@@ -1,0 +1,100 @@
+MERCENARY
+
+HP  20 - 50%
+Str 4  - 30%
+Mag 1  - 10%
+Skl 7  - 35%
+Spd 8  - 35%
+Def 5  - 20%
+Res 2  - 10%
+Lck 4  - 30%
+Mv  6
+
+
+ARCHER
+
+HP  20 - 50%
+Str 4  - 25%
+Mag 0  - 10%
+Skl 8  - 40%
+Spd 6  - 30%
+Def 3  - 15%
+Res 3  - 15%
+Lck 5  - 35%
+Mv  6
+
+
+FIGHTER
+
+HP  24 - 65%
+Str 9  - 45%
+Mag 1  - 5%
+Skl 5  - 30%
+Spd 4  - 30%
+Def 3  - 15%
+Res 0  - 10%
+Lck 5  - 20%
+Mv  6
+
+SOLDIER
+
+HP  20 - 55%
+Str 5  - 35%
+Mag 1  - 10%
+Skl 5  - 35%
+Spd 4  - 25%
+Def 5  - 25%
+Res 3  - 20%
+Lck 6  - 15%
+Mv  6
+
+
+MAGE
+
+HP  20 - 45%
+Str 1  - 15%
+Mag 5  - 35%
+Skl 4  - 25%
+Spd 3  - 25%
+Def 3  - 15%
+Res 6  - 35%
+Lck 4  - 25%
+Mv  6
+
+MONK
+
+HP  20 - 40%
+Str 1  - 10%
+Mag 4  - 35%
+Skl 5  - 35%
+Spd 6  - 30%
+Def 1  - 10%
+Res 6  - 30%
+Lck 4  - 30%
+Mv  6
+
+
+DRUID
+
+HP  22 - 50%
+Str 3  - 20%
+Mag 8  - 40%
+Skl 5  - 20%
+Spd 3  - 20%
+Def 3  - 30%
+Res 3  - 30%
+Lck 1  - 10%
+Mv  6
+
+
+PRIEST
+
+HP  20 - 40%
+Str 1  - 5%
+Mag 4  - 35%
+Skl 3  - 15%
+Spd 6  - 30%
+Def 1  - 10%
+Res 6  - 40%
+Lck 6  - 45%
+Mv  6
