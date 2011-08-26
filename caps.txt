@@ -1,0 +1,98 @@
+Unpromoted:
+
+HP  40
+Str 20
+Mag 20
+Skl 20
+Spd 20
+Def 20
+Res 20
+Lck 30
+
+Hero:
+
+HP  60
+Str 25
+Mag 22
+Skl 30
+Spd 26
+Def 25
+Res 22
+Lck 30
+
+Swordmaster:
+
+HP  60
+Str 24
+Mag 22
+Skl 29
+Spd 30
+Def 22
+Res 23
+Lck 30
+
+Warrior:
+
+HP  60
+Str 30
+Mag 22
+Skl 26
+Spd 26
+Def 24
+Res 22
+Lck 30
+
+Berserker:
+
+HP  60
+Str 30
+Mag 22
+Skl 27
+Spd 27
+Def 23
+Res 21
+Lck 30
+
+Infantry:
+
+HP  60
+Str 26
+Mag 22
+Skl 26
+Spd 26
+Def 26
+Res 24
+Lck 30
+
+Halberdier:
+
+HP  60
+Str 26
+Mag 22
+Skl 27
+Spd 27
+Def 25
+Res 23
+Lck 30
+
+Hunter:
+
+HP  60
+Str 25
+Mag 22
+Skl 28
+Spd 28
+Def 25
+Res 22
+Lck 30
+
+Sniper:
+
+HP  60
+Str 24
+Mag 22
+Skl 30
+Spd 28
+Def 24
+Res 22
+Lck 30

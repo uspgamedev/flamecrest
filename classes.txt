@@ -1,0 +1,32 @@
+Mercenary (Swd E)
+  Hero (Swd, Axe D)
+  Swordmaster (Swd, Crit +15)
+
+Fighter (Axe E)
+  Warrior (Axe, Bow D)
+  Berserker (Axe, Crit +15)
+
+Soldier (Lnc E)
+  Infantry (Lnc, Swd D)
+  Halberdier (Lnc, Crit +15)
+
+Archer (Bow E)
+  Hunter (Bow, Lnc D)
+  Sniper (Bow, Crit +15)
+
+Mage (Anm E)
+  Sage (Anm, Stf D)
+  ??? (Anm, Lgt D)
+
+Monk (Lgt E)
+  Bishop (Lgt, Stf D)
+  Heretic (Lgt, Drk D)
+
+Shaman (Drk E)
+  Druid (Drk, Stf D)
+  ??? (Drk, Anm D)
+
+Priest (Stf E)
+  Sage (Stf, Anm D)
+  Bishop (Stf, Lgt D)
+  Druid (Stf, Drk D)
