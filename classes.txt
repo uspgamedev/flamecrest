@@ -16,7 +16,7 @@ Archer (Bow E)
 
 Mage (Anm E)
   Sage (Anm, Stf D)
-  ??? (Anm, Lgt D)
+  Exorcist (Anm Lgt D)
 
 Monk (Lgt E)
   Bishop (Lgt, Stf D)
@@ -24,7 +24,7 @@ Monk (Lgt E)
 
 Shaman (Drk E)
   Druid (Drk, Stf D)
-  ??? (Drk, Anm D)
+  Sorcerer (Drk, Anm D)
 
 Priest (Stf E)
   Sage (Stf, Anm D)
