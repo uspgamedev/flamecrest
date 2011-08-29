@@ -98,3 +98,29 @@ Def 1  - 10%
 Res 6  - 40%
 Lck 6  - 45%
 Mv  6
+
+
+KNIGHT
+
+HP  25 - 65%
+Str 7  - 40%
+Mag 0  - 10%
+Skl 6  - 30%
+Spd 2  - 10%
+Def 9  - 45%
+Res 0  - 10%
+Lck 4  - 20%
+Mv  5
+
+
+CAVALIER
+
+HP  20 - 50%
+Str 5  - 30%
+Mag 1  - 15%
+Skl 6  - 30%
+Spd 6  - 30%
+Def 4  - 20%
+Res 2  - 15%
+Lck 5  - 20%
+Mv  7

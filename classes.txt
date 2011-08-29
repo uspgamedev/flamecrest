@@ -30,3 +30,9 @@ Priest (Stf E)
   Sage (Stf, Anm D)
   Bishop (Stf, Lgt D)
   Druid (Stf, Drk D)
+
+Knight (Lnc E or Swd E or Axe E)
+  General (Lnc or Swd or Axe, Lnc D or Swd D or Axe D)
+
+Cavalier (Lnc E, Swd E)
+  Paladin (Lnc, Swd, Axe D)
