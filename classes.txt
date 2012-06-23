@@ -1,4 +1,4 @@
-Mercenary (Swd E)
+Mercenary/Myrmidon (Swd E)
   Hero (Swd, Axe D)
   Swordmaster (Swd, Crit +15)
 
@@ -7,7 +7,7 @@ Fighter (Axe E)
   Berserker (Axe, Crit +15)
 
 Soldier (Lnc E)
-  Infantry (Lnc, Swd D)
+  Vanguardian (Lnc, Swd D)
   Halberdier (Lnc, Crit +15)
 
 Archer (Bow E)
@@ -20,7 +20,7 @@ Mage (Anm E)
 
 Monk (Lgt E)
   Bishop (Lgt, Stf D)
-  Heretic (Lgt, Drk D)
+  Heretic/Fallen (Lgt, Drk D)
 
 Shaman (Drk E)
   Druid (Drk, Stf D)
