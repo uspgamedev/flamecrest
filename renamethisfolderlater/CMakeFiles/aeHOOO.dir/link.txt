@@ -1,1 +1,0 @@
-/usr/bin/c++   -O3 -DNDEBUG   CMakeFiles/aeHOOO.dir/src/game/notasteroids.cc.o  -o aeHOOO -rdynamic -L/home/renan/flamecrest/renamethisfolderlater/lib -lm lib/libugdk_d.a -Wl,-Bstatic -lSDLmain -Wl,-Bdynamic -lSDL -lpthread -lSDL_mixer -lSDL_ttf -lSDL_image -lGLU -lGL -lSM -lICE -lX11 -lXext -Wl,-rpath,/home/renan/flamecrest/renamethisfolderlater/lib: 
