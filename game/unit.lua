@@ -17,6 +17,9 @@ end
 
 function unit:takedamage (dmg)
   self.hp = self.hp - dmg
+  if self.hp < 0 then
+    self.hp = 0
+  end
 end
 
 function unit:isdead ()
