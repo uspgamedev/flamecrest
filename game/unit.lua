@@ -1,5 +1,5 @@
 
-local attributes = { "str", "def", "spd", "skl", "lck", "hp" }
+local attributes = { "str", "def", "spd", "skl", "lck", "maxhp" }
 
 unit = {
   name = "Soldier",
@@ -11,13 +11,14 @@ unit = {
   skl = 10,
   lck = 10,
   hp = 16,
+  maxhp = 16,
   growths = {
     str = 20,
     def = 20,
     spd = 20,
     skl = 20,
     lck = 20,
-    hp = 50
+    maxhp = 50
   },
   caps = {
     str = 20,
@@ -25,7 +26,7 @@ unit = {
     spd = 20,
     skl = 20,
     lck = 20,
-    hp = 40
+    maxhp = 40
   }
 }
 
@@ -33,6 +34,10 @@ function unit:new (newguy)
   newguy = newguy or {}
   self.__index = self --da fuq
   setmetatable(newguy, self) --da fuq 2
+  -- TODO F*CKING REMOVE FROM HERE
+  if newguy.maxhp then
+    newguy.hp = newguy.maxhp
+  end
   return newguy
 end
 
