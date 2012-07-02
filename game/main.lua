@@ -16,8 +16,15 @@ unit2 = {
   lck = 20
 }
 
-local keypressed = false
-local lastframekeypressed = false
+local keyactions = {}
+
+function keyactions.a ()
+  combat(unit1, unit2)
+end
+
+function keyactions.x ()
+  -- TODO XP
+end
 
 function love.load()
   unit1 = unit:new(unit1)
@@ -25,12 +32,7 @@ function love.load()
 end
 
 function love.update(dt)
-  if (keypressed and not lastframekeypressed) then
-    if (not unit:isdead() or not unit2:isdead()) then
-      combat(unit1, unit2)
-    end
-  end
-  lastframekeypressed = keypressed
+  -- NOTHING
 end
 
 function love.draw()
@@ -59,9 +61,12 @@ function love.draw()
 end
 
 function love.keypressed(key)
-  keypressed = true
+  -- NOTHING
 end
 
 function love.keyreleased(key)
-  keypressed = false
+  if keyactions[key] then
+    keyactions[key]()
+  end
 end
+
