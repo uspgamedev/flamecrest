@@ -23,7 +23,11 @@ function keyactions.a ()
 end
 
 function keyactions.x ()
-  -- TODO XP
+  unit1:gainexp(30)
+end
+
+function keyactions.c ()
+  unit2:gainexp(30)
 end
 
 function love.load()
@@ -36,21 +40,26 @@ function love.update(dt)
 end
 
 function love.draw()
-  love.graphics.print(unit1.name, 100, 100)
-  love.graphics.print(unit1.hp, 100, 120)
-  love.graphics.print(unit1.str, 100, 140)
-  love.graphics.print(unit1.def, 100, 160)
-  love.graphics.print(unit1.spd, 100, 180)
-  love.graphics.print(unit1.skl, 100, 200)
-  love.graphics.print(unit1.lck, 100, 220)
+  love.graphics.print("name: "..unit1.name, 100, 100)
+  love.graphics.print("  lv: "..unit1.lv, 100, 120)
+  love.graphics.print(" exp: "..unit1.exp, 100, 140)
+  love.graphics.print("  hp: "..unit1.hp, 100, 160)
+  love.graphics.print(" str: "..unit1.str, 100, 180)
+  love.graphics.print(" def: "..unit1.def, 100, 200)
+  love.graphics.print(" spd: "..unit1.spd, 100, 220)
+  love.graphics.print(" skl: "..unit1.skl, 100, 240)
+  love.graphics.print(" lck: "..unit1.lck, 100, 260)
 
-  love.graphics.print(unit2.name, 200, 100)
-  love.graphics.print(unit2.hp, 200, 120)
-  love.graphics.print(unit2.str, 200, 140)
-  love.graphics.print(unit2.def, 200, 160)
-  love.graphics.print(unit2.spd, 200, 180)
-  love.graphics.print(unit2.skl, 200, 200)
-  love.graphics.print(unit2.lck, 200, 220)
+
+  love.graphics.print("name: "..unit2.name, 200, 100)
+  love.graphics.print("  lv: "..unit2.lv, 200, 120)
+  love.graphics.print(" exp: "..unit2.exp, 200, 140)
+  love.graphics.print("  hp: "..unit2.hp, 200, 160)
+  love.graphics.print(" str: "..unit2.str, 200, 180)
+  love.graphics.print(" def: "..unit2.def, 200, 200)
+  love.graphics.print(" spd: "..unit2.spd, 200, 220)
+  love.graphics.print(" skl: "..unit2.skl, 200, 240)
+  love.graphics.print(" lck: "..unit2.lck, 200, 260)
 
   if (unit2:isdead()) then
      love.graphics.print("Winner!", 100, 80)
