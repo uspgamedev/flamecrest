@@ -9,23 +9,7 @@ local function muchfaster (unit1, unit2)
   return false, false
 end
 
-function combat (unit1, unit2)
-  strike(unit1, unit2)
-  if (unit2:isdead()) then
-    return
-  end
-  strike(unit2, unit1)
-  if (unit1:isdead()) then
-    return
-  end
-  faster, slower = muchfaster(unit1, unit2)
-  if (faster) then
-    print("moreattack")
-    strike(faster, slower)
-  end
-end
-
-function strike (unit1, unit2)
+local function strike (unit1, unit2)
   hitbonus = 80
   hit = 2 * unit1.skl + unit1.lck + hitbonus
   evade = 2 * unit2.spd + unit2.lck
@@ -45,3 +29,20 @@ function strike (unit1, unit2)
     unit2:takedamage(damage)
   end
 end
+
+function combat (unit1, unit2)
+  strike(unit1, unit2)
+  if (unit2:isdead()) then
+    return
+  end
+  strike(unit2, unit1)
+  if (unit1:isdead()) then
+    return
+  end
+  faster, slower = muchfaster(unit1, unit2)
+  if (faster) then
+    print("moreattack")
+    strike(faster, slower)
+  end
+end
+
