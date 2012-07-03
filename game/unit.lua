@@ -2,7 +2,7 @@
 local attributes = { "str", "def", "spd", "skl", "lck", "maxhp" }
 
 unit = {
-  name = "Soldier",
+  name = "Unit",
   lv = 1,
   exp = 0,
   str = 10,
@@ -78,5 +78,17 @@ end
 
 function unit:isdead ()
   return self.hp <= 0
+end
+
+function unit:draw ()
+  love.graphics.print("name: "..self.name, 0, 0)
+  love.graphics.print("lv: "..self.lv, 0, 20)
+  love.graphics.print("exp: "..self.exp, 0, 40)
+  love.graphics.print("hp: "..self.hp.."/"..self.maxhp, 0, 60)
+  love.graphics.print("str: "..self.str, 0, 80)
+  love.graphics.print("def: "..self.def, 0, 100)
+  love.graphics.print("spd: "..self.spd, 0, 120)
+  love.graphics.print("skl: "..self.skl, 0, 140)
+  love.graphics.print("lck: "..self.lck, 0, 160)
 end
 
