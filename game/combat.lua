@@ -1,5 +1,5 @@
+
 function combat (unit1, unit2)
-  math.randomseed( os.time() ) -- Retirar essa coisa aqui depois
   strike(unit1, unit2)
   if (unit2:isdead()) then
     return

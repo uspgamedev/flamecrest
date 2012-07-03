@@ -1,6 +1,8 @@
 require "unit"
 require "combat"
 
+math.randomseed( os.time() ) -- Retirar essa coisa aqui depois
+
 local unit1 = {
   name = "Juaum",
   maxhp = 20,
