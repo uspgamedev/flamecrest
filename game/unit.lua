@@ -74,6 +74,7 @@ function unit:lvup ()
       end
     end
   end
+  print("")
 end
 
 function unit:isdead ()

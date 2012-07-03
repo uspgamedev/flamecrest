@@ -9,7 +9,8 @@ local unit1 = {
   maxhp = 20,
   str = 12,
   spd = 14,
-  def = 6
+  def = 6,
+  lck = 0
 }
 
 unit2 = {
