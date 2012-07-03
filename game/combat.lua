@@ -9,20 +9,20 @@ local function muchfaster (unit1, unit2)
   return false, false
 end
 
-local function strike (unit1, unit2)
+local function strike (attacker, defender)
   hitbonus = 80
-  hit = 2 * unit1.skl + unit1.lck + hitbonus
-  evade = 2 * unit2.spd + unit2.lck
+  hit = 2 * attacker.skl + attacker.lck + hitbonus
+  evade = 2 * defender.spd + defender.lck
   hitchance = hit - evade
   print("hit "..hitchance)
-  damage = unit1.str - unit2.def
+  damage = attacker.str - defender.def
   print("damage "..damage)
   rand1 = math.random(100)
   rand2 = math.random(100)
   print("rand1 "..rand1.." rand 2 "..rand2.." avg "..((rand1+rand2)/2))
   if ((rand1 + rand2) / 2 <= hitchance) then --Double RNG as seen in the games!
-    crit = unit1.skl / 2
-    dodge = unit2.lck
+    crit = attacker.skl / 2
+    dodge = defender.lck
     critchance = crit - dodge
     print("crit "..critchance)
     rand1 = math.random(100)
@@ -30,21 +30,21 @@ local function strike (unit1, unit2)
       print("crits")
       damage = damage * 3
     end
-    unit2:takedamage(damage)
+    defender:takedamage(damage)
   end
   print("")
 end
 
-function combat (unit1, unit2)
-  strike(unit1, unit2)
-  if (unit2:isdead()) then
+function combat (attacker, defender)
+  strike(attacker, defender)
+  if (defender:isdead()) then
     return
   end
-  strike(unit2, unit1)
-  if (unit1:isdead()) then
+  strike(defender, attacker)
+  if (attacker:isdead()) then
     return
   end
-  faster, slower = muchfaster(unit1, unit2)
+  faster, slower = muchfaster(attacker, defender)
   if (faster) then
     print("moreattack")
     strike(faster, slower)
