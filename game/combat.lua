@@ -1,4 +1,14 @@
 
+local function muchfaster (unit1, unit2)
+  if (unit1.spd -4 >= unit2.spd) then
+    return unit1, unit2
+  end
+  if (unit2.spd -4 >= unit1.spd)  then
+    return unit2, unit1
+  end
+  return false, false
+end
+
 function combat (unit1, unit2)
   strike(unit1, unit2)
   if (unit2:isdead()) then
@@ -13,16 +23,6 @@ function combat (unit1, unit2)
     print("moreattack")
     strike(faster, slower)
   end
-end
-
-function muchfaster (unit1, unit2)
-  if (unit1.spd -4 >= unit2.spd) then
-    return unit1, unit2
-  end
-  if (unit2.spd -4 >= unit1.spd)  then
-    return unit2, unit1
-  end
-  return false, false
 end
 
 function strike (unit1, unit2)
