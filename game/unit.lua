@@ -1,22 +1,27 @@
 
 require "nova.object"
 
-local attributes = { "str", "def", "spd", "skl", "lck", "maxhp" }
+local attributes = { "str", "mag", "def", "res", "spd", "skl", "lck", "maxhp" }
 
 unit = nova.object:new {
   name = "Unit",
   lv = 1,
   exp = 0,
+  hp = 16,
+  maxhp = 16,
   str = 10,
+  mag = 10,
   def = 10,
+  res = 10,
   spd = 10,
   skl = 10,
   lck = 10,
-  hp = 16,
-  maxhp = 16,
+  con = 8, 
   growths = {
     str = 20,
+    mag = 20,
     def = 20,
+    res = 20,
     spd = 20,
     skl = 20,
     lck = 20,
@@ -24,12 +29,15 @@ unit = nova.object:new {
   },
   caps = {
     str = 20,
+    mag = 20,
     def = 20,
+    res = 20,
     spd = 20,
     skl = 20,
     lck = 20,
     maxhp = 40
-  }
+  },
+  weapon = nil
 }
 
 function unit:__init ()
@@ -76,6 +84,35 @@ end
 
 function unit:isdead ()
   return self.hp <= 0
+end
+
+function unit:combatspeed ()
+  local wgtmod = math.min(0, (self.str + self.con)/2 - self.weapon.wgt)
+  return self.spd + wgtmod
+end
+
+function unit:mt ()
+  return self.weapon.mt + self[self.weapon.atkattribute]
+end
+
+function unit:hit ()
+  return 2 * self.skl + self.lck + self.weapon.hit
+end
+
+function unit:evade ()
+  return 2 * self:combatspeed() + self.lck
+end
+
+function unit:defattr ()
+  return self.weapon.defattribute
+end
+
+function unit:crit ()
+  return self.skl/2 + self.weapon.crt
+end
+
+function unit:dodge ()
+  return self.lck
 end
 
 function unit:draw ()

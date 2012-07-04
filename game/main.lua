@@ -1,6 +1,7 @@
 
 require "unit"
 require "combat"
+require "weapon"
 
 math.randomseed( os.time() )
 
@@ -10,14 +11,16 @@ local unit1 = unit:new {
   str = 12,
   spd = 14,
   def = 6,
-  lck = 0
+  lck = 0,
+  weapon = weapon:new{}
 }
 
 local unit2 = unit:new {
   name = "Leeroy",
   maxhp = 20,
   skl = 20,
-  lck = 20
+  lck = 20,
+  weapon = weapon:new{}
 }
 
 local keyactions = {}
