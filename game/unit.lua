@@ -1,7 +1,9 @@
 
+require "nova.object"
+
 local attributes = { "str", "def", "spd", "skl", "lck", "maxhp" }
 
-unit = {
+unit = nova.object:new {
   name = "Unit",
   lv = 1,
   exp = 0,
@@ -30,15 +32,10 @@ unit = {
   }
 }
 
-function unit:new (newguy)
-  newguy = newguy or {}
-  self.__index = self --da fuq
-  setmetatable(newguy, self) --da fuq 2
-  -- TODO F*CKING REMOVE FROM HERE
-  if newguy.maxhp then
-    newguy.hp = newguy.maxhp
+function unit:__init ()
+  if self.maxhp then
+    self.hp = self.maxhp
   end
-  return newguy
 end
 
 function unit:takedamage (dmg)
