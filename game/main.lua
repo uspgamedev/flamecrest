@@ -4,7 +4,7 @@ require "combat"
 
 math.randomseed( os.time() )
 
-local unit1 = {
+local unit1 = unit:new {
   name = "Juaum",
   maxhp = 20,
   str = 12,
@@ -13,7 +13,7 @@ local unit1 = {
   lck = 0
 }
 
-unit2 = {
+local unit2 = unit:new {
   name = "Leeroy",
   maxhp = 20,
   skl = 20,
@@ -35,8 +35,7 @@ function keyactions.c ()
 end
 
 function love.load()
-  unit1 = unit:new(unit1)
-  unit2 = unit:new(unit2)
+  -- NOTHNG
 end
 
 function love.update(dt)
