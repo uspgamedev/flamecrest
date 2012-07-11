@@ -1,7 +1,10 @@
 
+require "nova.table"
+require "vec2"
 require "unit"
 require "combat"
 require "weapon"
+require "button"
 
 math.randomseed( os.time() )
 
@@ -20,12 +23,20 @@ local unit2 = unit:new {
   maxhp = 20,
   skl = 20,
   lck = 20,
-  weapon = weapon:new{
+  weapon = weapon:new {
     hit = 40
   }
 }
 
 local keyactions = {}
+local buttons = nova.table:new {
+  button:new {
+    pos = vec2:new { 500, 500 },
+    size = vec2:new { 64, 32 },
+    text = "QUIT",
+    action = function () love.event.push "quit" end
+  }
+}
 
 function keyactions.a ()
   if unit1:isdead() or unit2:isdead() then return end
@@ -45,12 +56,28 @@ function keyactions.c ()
   unit2:gainexp(30)
 end
 
-function love.load()
+function love.load ()
   -- NOTHNG
 end
 
-function love.update(dt)
+function love.update (dt)
   -- NOTHING
+end
+
+function love.keypressed (key)
+  -- NOTHING
+end
+
+function love.keyreleased (key)
+  if keyactions[key] then
+    keyactions[key]()
+  end
+end
+
+function love.mousereleased (x, y, b)
+  if b == "l" then
+    button.check(buttons, vec2:new {x, y})
+  end
 end
 
 function love.draw()
@@ -71,15 +98,10 @@ function love.draw()
   if (unit1:isdead()) then
      love.graphics.print("Winner!", 200, 80)
   end
-end
 
-function love.keypressed(key)
-  -- NOTHING
-end
-
-function love.keyreleased(key)
-  if keyactions[key] then
-    keyactions[key]()
+  for _,v in pairs(buttons) do
+    v:draw()
   end
+
 end
 
