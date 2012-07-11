@@ -115,6 +115,22 @@ function unit:dodge ()
   return self.lck
 end
 
+function unit:expbase ()
+  return self.lv -- + self.class.tierbonus 
+end
+
+function unit:exppower ()
+  return 3 -- self.class.power
+end
+
+function unit:expbonus ()
+  return 0 -- self.class.bonus -- URGGGGHHHH
+end
+
+function unit:bossbonus ()
+  return 0 -- TODO: enfiar isso de modo que seja variavel
+end
+
 function unit:draw ()
   love.graphics.print("name: "..self.name, 0, 0)
   love.graphics.print("lv: "..self.lv, 0, 20)

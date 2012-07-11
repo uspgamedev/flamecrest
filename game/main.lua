@@ -20,13 +20,21 @@ local unit2 = unit:new {
   maxhp = 20,
   skl = 20,
   lck = 20,
-  weapon = weapon:new{}
+  weapon = weapon:new{
+    hit = 40
+  }
 }
 
 local keyactions = {}
 
 function keyactions.a ()
+  if unit1:isdead() or unit2:isdead() then return end
   combat(unit1, unit2)
+end
+
+function keyactions.s ()
+  if unit1:isdead() or unit2:isdead() then return end
+  combat(unit2, unit1)
 end
 
 function keyactions.x ()
