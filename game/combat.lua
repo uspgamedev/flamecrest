@@ -1,10 +1,10 @@
 
-local function muchfaster (unit1, unit2)
-  if (unit1.spd -4 >= unit2.spd) then
-    return unit1, unit2
+local function muchfaster (attacker, defender)
+  if (attacker.spd -4 >= defender.spd) then
+    return "attacker", "defender"
   end
-  if (unit2.spd -4 >= unit1.spd)  then
-    return unit2, unit1
+  if (defender.spd -4 >= attacker.spd)  then
+    return "defender", "attacker"
   end
   return false, false
 end
@@ -43,14 +43,26 @@ end
 
 function combat (attacker, defender)
   local exp = 1
-  local attdmg = strike(attacker, defender)
+  local info = {
+    attacker = {
+      unit = attacker,
+      dealtdmg = false,
+      enemy = defender
+    },
+    defender = {
+      unit = defender,
+      dealtdmg = false,
+      enemy = attacker
+    }
+  }
+  info.attacker.dealtdmg = strike(attacker, defender)
   if (defender:isdead()) then
     print (defender.name.." is dead!")
     exp = killexp(attacker, defender)
     attacker:gainexp(exp)
     return
   end
-  local defdmg = strike(defender, attacker)
+  info.defender.dealtdmg = strike(defender, attacker)
   if (attacker:isdead()) then
     print (attacker.name.." is dead!")
     exp = killexp(attacker, defender)
@@ -60,38 +72,27 @@ function combat (attacker, defender)
   local faster, slower = muchfaster(attacker, defender)
   if (faster) then
     print("moreattack")
-    local fastdmg = strike(faster, slower)
-    print(faster.name.." hit again! hurrah!")
-    if slower:isdead() then
-      print (slower.name.." is dead!")
-      exp = killexp(attacker, defender)
-      faster:gainexp(exp)
+    local fastdealt = strike(info[faster].unit, info[slower].unit)
+    info[faster].dealtdmg = info[faster].dealtdmg or fastdealt
+    print(info[faster].unit.name.." hit again! hurrah!")
+    if info[slower].unit:isdead() then
+      print (info[slower].unit.name.." is dead!")
+      exp = killexp(info[faster].unit, info[slower].unit)
+      info[faster].unit:gainexp(exp)
       return
     end
-    if faster == attacker then
-      print(attacker.name.." is successful")
-      attdmg = attdmg or fastdmg
+    print(info[faster].unit.name.." is successful")
+  end
+  for _,v in pairs(info) do
+    if v.dealtdmg then
+      print (v.unit.name.." dealt damage!")
+      exp = combatexp(v.unit, v.enemy)
     else
-      print(defender.name.." is successful")
-      defdmg = defdmg or fastdmg
+      print (v.unit.name.." failed miserably!")
+      exp = 1
     end
+    v.unit:gainexp(exp)
   end
-  if attdmg then
-    print (attacker.name.." dealt damage!")
-    exp = combatexp(attacker, defender)
-  else
-    print (attacker.name.." failed miserably!")
-    exp = 1
-  end
-  attacker:gainexp(exp)
-  if defdmg then
-    print (defender.name.." dealt damage!")
-    exp = combatexp(defender, attacker)
-  else
-    print (defender.name.." failed miserably!")
-    exp = 1
-  end
-  defender:gainexp(exp)
 end
 
 

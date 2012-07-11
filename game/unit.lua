@@ -124,7 +124,7 @@ function unit:exppower ()
 end
 
 function unit:expbonus ()
-  return 0 -- self.class.bonus -- URGGGGHHHH
+  return 0 -- self.class.bonus
 end
 
 function unit:bossbonus ()
