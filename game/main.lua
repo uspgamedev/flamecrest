@@ -57,7 +57,7 @@ function keyactions.c ()
 end
 
 function love.load ()
-  -- NOTHNG
+  love.graphics.setFont(love.graphics.newFont(14))
 end
 
 function love.update (dt)
