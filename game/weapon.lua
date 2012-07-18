@@ -6,6 +6,7 @@ weapon = nova.object:new{
   hit = 60,
   wgt = 3,
   crt = 0,
+  weapontype = "sword",
   atkattribute = "str",
   defattribute = "def"
 }

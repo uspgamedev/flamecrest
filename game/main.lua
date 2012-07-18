@@ -15,7 +15,9 @@ local unit1 = unit:new {
   spd = 14,
   def = 6,
   lck = 0,
-  weapon = weapon:new{}
+  weapon = weapon:new{
+    weapontype = "lance"
+  }
 }
 
 local unit2 = unit:new {

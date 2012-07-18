@@ -1,3 +1,19 @@
+require "nova.functional"
+
+weaponbonus = {
+  sword = {
+    axe   = { 1, 15 },
+    lance = { -1, -15 }
+  },
+  axe = { 
+    lance = { 1, 15 },
+    sword = { -1, -15 }
+  },
+  lance = {
+    sword = { 1, 15 },
+    axe   = { -1, -15 }
+  }
+}
 
 local function muchfaster (attacker, defender)
   if (attacker.spd -4 >= defender.spd) then
@@ -13,12 +29,19 @@ local function strike (attacker, defender)
   if not attacker.weapon then return end
   local dealtdamage = false
   local hit = attacker:hit()
+  attackerweapontype = attacker.weapon.weapontype
+  defenderweapontype = defender.weapon.weapontype
   local evade = defender:evade()
   local hitchance = hit - evade
   print("hit "..hitchance)
   local mt = attacker:mt()
   local damage = mt - defender[attacker:defattr()]
   print("damage "..damage)
+  if weaponbonus[attackerweapontype] and weaponbonus[attackerweapontype][defenderweapontype] then
+    damage, hitchance = damage + weaponbonus[attackerweapontype][defenderweapontype][1], hitchance + weaponbonus[attackerweapontype][defenderweapontype][2]
+  end
+  print("newhit "..hitchance)
+  print("newdamage "..damage)
   local rand1 = math.random(100)
   local rand2 = math.random(100)
   print("rand1 "..rand1.." rand 2 "..rand2.." avg "..((rand1+rand2)/2))
@@ -108,7 +131,7 @@ function killexp (unit1, unit2)
   local base = (unit2.lv * unit2:exppower() + unit2:expbonus()) - 
                (unit1.lv * unit1:exppower() + unit1:expbonus()) 
   local exp = combatexp(unit1, unit2) + base + 20 + unit2:bossbonus()
-  exp = math.floor(exp)
+  exp = math.max(math.floor(exp), 1)
   print("kill exp "..exp)
   print("")
   return exp
