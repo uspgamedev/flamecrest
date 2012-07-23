@@ -56,7 +56,7 @@ function button:draw ()
   local currentcolor = { love.graphics.getColor() }
 
   -- draw button rectangle
-  love.graphics.setColor { 0, 0, 200, 255 }
+  love.graphics.setColor { 50, 50, 50, 255 }
   love.graphics.rectangle("fill", self.pos.x, self.pos.y,
                                   self.size.x, self.size.y)
 

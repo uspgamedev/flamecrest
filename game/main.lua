@@ -5,6 +5,7 @@ require "unit"
 require "combat"
 require "weapon"
 require "button"
+require "layout"
 
 math.randomseed( os.time() )
 
@@ -31,14 +32,6 @@ local unit2 = unit:new {
 }
 
 local keyactions = {}
-local buttons = nova.table:new {
-  button:new {
-    pos = vec2:new { 500, 500 },
-    size = vec2:new { 64, 32 },
-    text = "QUIT",
-    action = function () love.event.push "quit" end
-  }
-}
 
 function keyactions.a ()
   if unit1:isdead() or unit2:isdead() then return end
@@ -59,7 +52,7 @@ function keyactions.c ()
 end
 
 function love.load ()
-  love.graphics.setFont(love.graphics.newFont(14))
+  love.graphics.setFont(love.graphics.newFont("fonts/Verdana.ttf", 14))
 end
 
 function love.update (dt)
@@ -78,7 +71,7 @@ end
 
 function love.mousereleased (x, y, b)
   if b == "l" then
-    button.check(buttons, vec2:new {x, y})
+    button.check(layout.buttons, vec2:new {x, y})
   end
 end
 
@@ -101,7 +94,7 @@ function love.draw()
      love.graphics.print("Winner!", 200, 80)
   end
 
-  for _,v in pairs(buttons) do
+  for _,v in pairs(layout.buttons) do
     v:draw()
   end
 
