@@ -1,7 +1,7 @@
 
 require "nova.object"
 
-local attributes = { "str", "mag", "def", "res", "spd", "skl", "lck", "maxhp" }
+local attributes = { "maxhp", "str", "mag", "def", "res", "spd", "skl", "lck" }
 
 unit = nova.object:new {
   name = "Unit",
@@ -137,9 +137,15 @@ function unit:draw ()
   love.graphics.print("exp: "..self.exp, 0, 40)
   love.graphics.print("hp: "..self.hp.."/"..self.maxhp, 0, 60)
   love.graphics.print("str: "..self.str, 0, 80)
-  love.graphics.print("def: "..self.def, 0, 100)
-  love.graphics.print("spd: "..self.spd, 0, 120)
-  love.graphics.print("skl: "..self.skl, 0, 140)
-  love.graphics.print("lck: "..self.lck, 0, 160)
+  love.graphics.print("mag: "..self.mag, 0, 100)
+  love.graphics.print("def: "..self.def, 0, 120)
+  love.graphics.print("res: "..self.res, 0, 140)
+  love.graphics.print("spd: "..self.spd, 0, 160)
+  love.graphics.print("skl: "..self.skl, 0, 180)
+  love.graphics.print("lck: "..self.lck, 0, 200)
+end
+
+function unit.foreachattr (f)
+  table.foreach(attributes, f)
 end
 
