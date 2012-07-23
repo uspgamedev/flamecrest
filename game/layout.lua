@@ -100,6 +100,14 @@ module ("layout", package.seeall) do
 
   local function addunitbuttons (unit, offset)
     spinner(unit, offset, "lv", 1, 20)
+    buttons:insert(
+      button:new {
+        text = "+30",
+        pos = offset+vec2:new{0,32},
+        size = vec2:new { 32, 16 },
+        action = function () unit:gainexp(30) end
+      }
+    )
     local function addspinner (i, attr)
       spinner(unit, offset+vec2:new{0,64+32*(i-1)}, attr, 0, 30)
       -- TODO: actually, luck's max is 40
