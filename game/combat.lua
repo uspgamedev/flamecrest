@@ -1,19 +1,5 @@
-require "nova.functional"
 
-weaponbonus = {
-  sword = {
-    axe   = { 1, 15 },
-    lance = { -1, -15 }
-  },
-  axe = { 
-    lance = { 1, 15 },
-    sword = { -1, -15 }
-  },
-  lance = {
-    sword = { 1, 15 },
-    axe   = { -1, -15 }
-  }
-}
+require "weaponmechanics"
 
 local function muchfaster (attacker, defender)
   if (attacker.spd -4 >= defender.spd) then
@@ -29,17 +15,15 @@ local function strike (attacker, defender)
   if not attacker.weapon then return end
   local dealtdamage = false
   local hit = attacker:hit()
-  attackerweapontype = attacker.weapon.weapontype
-  defenderweapontype = defender.weapon.weapontype
+  attackerweapon = attacker.weapon
+  defenderweapon = defender.weapon
   local evade = defender:evade()
   local hitchance = hit - evade
   print("hit "..hitchance)
   local mt = attacker:mt()
   local damage = mt - defender[attacker:defattr()]
   print("damage "..damage)
-  if weaponbonus[attackerweapontype] and weaponbonus[attackerweapontype][defenderweapontype] then
-    damage, hitchance = damage + weaponbonus[attackerweapontype][defenderweapontype][1], hitchance + weaponbonus[attackerweapontype][defenderweapontype][2]
-  end
+  damage, hitchance = trianglebonus(damage, hitchance, attackerweapon, defenderweapon)
   print("newhit "..hitchance)
   print("newdamage "..damage)
   local rand1 = math.random(100)
