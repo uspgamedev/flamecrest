@@ -15,15 +15,17 @@ local function strike (attacker, defender)
   if not attacker.weapon then return end
   local dealtdamage = false
   local hit = attacker:hit()
-  attackerweapon = attacker.weapon
-  defenderweapon = defender.weapon
+  local attackerweapon = attacker.weapon
+  local defenderweapon = defender.weapon
   local evade = defender:evade()
   local hitchance = hit - evade
   print("hit "..hitchance)
   local mt = attacker:mt()
   local damage = mt - defender[attacker:defattr()]
   print("damage "..damage)
-  damage, hitchance = trianglebonus(damage, hitchance, attackerweapon, defenderweapon)
+  damage, hitchance = weaponmechanics.trianglebonus(damage, hitchance,
+                                                    attackerweapon,
+                                                    defenderweapon)
   print("newhit "..hitchance)
   print("newdamage "..damage)
   local rand1 = math.random(100)

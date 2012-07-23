@@ -1,3 +1,6 @@
+
+module ("weaponmechanics", package.seeall)
+
 local weapontriangle = {
    sword = {
      axe = 1,
@@ -54,3 +57,4 @@ function trianglebonus(dmg, hit, attwpn, defwpn)
   hit = hit + tbonus.hit * bonus
   return dmg, hit
 end
+
