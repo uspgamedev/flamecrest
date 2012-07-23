@@ -33,25 +33,25 @@ end
 
 function love.draw()
 
-  love.graphics.push()
-  love.graphics.translate(layout.left, layout.top)
+  local g = love.graphics
+
+  layout.draw(g)
+
+  g.push()
+  g.translate(layout.left, layout.top)
   game.unit1:draw()
-  love.graphics.pop()
+  g.pop()
   
-  love.graphics.push()
-  love.graphics.translate(layout.middle, layout.top)
+  g.push()
+  g.translate(layout.middle, layout.top)
   game.unit2:draw()
-  love.graphics.pop()
+  g.pop()
 
   if (game.unit2:isdead()) then
-     love.graphics.print("Winner!", 100, 80)
+     g.print("Winner!", 100, 80)
   end
   if (game.unit1:isdead()) then
-     love.graphics.print("Winner!", 200, 80)
-  end
-
-  for _,v in pairs(layout.buttons) do
-    v:draw()
+     g.print("Winner!", 200, 80)
   end
 
 end
