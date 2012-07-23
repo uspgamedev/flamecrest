@@ -4,6 +4,10 @@ require "button"
 
 module ("layout", package.seeall) do
 
+  top = 96
+  left = 32
+  middle = 512 + 32
+
   buttons = nova.table:new {
     -- quit button
     button:new {
@@ -12,13 +16,14 @@ module ("layout", package.seeall) do
       text = "QUIT",
       action = function () love.event.push "quit" end
     },
-    -- reset all button
+    -- reset all to initial state
     button:new {
       pos = vec2:new { 32, 32 },
       size = vec2:new { 128, 32 },
       text = "RESET ALL",
       action = function () end
-    }
+    },
+    --
   }
 
 end
