@@ -1,7 +1,7 @@
 
 require "nova.object"
 
-weapon = nova.object:new{
+weapon = nova.object:new {
   mt = 5,
   hit = 60,
   wgt = 3,

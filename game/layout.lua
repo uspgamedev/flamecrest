@@ -71,43 +71,53 @@ module ("layout", package.seeall) do
     },
   }
 
-  local function inc (pos, unit, attrname, max)
+  local function inc (pos, obj, attrname, max)
     return button:new {
       text = "+",
       pos = pos,
       size = vec2:new { 16, 16 },
       action = function ()
-        unit[attrname] = math.min(unit[attrname] + 1, max)
+        obj[attrname] = max and
+          math.min(obj[attrname] + 1, max) or
+          obj[attrname] + 1
       end
     }
   end
 
-  local function dec (pos, unit, attrname, min)
+  local function dec (pos, obj, attrname, min)
     return button:new {
       text = "-",
       pos = pos,
       size = vec2:new { 16, 16 },
       action = function ()
-        unit[attrname] = math.max(unit[attrname] - 1, min)
+        obj[attrname] = min and
+          math.max(obj[attrname] - 1, min) or
+          obj[attrname] - 1
+        -- TODO this is ugly
         if attrname == "maxhp" then
-          unit.hp = math.min(unit.hp, unit.maxhp)
+          obj.hp = math.min(obj.hp, obj.maxhp)
         end
       end
     }
   end
 
-  local function spinner (unit, pos, attrname, min, max)
-    buttons:insert(inc(pos+vec2:new{16,0}, unit, attrname, max))
-    buttons:insert(dec(pos, unit, attrname, min))
+  local function spinner (obj, pos, attrname, min, max)
+    buttons:insert(inc(pos+vec2:new{16,0}, obj, attrname, max))
+    buttons:insert(dec(pos, obj, attrname, min))
   end
 
   local function addunitbuttons (unit, offset)
     spinner(unit, offset, "lv", 1, 20)
+    local function addspinner (i, attr)
+      spinner(unit, offset+vec2:new{0,32+32*(i-1)}, attr, 0, 30)
+      -- TODO: actually, luck's max is 40
+    end
+    unit.foreachattr(addspinner)
     buttons:insert(
       button:new {
         text = "+30",
         pos = offset+vec2:new{128,0},
-        size = vec2:new { 40, 16 },
+        size = vec2:new {40,16},
         action = function () unit:gainexp(30) end
       }
     )
@@ -115,15 +125,19 @@ module ("layout", package.seeall) do
       button:new {
         text = "reset",
         pos = offset+vec2:new{128,16},
-        size = vec2:new { 40, 16 },
+        size = vec2:new {40,16},
         action = function () unit.exp = 0 end
       }
     )
-    local function addspinner (i, attr)
-      spinner(unit, offset+vec2:new{0,32+32*(i-1)}, attr, 0, 30)
-      -- TODO: actually, luck's max is 40
-    end
-    unit.foreachattr(addspinner)
+    buttons:insert(
+      button:new {
+        text = "heal",
+        pos = offset+vec2:new{128,64},
+        size = vec2:new {40,16},
+        action = function () unit.hp = unit.maxhp end
+      }
+    )
+    spinner(unit.weapon, offset+vec2:new{256,0}, "mt")
   end
 
   addunitbuttons(game.unit1, vec2:new{32+16, 384+16})
