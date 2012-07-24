@@ -12,10 +12,10 @@ module ("layout", package.seeall) do
 
   local function drawlabels (g, ox, oy)
     g.print("lv", ox, oy)
-    g.print("exp", ox, oy+32)
+    g.print("exp", ox+128+8, oy+8)
     unit.foreachattr(
       function (i, attr)
-        g.print(attr, ox, oy+32+32*i)
+        g.print(attr, ox, oy+32*i)
       end
     )
   end
@@ -89,6 +89,9 @@ module ("layout", package.seeall) do
       size = vec2:new { 16, 16 },
       action = function ()
         unit[attrname] = math.max(unit[attrname] - 1, min)
+        if attrname == "maxhp" then
+          unit.hp = math.min(unit.hp, unit.maxhp)
+        end
       end
     }
   end
@@ -103,13 +106,21 @@ module ("layout", package.seeall) do
     buttons:insert(
       button:new {
         text = "+30",
-        pos = offset+vec2:new{0,32},
-        size = vec2:new { 32, 16 },
+        pos = offset+vec2:new{128,0},
+        size = vec2:new { 40, 16 },
         action = function () unit:gainexp(30) end
       }
     )
+    buttons:insert(
+      button:new {
+        text = "reset",
+        pos = offset+vec2:new{128,16},
+        size = vec2:new { 40, 16 },
+        action = function () unit.exp = 0 end
+      }
+    )
     local function addspinner (i, attr)
-      spinner(unit, offset+vec2:new{0,64+32*(i-1)}, attr, 0, 30)
+      spinner(unit, offset+vec2:new{0,32+32*(i-1)}, attr, 0, 30)
       -- TODO: actually, luck's max is 40
     end
     unit.foreachattr(addspinner)
