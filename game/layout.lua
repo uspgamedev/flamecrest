@@ -18,10 +18,10 @@ module ("layout", package.seeall) do
         g.print(attr, ox, oy+32*i)
       end
     )
-    g.print("mt", ox+256, oy)
-    g.print("hit", ox+256, oy+32)
-    g.print("wgt", ox+256, oy+64)
-    g.print("crt", ox+256, oy+96)
+    g.print("mt", ox+256, oy+64)
+    g.print("hit", ox+256, oy+96)
+    g.print("wgt", ox+256, oy+128)
+    g.print("crt", ox+256, oy+160)
   end
 
   function draw (g)
@@ -141,16 +141,16 @@ module ("layout", package.seeall) do
         action = function () unit.hp = unit.maxhp end
       }
     )
-    spinner(unit.weapon, offset+vec2:new{256,0}, "mt")
-    spinner(unit.weapon, offset+vec2:new{256,32}, "hit")
-    spinner(unit.weapon, offset+vec2:new{256,64}, "wgt", 0)
-    spinner(unit.weapon, offset+vec2:new{256,96}, "crt")
+    spinner(unit.weapon, offset+vec2:new{256,64}, "mt")
+    spinner(unit.weapon, offset+vec2:new{256,96}, "hit")
+    spinner(unit.weapon, offset+vec2:new{256,128}, "wgt", 0)
+    spinner(unit.weapon, offset+vec2:new{256,160}, "crt")
     buttons:insert(
       button:new {
-        text = "change",
-        pos = offset+vec2:new {128,128},
-        size = vec2:new {40,16},
-        action = function () unit.weapon:setweapontype("fire") end
+        text = "change weapon",
+        pos = offset+vec2:new {256,0},
+        size = vec2:new {128,32},
+        action = function () unit.weapon:nexttype() end
       }
     )
   end

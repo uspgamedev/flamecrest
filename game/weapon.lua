@@ -18,18 +18,18 @@ weapon = nova.object:new {
 weapon.weapontypenum = #weapon.weapontypelist
 
 local physicaltypes = {
-  sword = true,
-  axe = true,
-  lance = true,
-  bow = true
+  sword = "lance",
+  lance = "axe",
+  axe = "bow",
+  bow = "light"
 }
 
 local magicaltypes = {
-  light = true,
-  dark = true,
-  fire = true,
-  thunder = true,
-  wind = true
+  light = "dark",
+  dark = "fire",
+  fire = "thunder",
+  thunder = "wind",
+  wind = "sword"
 }
 
 function weapon:setweapontype (weapontype)
@@ -41,5 +41,11 @@ function weapon:setweapontype (weapontype)
     self.defattribute = "res"
   else return end
   self.weapontype = weapontype
+end
+
+function weapon:nexttype ()
+  local newtype =
+    physicaltypes[self.weapontype] or magicaltypes[self.weapontype]
+  self:setweapontype(newtype)
 end
 
