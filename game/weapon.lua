@@ -35,7 +35,7 @@ local magicaltypes = {
 function weapon:setweapontype (weapontype)
   if physicaltypes[weapontype] then
     self.atkattribute = "str"
-    self.atkattribute = "def"
+    self.defattribute = "def"
   elseif magicaltypes[weapontype] then
     self.atkattribute = "mag"
     self.defattribute = "res"
