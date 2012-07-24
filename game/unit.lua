@@ -132,6 +132,7 @@ function unit:bossbonus ()
 end
 
 function unit:draw ()
+  -- unit info
   love.graphics.print("name: "..self.name, 0, 0)
   love.graphics.print("lv: "..self.lv, 0, 20)
   love.graphics.print("exp: "..self.exp, 0, 40)
@@ -143,6 +144,12 @@ function unit:draw ()
   love.graphics.print("spd: "..self.spd, 0, 160)
   love.graphics.print("skl: "..self.skl, 0, 180)
   love.graphics.print("lck: "..self.lck, 0, 200)
+  -- unit weapon info
+  love.graphics.print("weapon: "..self.weapon.weapontype, 128, 0)
+  love.graphics.print("mt: "..self.weapon.mt, 128, 20)
+  love.graphics.print("hit: "..self.weapon.hit, 128, 40)
+  love.graphics.print("wgt: "..self.weapon.wgt, 128, 60)
+  love.graphics.print("crt: "..self.weapon.crt, 128, 80)
 end
 
 function unit.foreachattr (f)
