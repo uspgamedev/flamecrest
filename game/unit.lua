@@ -1,5 +1,6 @@
 
 require "nova.object"
+require "class"
 
 local attributes = { "maxhp", "str", "mag", "def", "res", "spd", "skl", "lck" }
 
@@ -7,44 +8,53 @@ unit = nova.object:new {
   name = "Unit",
   lv = 1,
   exp = 0,
-  hp = 16,
-  maxhp = 16,
-  str = 10,
-  mag = 10,
-  def = 10,
-  res = 10,
-  spd = 10,
-  skl = 10,
-  lck = 10,
-  con = 8, 
+  hp = nil,
+  maxhp = nil,
+  str = nil,
+  mag = nil,
+  def = nil,
+  res = nil,
+  spd = nil,
+  skl = nil,
+  lck = nil,
+  con =nil,
+  mv = nil, 
   growths = {
-    str = 20,
-    mag = 20,
-    def = 20,
-    res = 20,
-    spd = 20,
-    skl = 20,
-    lck = 20,
-    maxhp = 50
+    maxhp = nil,
+    str = nil,
+    mag = nil,
+    def = nil,
+    res = nil,
+    spd = nil,
+    skl = nil,
+    lck = nil,
   },
-  caps = {
-    str = 20,
-    mag = 20,
-    def = 20,
-    res = 20,
-    spd = 20,
-    skl = 20,
-    lck = 20,
-    maxhp = 40
-  },
+  class = nil,
   weapon = nil,
   bossexpbonus = 0
 }
 
 function unit:__init ()
-  if self.maxhp then
-    self.hp = self.maxhp
+  if not self.class then
+    self.class = class:new{}
   end
+  self.foreachattr(
+     function (_, attr)
+       if not self[attr] then 
+         self[attr] = self.class.defaultstats[attr]
+       end
+       if not self.growths[attr] then
+	 self.growths[attr] = self.class.defaultgrowths[attr] 
+      end
+     end 
+  )
+  if not self.mv then
+    self.mv = self.class.defaultstats.mv
+  end
+  if not self.con then
+    self.con = self.class.defaultstats.con
+  end
+  self.hp = self.maxhp
 end
 
 function unit:takedamage (dmg)
