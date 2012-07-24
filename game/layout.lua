@@ -145,6 +145,14 @@ module ("layout", package.seeall) do
     spinner(unit.weapon, offset+vec2:new{256,32}, "hit")
     spinner(unit.weapon, offset+vec2:new{256,64}, "wgt", 0)
     spinner(unit.weapon, offset+vec2:new{256,96}, "crt")
+    buttons:insert(
+      button:new {
+        text = "change",
+        pos = offset+vec2:new {128,128},
+        size = vec2:new {40,16},
+        action = function () unit.weapon:setweapontype("fire") end
+      }
+    )
   end
 
   addunitbuttons(game.unit1, vec2:new{32+16, 384+16})
