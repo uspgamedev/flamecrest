@@ -129,15 +129,15 @@ function unit:dodge ()
 end
 
 function unit:expbase ()
-  return self.lv -- + self.class.tierbonus 
+  return self.lv + self.class.exptierbonus 
 end
 
 function unit:exppower ()
-  return 3 -- self.class.power
+  return self.class.expclasspower
 end
 
 function unit:expbonus ()
-  return 0 -- self.class.bonus
+  return self.class.expclassbonus
 end
 
 function unit:bossbonus ()
