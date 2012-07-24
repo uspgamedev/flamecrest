@@ -37,7 +37,8 @@ unit = nova.object:new {
     lck = 20,
     maxhp = 40
   },
-  weapon = nil
+  weapon = nil,
+  bossexpbonus = 0
 }
 
 function unit:__init ()
@@ -128,7 +129,7 @@ function unit:expbonus ()
 end
 
 function unit:bossbonus ()
-  return 0 -- TODO: enfiar isso de modo que seja variavel
+  return self.bossexpbonus
 end
 
 function unit:draw ()
