@@ -18,6 +18,10 @@ module ("layout", package.seeall) do
         g.print(attr, ox, oy+32*i)
       end
     )
+    g.print("mt", ox+256, oy)
+    g.print("hit", ox+256, oy+32)
+    g.print("wgt", ox+256, oy+64)
+    g.print("crt", ox+256, oy+96)
   end
 
   function draw (g)
@@ -138,6 +142,9 @@ module ("layout", package.seeall) do
       }
     )
     spinner(unit.weapon, offset+vec2:new{256,0}, "mt")
+    spinner(unit.weapon, offset+vec2:new{256,32}, "hit")
+    spinner(unit.weapon, offset+vec2:new{256,64}, "wgt", 0)
+    spinner(unit.weapon, offset+vec2:new{256,96}, "crt")
   end
 
   addunitbuttons(game.unit1, vec2:new{32+16, 384+16})
