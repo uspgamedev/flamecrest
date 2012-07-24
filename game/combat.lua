@@ -2,10 +2,10 @@
 require "weaponmechanics"
 
 local function muchfaster (attacker, defender)
-  if (attacker.spd -4 >= defender.spd) then
+  if (attacker:combatspeed() -4 >= defender:combatspeed()) then
     return "attacker", "defender"
   end
-  if (defender.spd -4 >= attacker.spd)  then
+  if (defender:combatspeed() -4 >= attacker:combatspeed())  then
     return "defender", "attacker"
   end
   return false, false
