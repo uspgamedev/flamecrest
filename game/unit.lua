@@ -79,17 +79,19 @@ end
 
 function unit:lvup ()
   self.lv = self.lv + 1
-  for _,attr in ipairs(attributes) do
-    if self[attr] < self.caps[attr] then
-      rand = math.random(100)
-      growth = self.growths[attr]
-      print("Attribute:", attr, growth, rand)
-      while rand <= growth do
-        self[attr] = self[attr] + 1
-        growth = growth - 100
+  self.foreachattr(
+    function (_,attr)
+      if self[attr] < self.class.caps[attr] then
+        rand = math.random(100)
+        growth = self.growths[attr]
+        print("Attribute:", attr, growth, rand)
+        while rand <= growth do
+          self[attr] = self[attr] + 1
+          growth = growth - 100
+        end
       end
     end
-  end
+  )
   print("")
 end
 
