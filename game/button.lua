@@ -16,7 +16,7 @@ function button.check (buttons, pos)
   end
 end
 
-function button:graphics ()
+function button:draw ()
   -- store current color
   local currentcolor = { love.graphics.getColor() }
 

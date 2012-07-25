@@ -7,8 +7,7 @@ require "vec2"
 
 ui.component = nova.object:new {
   pos = nil,
-  size = nil,
-  children = nil
+  size = nil
 }
 
 local component = ui.component
@@ -19,9 +18,6 @@ function component:__init ()
   end
   if not self.size then
     self.size = vec2:new { 32, 32 }
-  end
-  if not self.children then
-    self.children = nova.table:new {}
   end
 end
 
@@ -51,17 +47,13 @@ function component:inside (pos)
   return true
 end
 
-function component:pressed ()
-  print "Unimplemented component event (press)."
+function component:pressed (b, pos)
+  -- Unimplemented component event.
 end
 
-function component:released ()
-  print "Unimplemented component event (press)."
+function component:released (b, pos)
+  -- Unimplemented component event.
 end
 
 function component:draw ()
-  self:graphics()
-  for _,child in pairs(self.children) do
-    child:draw()
-  end
 end
