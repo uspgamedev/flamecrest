@@ -2,8 +2,9 @@
 require "nova.object"
 require "nova.table"
 
-require "ui"
 require "vec2"
+
+module ("ui", package.seeall)
 
 ui.component = nova.object:new {
   pos = nil,
@@ -56,4 +57,5 @@ function component:released (b, pos)
 end
 
 function component:draw ()
+  -- Unimplemented component event.
 end
