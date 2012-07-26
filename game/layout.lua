@@ -44,14 +44,24 @@ module ("layout", package.seeall) do
 
   end
 
+  -- quit button
+  ui.addbutton {
+    text = "QUIT",
+    pos = vec2:new { 928, 16 },
+    size = vec2:new { 64, 32 },
+    action = function ()
+      love.event.push "quit"
+    end
+  }
+
   buttons = nova.table:new {
     -- quit button
-    ui.button:new {
-      text = "QUIT",
-      pos = vec2:new { 928, 16 },
-      size = vec2:new { 64, 32 },
-      action = function () love.event.push "quit" end
-    },
+    --ui.button:new {
+    --  text = "QUIT",
+    --  pos = vec2:new { 928, 16 },
+    --  size = vec2:new { 64, 32 },
+    --  action = function () love.event.push "quit" end
+    --},
     -- reset all to initial state
     ui.button:new {
       text = "RESET ALL",

@@ -1,7 +1,7 @@
 
 require "nova.table"
 
-require "button"
+require "ui.button"
 
 module ("ui", package.seeall) do
 
@@ -27,7 +27,7 @@ module ("ui", package.seeall) do
   function mouserelease (b, pos)
     for _,component in pairs(components) do
       if component:inside(pos) then
-        component:released(pos)
+        component:released(b, pos)
         return
       end
     end
@@ -36,10 +36,11 @@ module ("ui", package.seeall) do
   function draw (graphics)
     for _,component in pairs(components) do
       graphics.push()
-      graphics.translate(component.pos.x, component.pos.y)
+      --graphics.translate(component.pos.x, component.pos.y)
       component:draw(graphics)
       graphics.pop()
     end
   end
 
 end
+

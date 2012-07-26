@@ -2,6 +2,7 @@
 require "nova.table"
 require "vec2"
 require "game"
+require "ui"
 require "ui.button"
 require "layout"
 
@@ -29,6 +30,7 @@ function love.mousereleased (x, y, b)
   if b == "l" then
     ui.button.check(layout.buttons, vec2:new {x, y})
   end
+  ui.mouserelease(b, vec2:new{x,y})
 end
 
 function love.draw()
@@ -36,6 +38,7 @@ function love.draw()
   local g = love.graphics
 
   layout.draw(g)
+  ui.draw(love.graphics)
 
   g.push()
   g.translate(layout.left, layout.top)
