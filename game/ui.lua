@@ -27,15 +27,18 @@ module ("ui", package.seeall) do
   function mouserelease (b, pos)
     for _,component in pairs(components) do
       if component:inside(pos) then
-        component:pressed(pos)
+        component:released(pos)
         return
       end
     end
   end
   
-  function draw ()
-    for _,v in pairs(components) do
-      v:draw()
+  function draw (graphics)
+    for _,component in pairs(components) do
+      graphics.push()
+      graphics.translate(component.pos.x, component.pos.y)
+      component:draw(graphics)
+      graphics.pop()
     end
   end
 
