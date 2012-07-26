@@ -2,7 +2,6 @@
 require "unit"
 require "combat"
 require "weapon"
-require "button"
 
 module ("game", package.seeall) do
 

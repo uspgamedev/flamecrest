@@ -2,10 +2,14 @@
 require "ui.component"
 require "vec2"
 
-button = ui.component:new {
+module ("ui", package.seeall)
+
+ui.button = ui.component:new {
   text = "<dummy text>",
   action = function () print "duh" end
 }
+
+local button = ui.button
 
 function button.check (buttons, pos)
   for _,b in pairs(buttons) do

@@ -2,7 +2,7 @@
 require "nova.table"
 require "vec2"
 require "game"
-require "button"
+require "ui.button"
 require "layout"
 
 math.randomseed( os.time() )
@@ -27,7 +27,7 @@ end
 
 function love.mousereleased (x, y, b)
   if b == "l" then
-    button.check(layout.buttons, vec2:new {x, y})
+    ui.button.check(layout.buttons, vec2:new {x, y})
   end
 end
 

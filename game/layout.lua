@@ -1,7 +1,7 @@
 
 require "nova.table"
 require "vec2"
-require "button"
+require "ui.button"
 require "game"
 
 module ("layout", package.seeall) do
@@ -46,28 +46,28 @@ module ("layout", package.seeall) do
 
   buttons = nova.table:new {
     -- quit button
-    button:new {
+    ui.button:new {
       text = "QUIT",
       pos = vec2:new { 928, 16 },
       size = vec2:new { 64, 32 },
       action = function () love.event.push "quit" end
     },
     -- reset all to initial state
-    button:new {
+    ui.button:new {
       text = "RESET ALL",
       pos = vec2:new { 32, 16 },
       size = vec2:new { 128, 32 },
       action = function () end
     },
     -- unit1 attacks unit2
-    button:new {
+    ui.button:new {
       text = "FIGHT >>>",
       pos = vec2:new { 512-16-128, 16 },
       size = vec2:new { 128, 32 },
       action = game.keyactions.a
     },
     -- unit2 attacks unit1
-    button:new {
+    ui.button:new {
       text = "<<< FIGHT",
       pos = vec2:new { 512+16, 16 },
       size = vec2:new { 128, 32 },
@@ -76,7 +76,7 @@ module ("layout", package.seeall) do
   }
 
   local function inc (pos, obj, attrname, max)
-    return button:new {
+    return ui.button:new {
       text = "+",
       pos = pos,
       size = vec2:new { 16, 16 },
@@ -89,7 +89,7 @@ module ("layout", package.seeall) do
   end
 
   local function dec (pos, obj, attrname, min)
-    return button:new {
+    return ui.button:new {
       text = "-",
       pos = pos,
       size = vec2:new { 16, 16 },
@@ -118,7 +118,7 @@ module ("layout", package.seeall) do
     end
     unit.foreachattr(addspinner)
     buttons:insert(
-      button:new {
+      ui.button:new {
         text = "+30",
         pos = offset+vec2:new{128,0},
         size = vec2:new {40,16},
@@ -126,7 +126,7 @@ module ("layout", package.seeall) do
       }
     )
     buttons:insert(
-      button:new {
+      ui.button:new {
         text = "reset",
         pos = offset+vec2:new{128,16},
         size = vec2:new {40,16},
@@ -134,7 +134,7 @@ module ("layout", package.seeall) do
       }
     )
     buttons:insert(
-      button:new {
+      ui.button:new {
         text = "heal",
         pos = offset+vec2:new{128,64},
         size = vec2:new {40,16},
@@ -146,7 +146,7 @@ module ("layout", package.seeall) do
     spinner(unit.weapon, offset+vec2:new{256,128}, "wgt", 0)
     spinner(unit.weapon, offset+vec2:new{256,160}, "crt")
     buttons:insert(
-      button:new {
+      ui.button:new {
         text = "change weapon",
         pos = offset+vec2:new {256,0},
         size = vec2:new {128,32},
