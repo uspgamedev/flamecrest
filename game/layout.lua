@@ -1,7 +1,7 @@
 
 require "nova.table"
 require "vec2"
-require "ui.button"
+require "ui"
 require "game"
 
 module ("layout", package.seeall) do
