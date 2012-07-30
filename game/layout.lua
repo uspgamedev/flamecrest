@@ -37,11 +37,6 @@ module ("layout", package.seeall) do
     drawlabels(g, 32+16+40, 384+16)
     drawlabels(g, 512+16+40, 384+16)
 
-    -- draw buttons
-    for _,v in pairs(buttons) do
-      v:draw()
-    end
-
   end
 
   -- quit button
@@ -78,11 +73,8 @@ module ("layout", package.seeall) do
     action = game.keyactions.s
   }
 
-  buttons = nova.table:new {
-  }
-
   local function inc (pos, obj, attrname, max)
-    return ui.button:new {
+    ui.addbutton {
       text = "+",
       pos = pos,
       size = vec2:new { 16, 16 },
@@ -95,7 +87,7 @@ module ("layout", package.seeall) do
   end
 
   local function dec (pos, obj, attrname, min)
-    return ui.button:new {
+    ui.addbutton {
       text = "-",
       pos = pos,
       size = vec2:new { 16, 16 },
@@ -112,8 +104,8 @@ module ("layout", package.seeall) do
   end
 
   local function spinner (obj, pos, attrname, min, max)
-    buttons:insert(inc(pos+vec2:new{16,0}, obj, attrname, max))
-    buttons:insert(dec(pos, obj, attrname, min))
+    inc(pos+vec2:new{16,0}, obj, attrname, max)
+    dec(pos, obj, attrname, min)
   end
 
   local function addunitbuttons (unit, offset)
@@ -123,42 +115,34 @@ module ("layout", package.seeall) do
       -- TODO: actually, luck's max is 40
     end
     unit.foreachattr(addspinner)
-    buttons:insert(
-      ui.button:new {
-        text = "+30",
-        pos = offset+vec2:new{128,0},
-        size = vec2:new {40,16},
-        action = function () unit:gainexp(30) end
-      }
-    )
-    buttons:insert(
-      ui.button:new {
-        text = "reset",
-        pos = offset+vec2:new{128,16},
-        size = vec2:new {40,16},
-        action = function () unit.exp = 0 end
-      }
-    )
-    buttons:insert(
-      ui.button:new {
-        text = "heal",
-        pos = offset+vec2:new{128,64},
-        size = vec2:new {40,16},
-        action = function () unit.hp = unit.maxhp end
-      }
-    )
+    ui.addbutton {
+      text = "+30",
+      pos = offset+vec2:new{128,0},
+      size = vec2:new {40,16},
+      action = function () unit:gainexp(30) end
+    }
+    ui.addbutton {
+      text = "reset",
+      pos = offset+vec2:new{128,16},
+      size = vec2:new {40,16},
+      action = function () unit.exp = 0 end
+    }
+    ui.addbutton {
+      text = "heal",
+      pos = offset+vec2:new{128,64},
+      size = vec2:new {40,16},
+      action = function () unit.hp = unit.maxhp end
+    }
     spinner(unit.weapon, offset+vec2:new{256,64}, "mt")
     spinner(unit.weapon, offset+vec2:new{256,96}, "hit")
     spinner(unit.weapon, offset+vec2:new{256,128}, "wgt", 0)
     spinner(unit.weapon, offset+vec2:new{256,160}, "crt")
-    buttons:insert(
-      ui.button:new {
-        text = "change weapon",
-        pos = offset+vec2:new {256,0},
-        size = vec2:new {128,32},
-        action = function () unit.weapon:nexttype() end
-      }
-    )
+    ui.addbutton {
+      text = "change weapon",
+      pos = offset+vec2:new {256,0},
+      size = vec2:new {128,32},
+      action = function () unit.weapon:nexttype() end
+    }
   end
 
   addunitbuttons(game.unit1, vec2:new{32+16, 384+16})

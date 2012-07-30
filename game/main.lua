@@ -27,9 +27,6 @@ function love.keyreleased (key)
 end
 
 function love.mousereleased (x, y, b)
-  if b == "l" then
-    ui.button.check(layout.buttons, vec2:new {x, y})
-  end
   ui.mouserelease(b, vec2:new{x,y})
 end
 
