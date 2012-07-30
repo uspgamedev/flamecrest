@@ -54,35 +54,31 @@ module ("layout", package.seeall) do
     end
   }
 
+  -- reset all to initial state
+  ui.addbutton {
+    text = "RESET ALL",
+    pos = vec2:new { 32, 16 },
+    size = vec2:new { 128, 32 },
+    action = function () end
+  }
+
+  -- unit1 attacks unit2
+  ui.addbutton {
+    text = "FIGHT >>>",
+    pos = vec2:new { 512-16-128, 16 },
+    size = vec2:new { 128, 32 },
+    action = game.keyactions.a
+  }
+
+  -- unit2 attacks unit1
+  ui.addbutton {
+    text = "<<< FIGHT",
+    pos = vec2:new { 512+16, 16 },
+    size = vec2:new { 128, 32 },
+    action = game.keyactions.s
+  }
+
   buttons = nova.table:new {
-    -- quit button
-    --ui.button:new {
-    --  text = "QUIT",
-    --  pos = vec2:new { 928, 16 },
-    --  size = vec2:new { 64, 32 },
-    --  action = function () love.event.push "quit" end
-    --},
-    -- reset all to initial state
-    ui.button:new {
-      text = "RESET ALL",
-      pos = vec2:new { 32, 16 },
-      size = vec2:new { 128, 32 },
-      action = function () end
-    },
-    -- unit1 attacks unit2
-    ui.button:new {
-      text = "FIGHT >>>",
-      pos = vec2:new { 512-16-128, 16 },
-      size = vec2:new { 128, 32 },
-      action = game.keyactions.a
-    },
-    -- unit2 attacks unit1
-    ui.button:new {
-      text = "<<< FIGHT",
-      pos = vec2:new { 512+16, 16 },
-      size = vec2:new { 128, 32 },
-      action = game.keyactions.s
-    },
   }
 
   local function inc (pos, obj, attrname, max)
