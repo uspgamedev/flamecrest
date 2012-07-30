@@ -9,6 +9,7 @@ weapon = nova.object:new {
   weapontype = "sword",
   atkattribute = "str",
   defattribute = "def",
+  useexp = nil, --for staves
   weapontypelist = {
     "sword", "lance", "axe", "bow",
     "light", "dark", "fire", "thunder", "wind",

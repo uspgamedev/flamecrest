@@ -14,7 +14,8 @@ module ("game", package.seeall) do
     def = 6,
     lck = 0,
     weapon = weapon:new{
-      weapontype = "lance"
+      weapontype = "lance",
+      useexp = 11
     }
   }
 
@@ -24,7 +25,8 @@ module ("game", package.seeall) do
     skl = 20,
     lck = 20,
     weapon = weapon:new {
-      hit = 40
+      hit = 40,
+      useexp = 100
     }
   }
 
