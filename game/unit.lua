@@ -1,6 +1,8 @@
 
 require "nova.object"
 require "class"
+require "ui"
+require "ui.component"
 
 local attributes = { "maxhp", "str", "mag", "def", "res", "spd", "skl", "lck" }
 
@@ -151,25 +153,35 @@ function unit:bossbonus ()
   return self.bossexpbonus
 end
 
-function unit:draw ()
+unit.display = ui.component:new {}
+
+function unit.display:draw (graphics)
   -- unit info
-  love.graphics.print("name: "..self.name, 0, 0)
-  love.graphics.print("lv: "..self.lv, 0, 20)
-  love.graphics.print("exp: "..self.exp, 0, 40)
-  love.graphics.print("hp: "..self.hp.."/"..self.maxhp, 0, 60)
-  love.graphics.print("str: "..self.str, 0, 80)
-  love.graphics.print("mag: "..self.mag, 0, 100)
-  love.graphics.print("def: "..self.def, 0, 120)
-  love.graphics.print("res: "..self.res, 0, 140)
-  love.graphics.print("spd: "..self.spd, 0, 160)
-  love.graphics.print("skl: "..self.skl, 0, 180)
-  love.graphics.print("lck: "..self.lck, 0, 200)
+  graphics.print("name: "..self.unit.name, 0, 0)
+  graphics.print("lv: "..self.unit.lv, 0, 20)
+  graphics.print("exp: "..self.unit.exp, 0, 40)
+  graphics.print("hp: "..self.unit.hp.."/"..self.unit.maxhp, 0, 60)
+  graphics.print("str: "..self.unit.str, 0, 80)
+  graphics.print("mag: "..self.unit.mag, 0, 100)
+  graphics.print("def: "..self.unit.def, 0, 120)
+  graphics.print("res: "..self.unit.res, 0, 140)
+  graphics.print("spd: "..self.unit.spd, 0, 160)
+  graphics.print("skl: "..self.unit.skl, 0, 180)
+  graphics.print("lck: "..self.unit.lck, 0, 200)
   -- unit weapon info
-  love.graphics.print("weapon: "..self.weapon.weapontype, 128, 0)
-  love.graphics.print("mt: "..self.weapon.mt, 128, 20)
-  love.graphics.print("hit: "..self.weapon.hit, 128, 40)
-  love.graphics.print("wgt: "..self.weapon.wgt, 128, 60)
-  love.graphics.print("crt: "..self.weapon.crt, 128, 80)
+  graphics.print("weapon: "..self.unit.weapon.weapontype, 128, 0)
+  graphics.print("mt: "..self.unit.weapon.mt, 128, 20)
+  graphics.print("hit: "..self.unit.weapon.hit, 128, 40)
+  graphics.print("wgt: "..self.unit.weapon.wgt, 128, 60)
+  graphics.print("crt: "..self.unit.weapon.crt, 128, 80)
+end
+
+function unit:makedisplay (pos)
+  return unit.display:new {
+    unit = self,
+    pos = vec2:new {pos.x,pos.y},
+    size = vec2:new {256,220}
+  }
 end
 
 function unit.foreachattr (f)

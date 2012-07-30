@@ -1,9 +1,6 @@
 
-require "nova.table"
-require "vec2"
 require "game"
 require "ui"
-require "ui.button"
 require "layout"
 
 math.randomseed( os.time() )
@@ -11,6 +8,12 @@ math.randomseed( os.time() )
 function love.load ()
   love.graphics.setFont(love.graphics.newFont("fonts/Verdana.ttf", 14))
   ui.addcomponent(layout:new{})
+  ui.addcomponent(
+    game.unit1:makedisplay(vec2:new{layout.margin.left, layout.margin.top})
+  )
+  ui.addcomponent(
+    game.unit2:makedisplay(vec2:new{layout.middle, layout.margin.top})
+  )
 end
 
 function love.update (dt)
@@ -35,18 +38,7 @@ function love.draw()
 
   local g = love.graphics
 
-  --layout.draw(g)
   ui.draw(love.graphics)
-
-  g.push()
-  g.translate(layout.margin.left, layout.margin.top)
-  game.unit1:draw()
-  g.pop()
-  
-  g.push()
-  g.translate(layout.middle, layout.margin.top)
-  game.unit2:draw()
-  g.pop()
 
   if (game.unit2:isdead()) then
      g.print("Winner!", 100, 80)
