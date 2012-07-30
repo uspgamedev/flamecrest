@@ -11,7 +11,8 @@ weapon = nova.object:new {
   defattribute = "def",
   weapontypelist = {
     "sword", "lance", "axe", "bow",
-    "light", "dark", "fire", "thunder", "wind"
+    "light", "dark", "fire", "thunder", "wind",
+    "staff"
   }
 }
 

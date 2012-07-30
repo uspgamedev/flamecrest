@@ -64,6 +64,13 @@ function unit:takedamage (dmg)
   end
 end
 
+function unit:heal (healamount)
+  self.hp = self.hp + healamount
+  if self.hp > self.maxhp then
+    self.hp = self.maxhp
+  end
+end
+
 function unit:gainexp (exp)
   if self.lv < 20 then
     self.exp = self.exp + exp
