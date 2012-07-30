@@ -2,6 +2,7 @@
 require "unit"
 require "combat"
 require "weapon"
+require "effects"
 
 module ("game", package.seeall) do
 
@@ -47,5 +48,12 @@ module ("game", package.seeall) do
     unit2:gainexp(30)
   end
 
+  function keyactions.q ()
+    heal(unit1, unit2)
+ end
+
+  function keyactions.w ()
+    heal(unit2, unit1)
+  end
 end
 

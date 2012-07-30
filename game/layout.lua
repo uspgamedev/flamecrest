@@ -73,6 +73,22 @@ module ("layout", package.seeall) do
     action = game.keyactions.s
   }
 
+  -- unit1 attacks unit2
+  ui.addbutton {
+    text = "HEAL >>>",
+    pos = vec2:new { 512-32-256, 16 },
+    size = vec2:new { 128, 32 },
+    action = game.keyactions.q
+  }
+
+  -- unit2 attacks unit1
+  ui.addbutton {
+    text = "<<< HEAL",
+    pos = vec2:new { 512+32+128, 16 },
+    size = vec2:new { 128, 32 },
+    action = game.keyactions.w
+  }
+
   local function inc (pos, obj, attrname, max)
     ui.addbutton {
       text = "+",
