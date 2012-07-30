@@ -36,7 +36,7 @@ module ("ui", package.seeall) do
   function draw (graphics)
     for _,component in pairs(components) do
       graphics.push()
-      --graphics.translate(component.pos.x, component.pos.y)
+      graphics.translate(component.pos.x, component.pos.y)
       component:draw(graphics)
       graphics.pop()
     end
