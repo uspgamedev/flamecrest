@@ -10,6 +10,7 @@ math.randomseed( os.time() )
 
 function love.load ()
   love.graphics.setFont(love.graphics.newFont("fonts/Verdana.ttf", 14))
+  ui.addcomponent(layout:new{})
 end
 
 function love.update (dt)
@@ -34,16 +35,16 @@ function love.draw()
 
   local g = love.graphics
 
-  layout.draw(g)
+  --layout.draw(g)
   ui.draw(love.graphics)
 
   g.push()
-  g.translate(layout.left, layout.top)
+  g.translate(layout.margin.left, layout.margin.top)
   game.unit1:draw()
   g.pop()
   
   g.push()
-  g.translate(layout.middle, layout.top)
+  g.translate(layout.middle, layout.margin.top)
   game.unit2:draw()
   g.pop()
 
