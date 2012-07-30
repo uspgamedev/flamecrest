@@ -6,6 +6,8 @@ weapon = nova.object:new {
   hit = 60,
   wgt = 3,
   crt = 0,
+  durability = nil,
+  maxdurability = 40,
   weapontype = "sword",
   atkattribute = "str",
   defattribute = "def",
@@ -33,6 +35,23 @@ local magicaltypes = {
   thunder = "wind",
   wind = "sword"
 }
+
+function weapon:__init ()
+  self.durability = self.maxdurability
+end
+
+function weapon:hasdurability ()
+  print("Current weapon durability = "..self.durability)
+  return self.durability > 0
+end
+
+function weapon:weardown ()
+  print("Wearing weapon down")
+  if self.durability > 0 then
+    self.durability = self.durability - 1
+  end
+  print("Current weapon durability = "..self.durability)
+end
 
 function weapon:setweapontype (weapontype)
   if physicaltypes[weapontype] then

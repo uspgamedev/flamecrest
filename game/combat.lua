@@ -12,7 +12,7 @@ local function muchfaster (attacker, defender)
 end
 
 local function strike (attacker, defender)
-  if not attacker.weapon then return end
+  if not attacker.weapon or not attacker.weapon:hasdurability() then return end
   local dealtdamage = false
   local hit = attacker:hit()
   local attackerweapon = attacker.weapon
@@ -45,6 +45,7 @@ local function strike (attacker, defender)
       dealtdamage = true
       defender:takedamage(damage)
     end
+    attacker.weapon:weardown()
   end
   print("")
   return dealtdamage

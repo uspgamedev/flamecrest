@@ -2,6 +2,7 @@
 require "unit"
 
 function heal (healer, healee)
+  if not healer.weapon or not healer.weapon:hasdurability() then return end
   local healamount = healer:mt()
   print("Healer will heal healee for "..healamount)
   if healer.weapon.useexp then
@@ -10,4 +11,5 @@ function heal (healer, healee)
     healer:gainexp(exp)
   end
   healee:heal(healamount)
+  healer.weapon:weardown()
 end
