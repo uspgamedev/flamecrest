@@ -16,9 +16,6 @@ function button:released (b, pos)
 end
 
 function button:draw ()
-  -- store current color
-  local currentcolor = { love.graphics.getColor() }
-
   -- draw button rectangle
   love.graphics.setColor { 50, 50, 50, 255 }
   love.graphics.rectangle("fill", 0, 0, self.size.x, self.size.y)
@@ -28,8 +25,5 @@ function button:draw ()
                         love.graphics.getFont():getHeight()
   love.graphics.setColor { 255, 255, 255, 255 }
   love.graphics.print(self.text, (self.size.x-width)/2, (self.size.y-height)/2)
-
-  -- Go back to original color
-  love.graphics.setColor(currentcolor)
 end
 
