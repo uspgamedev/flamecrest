@@ -156,6 +156,10 @@ end
 unit.display = ui.component:new {}
 
 function unit.display:draw (graphics)
+  if self.unit.hp <= 0 then
+    graphics.setColor { 255, 50, 50, 255 }
+    graphics.print("DEAD", 0, -20)
+  end
   -- unit info
   graphics.print("name: "..self.unit.name, 0, 0)
   graphics.print("lv: "..self.unit.lv, 0, 20)

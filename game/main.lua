@@ -35,17 +35,6 @@ function love.mousereleased (x, y, b)
 end
 
 function love.draw()
-
-  local g = love.graphics
-
   ui.draw(love.graphics)
-
-  if (game.unit2:isdead()) then
-     g.print("Winner!", 100, 80)
-  end
-  if (game.unit1:isdead()) then
-     g.print("Winner!", 200, 80)
-  end
-
 end
 
