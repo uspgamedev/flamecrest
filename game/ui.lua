@@ -35,13 +35,14 @@ module ("ui", package.seeall) do
   
   function draw (graphics)
     for _,component in pairs(components) do
-      -- store current color
+      -- store current graphics state
       local currentcolor = { graphics.getColor() }
       graphics.push()
+      -- move to component's position and draw it
       graphics.translate(component.pos.x, component.pos.y)
       component:draw(graphics)
+      -- restore previous graphics state
       graphics.pop()
-      -- Go back to original color
       graphics.setColor(currentcolor)
     end
   end
