@@ -3,10 +3,10 @@ require "weaponmechanics"
 
 local function muchfaster (attacker, defender)
   if (attacker:combatspeed() -4 >= defender:combatspeed()) then
-    return "attacker", "defender"
+    return attacker, defender
   end
   if (defender:combatspeed() -4 >= attacker:combatspeed())  then
-    return "defender", "attacker"
+    return defender, attacker
   end
   return false, false
 end
@@ -53,26 +53,25 @@ end
 
 function combat (attacker, defender)
   local exp = 1
-  local info = {
-    attacker = {
-      unit = attacker,
-      dealtdmg = false,
-      enemy = defender
-    },
-    defender = {
-      unit = defender,
-      dealtdmg = false,
-      enemy = attacker
-    }
+  local info = { }
+  info[attacker] = {
+    unit = attacker,
+    dealtdmg = false,
+    enemy = defender
   }
-  info.attacker.dealtdmg = strike(attacker, defender)
+  info[defender] = {
+    unit = defender,
+    dealtdmg = false,
+    enemy = attacker
+  }
+  info[attacker].dealtdmg = strike(attacker, defender)
   if (defender:isdead()) then
     print (defender.name.." is dead!")
     exp = killexp(attacker, defender)
     attacker:gainexp(exp)
     return
   end
-  info.defender.dealtdmg = strike(defender, attacker)
+  info[defender].dealtdmg = strike(defender, attacker)
   if (attacker:isdead()) then
     print (attacker.name.." is dead!")
     exp = killexp(attacker, defender)
