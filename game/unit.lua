@@ -108,8 +108,8 @@ function unit:isdead ()
 end
 
 function unit:combatspeed ()
-  local wgtmod = math.min(0, (self.str + self.con)/2 - self.weapon.wgt)
-  return self.spd + wgtmod
+  local wgtmod = math.max(0, (self.weapon.wgt - self.str + self.con)/2)
+  return self.spd - wgtmod
 end
 
 function unit:mt ()
