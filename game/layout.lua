@@ -1,7 +1,7 @@
 
 require "nova.table"
 require "vec2"
-require "ui"
+require "ui.layout"
 require "ui.component"
 require "game"
 
@@ -44,7 +44,7 @@ function layout:draw (g)
 end
 
 local function inc (pos, obj, attrname, max)
-  ui.addbutton {
+  ui.layout.addbutton {
     text = "+",
     pos = pos,
     size = vec2:new { 16, 16 },
@@ -57,7 +57,7 @@ local function inc (pos, obj, attrname, max)
 end
 
 local function dec (pos, obj, attrname, min)
-  ui.addbutton {
+  ui.layout.addbutton {
     text = "-",
     pos = pos,
     size = vec2:new { 16, 16 },
@@ -85,19 +85,19 @@ local function addunitbuttons (unit, offset)
     -- TODO: actually, luck's max is 40
   end
   unit.foreachattr(addspinner)
-  ui.addbutton {
+  ui.layout.addbutton {
     text = "+30",
     pos = offset+vec2:new{128,0},
     size = vec2:new {40,16},
     action = function () unit:gainexp(30) end
   }
-  ui.addbutton {
+  ui.layout.addbutton {
     text = "reset",
     pos = offset+vec2:new{128,16},
     size = vec2:new {40,16},
     action = function () unit.exp = 0 end
   }
-  ui.addbutton {
+  ui.layout.addbutton {
     text = "heal",
     pos = offset+vec2:new{128,64},
     size = vec2:new {40,16},
@@ -107,7 +107,7 @@ local function addunitbuttons (unit, offset)
   spinner(unit.weapon, offset+vec2:new{256,96}, "hit")
   spinner(unit.weapon, offset+vec2:new{256,128}, "wgt", 0)
   spinner(unit.weapon, offset+vec2:new{256,160}, "crt")
-  ui.addbutton {
+  ui.layout.addbutton {
     text = "change weapon",
     pos = offset+vec2:new {256,0},
     size = vec2:new {128,32},
@@ -117,7 +117,7 @@ end
 
 function layout:placebuttons ()
   -- quit button
-  ui.addbutton {
+  ui.layout.addbutton {
     text = "QUIT",
     pos = vec2:new { 928, 16 },
     size = vec2:new { 64, 32 },
@@ -126,35 +126,35 @@ function layout:placebuttons ()
     end
   }
   -- reset all to initial state
-  ui.addbutton {
+  ui.layout.addbutton {
     text = "RESET ALL",
     pos = vec2:new { 32, 16 },
     size = vec2:new { 128, 32 },
     action = function () end
   }
   -- unit1 attacks unit2
-  ui.addbutton {
+  ui.layout.addbutton {
     text = "FIGHT >>>",
     pos = vec2:new { 512-16-128, 16 },
     size = vec2:new { 128, 32 },
     action = game.keyactions.a
   }
   -- unit2 attacks unit1
-  ui.addbutton {
+  ui.layout.addbutton {
     text = "<<< FIGHT",
     pos = vec2:new { 512+16, 16 },
     size = vec2:new { 128, 32 },
     action = game.keyactions.s
   }
   -- unit1 attacks unit2
-  ui.addbutton {
+  ui.layout.addbutton {
     text = "HEAL >>>",
     pos = vec2:new { 512-32-256, 16 },
     size = vec2:new { 128, 32 },
     action = game.keyactions.q
   }
   -- unit2 attacks unit1
-  ui.addbutton {
+  ui.layout.addbutton {
     text = "<<< HEAL",
     pos = vec2:new { 512+32+128, 16 },
     size = vec2:new { 128, 32 },

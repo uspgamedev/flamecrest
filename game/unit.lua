@@ -1,7 +1,6 @@
 
 require "nova.object"
 require "class"
-require "ui"
 require "ui.component"
 
 local attributes = { "maxhp", "str", "mag", "def", "res", "spd", "skl", "lck" }
