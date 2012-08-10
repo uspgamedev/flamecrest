@@ -8,11 +8,13 @@ module ("game", package.seeall) do
 
   unit1 = unit:new {
     name = "Juaum",
-    maxhp = 20,
-    str = 12,
-    spd = 14,
-    def = 6,
-    lck = 0,
+    attributes = attributes:new{
+      maxhp = 20,
+      str = 12,
+      spd = 14,
+      def = 6,
+      lck = 0
+    },
     weapon = weapon:new{
       weapontype = "lance",
       useexp = 11
@@ -21,9 +23,11 @@ module ("game", package.seeall) do
 
   unit2 = unit:new {
     name = "Leeroy",
-    maxhp = 20,
-    skl = 20,
-    lck = 20,
+    attributes = attributes:new{
+      maxhp = 20,
+      skl = 20,
+      lck = 20
+    },
     weapon = weapon:new {
       hit = 40,
       useexp = 100

@@ -1,10 +1,21 @@
 
 require "nova.object"
+require "attributes"
 
 class = nova.object:new{
    name = "Soldier",
    weapons = {"lance"},
-   caps = {
+   caps = nil,
+   defaultgrowths = nil,
+   defaultattributes = nil,
+   defaultextendedattributes = nil,
+   exptierbonus = 0,
+   expclasspower = 3,
+   expclassbonus = 0
+}
+
+class.__init = {
+  caps = attributes:new{
       maxhp = 40,
       str = 20,
       mag = 20,
@@ -14,7 +25,7 @@ class = nova.object:new{
       res = 20,
       lck = 40
    },
-   defaultgrowths = {
+  defaultgrowths = attributes:new{
       maxhp = 50,
       str = 20,
       mag = 20,
@@ -24,7 +35,7 @@ class = nova.object:new{
       res = 20,
       lck = 20
    },
-   defaultstats = {
+  defaultattributes = attributes:new{
       maxhp = 20,
       str = 10,
       mag = 10,
@@ -33,10 +44,9 @@ class = nova.object:new{
       def = 10,
       res = 10,
       lck = 10,
-      mv = 5,
-      con = 8
    },
-   exptierbonus = 0,
-   expclasspower = 3,
-   expclassbonus = 0
+  defaultextendedattributes = extendedattributes:new{
+    mv = 5,
+    con = 8
+  }
 }

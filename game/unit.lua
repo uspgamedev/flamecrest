@@ -1,61 +1,44 @@
 
 require "nova.object"
 require "class"
+require "attributes"
 require "ui.component"
-
-local attributes = { "maxhp", "str", "mag", "def", "res", "spd", "skl", "lck" }
 
 unit = nova.object:new {
   name = "Unit",
   lv = 1,
   exp = 0,
   hp = nil,
-  maxhp = nil,
-  str = nil,
-  mag = nil,
-  def = nil,
-  res = nil,
-  spd = nil,
-  skl = nil,
-  lck = nil,
-  con =nil,
-  mv = nil, 
-  growths = {
-    maxhp = nil,
-    str = nil,
-    mag = nil,
-    def = nil,
-    res = nil,
-    spd = nil,
-    skl = nil,
-    lck = nil,
-  },
+  attributes = nil, --maxhp, str, mag, def, res, spd, skl, lck
+  extendedattributes = nil, --mv, con
+  growths = nil,
   class = nil,
   weapon = nil,
   bossexpbonus = 0
 }
 
 function unit:__init ()
+   print(">>>", self.extendedattributes)
+ table.foreach(self.extendedattributes, print)
+ print(">>>", self.class.defaultextendedattributes)
   if not self.class then
     self.class = class:new{}
   end
-  self.foreachattr(
-     function (_, attr)
-       if not self[attr] then 
-         self[attr] = self.class.defaultstats[attr]
-       end
-       if not self.growths[attr] then
-	 self.growths[attr] = self.class.defaultgrowths[attr] 
-      end
-     end 
-  )
-  if not self.mv then
-    self.mv = self.class.defaultstats.mv
+  if not self.attributes then
+    self.attributes = self.class.defaultattributes:clone()
+ end
+ print(">>>", self.extendedattributes)
+ table.foreach(self.extendedattributes, print)
+ print(">>>", self.class.defaultextendedattributes)
+  if not self.extendedattributes then
+    print "YO"
+    self.extendedattributes = self.class.defaultextendedattributes:clone()
+ end
+ table.foreach(class, print)
+  if not self.growths then
+    self.growths = self.class.defaultgrowths:clone()
   end
-  if not self.con then
-    self.con = self.class.defaultstats.con
-  end
-  self.hp = self.maxhp
+  self.hp = self.attributes.maxhp
 end
 
 function unit:takedamage (dmg)
@@ -86,10 +69,11 @@ function unit:gainexp (exp)
 end
 
 function unit:lvup ()
+  if self.lv >= 20 then return end
   self.lv = self.lv + 1
-  self.foreachattr(
+  attributes.foreachattr(
     function (_,attr)
-      if self[attr] < self.class.caps[attr] then
+      if self.attributes[attr] < self.class.caps[attr] then
         rand = math.random(100)
         growth = self.growths[attr]
         print("Attribute:", attr, growth, rand)
@@ -108,20 +92,20 @@ function unit:isdead ()
 end
 
 function unit:combatspeed ()
-  local wgtmod = math.max(0, (self.weapon.wgt - self.str + self.con)/2)
-  return self.spd - wgtmod
+  local wgtmod = math.max(0, (self.weapon.wgt - self.attributes.str + self.extendedattributes.con)/2)
+  return self.attributes.spd - wgtmod
 end
 
 function unit:mt ()
-  return self.weapon.mt + self[self.weapon.atkattribute]
+  return self.weapon.mt + self.attributes[self.weapon.atkattribute]
 end
 
 function unit:hit ()
-  return 2 * self.skl + self.lck + self.weapon.hit
+  return 2 * self.attributes.skl + self.attributes.lck + self.weapon.hit
 end
 
 function unit:evade ()
-  return 2 * self:combatspeed() + self.lck
+  return 2 * self:combatspeed() + self.attributes.lck
 end
 
 function unit:defattr ()
@@ -129,11 +113,11 @@ function unit:defattr ()
 end
 
 function unit:crit ()
-  return self.skl/2 + self.weapon.crt
+  return self.attributes.skl/2 + self.weapon.crt
 end
 
 function unit:dodge ()
-  return self.lck
+  return self.attributes.lck
 end
 
 function unit:expbase ()
@@ -164,13 +148,13 @@ function unit.display:draw (graphics)
   graphics.print("lv: "..self.unit.lv, 0, 20)
   graphics.print("exp: "..self.unit.exp, 0, 40)
   graphics.print("hp: "..self.unit.hp.."/"..self.unit.maxhp, 0, 60)
-  graphics.print("str: "..self.unit.str, 0, 80)
-  graphics.print("mag: "..self.unit.mag, 0, 100)
-  graphics.print("def: "..self.unit.def, 0, 120)
-  graphics.print("res: "..self.unit.res, 0, 140)
-  graphics.print("spd: "..self.unit.spd, 0, 160)
-  graphics.print("skl: "..self.unit.skl, 0, 180)
-  graphics.print("lck: "..self.unit.lck, 0, 200)
+  graphics.print("str: "..self.unit.attributes.str, 0, 80)
+  graphics.print("mag: "..self.unit.attributes.mag, 0, 100)
+  graphics.print("def: "..self.unit.attributes.def, 0, 120)
+  graphics.print("res: "..self.unit.attributes.res, 0, 140)
+  graphics.print("spd: "..self.unit.attributes.spd, 0, 160)
+  graphics.print("skl: "..self.unit.attributes.skl, 0, 180)
+  graphics.print("lck: "..self.unit.attributes.lck, 0, 200)
   -- unit weapon info
   graphics.print("weapon: "..self.unit.weapon.weapontype, 128, 0)
   graphics.print("mt: "..self.unit.weapon.mt, 128, 20)
@@ -186,8 +170,3 @@ function unit:makedisplay (pos)
     size = vec2:new {256,220}
   }
 end
-
-function unit.foreachattr (f)
-  table.foreach(attributes, f)
-end
-
