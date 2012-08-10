@@ -53,16 +53,17 @@ end
 
 function combat (attacker, defender)
   local exp = 1
-  local info = { }
-  info[attacker] = {
-    unit = attacker,
-    dealtdmg = false,
-    enemy = defender
-  }
-  info[defender] = {
-    unit = defender,
-    dealtdmg = false,
-    enemy = attacker
+  local info = {
+    [attacker] = {
+      unit = attacker,
+      dealtdmg = false,
+      enemy = defender
+    },
+    [defender] = {
+      unit = defender,
+      dealtdmg = false,
+      enemy = attacker
+    }
   }
   info[attacker].dealtdmg = strike(attacker, defender)
   if (defender:isdead()) then
