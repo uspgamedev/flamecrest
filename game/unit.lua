@@ -18,23 +18,24 @@ unit = nova.object:new {
 }
 
 function unit:__init ()
-   print(">>>", self.extendedattributes)
- table.foreach(self.extendedattributes, print)
- print(">>>", self.class.defaultextendedattributes)
+  print(">>>", self.extendedattributes)
+  table.foreach(self.extendedattributes, print)
+  print(">>>", self.class.defaultextendedattributes)
   if not self.class then
     self.class = class:new{}
   end
   if not self.attributes then
     self.attributes = self.class.defaultattributes:clone()
- end
- print(">>>", self.extendedattributes)
- table.foreach(self.extendedattributes, print)
- print(">>>", self.class.defaultextendedattributes)
+  end
+  print(">>>", self.extendedattributes)
+  table.foreach(self.extendedattributes, print)
+  print(">>>", self.class.defaultextendedattributes)
   if not self.extendedattributes then
     print "YO"
-    self.extendedattributes = self.class.defaultextendedattributes:clone()
- end
- table.foreach(class, print)
+    self.extendedattributes =
+      self.class.defaultextendedattributes:clone()
+  end
+  table.foreach(class, print)
   if not self.growths then
     self.growths = self.class.defaultgrowths:clone()
   end
