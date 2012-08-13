@@ -43,8 +43,8 @@ end
 
 function unit:heal (healamount)
   self.hp = self.hp + healamount
-  if self.hp > self.maxhp then
-    self.hp = self.maxhp
+  if self.hp > self.attributes.maxhp then
+    self.hp = self.attributes.maxhp
   end
 end
 
@@ -71,7 +71,7 @@ function unit:lvup ()
         growth = self.growths[attr]
         print("Attribute:", attr, growth, rand)
         while rand <= growth do
-          self[attr] = self[attr] + 1
+          self.attributes[attr] = self.attributes[attr] + 1
           growth = growth - 100
         end
       end
