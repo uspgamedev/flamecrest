@@ -21,7 +21,7 @@ local function strike (attacker, defender)
   local hitchance = hit - evade
   print("hit "..hitchance)
   local mt = attacker:mt()
-  local damage = mt - defender[attacker:defattr()]
+  local damage = mt - defender.attributes[attacker:defattr()]
   print("damage "..damage)
   damage, hitchance = weaponmechanics.trianglebonus(damage, hitchance,
                                                     attackerweapon,
