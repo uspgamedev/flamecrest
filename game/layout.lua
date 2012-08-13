@@ -102,7 +102,7 @@ local function addunitbuttons (unit, offset)
     text = "heal",
     pos = offset+vec2:new{128,64},
     size = vec2:new {40,16},
-    action = function () unit.hp = unit.maxhp end
+    action = function () unit.hp = unit.attributes.maxhp end
   }
   spinner(unit.weapon, offset+vec2:new{256,64}, "mt")
   spinner(unit.weapon, offset+vec2:new{256,96}, "hit")
