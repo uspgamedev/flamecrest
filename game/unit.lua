@@ -1,10 +1,10 @@
 
-require "nova.object"
+require "lux.object"
 require "class"
 require "attributes"
 require "ui.component"
 
-unit = nova.object.new {
+unit = lux.object.new {
   name = "Unit",
   lv = 1,
   exp = 0,

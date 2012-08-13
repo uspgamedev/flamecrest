@@ -1,5 +1,5 @@
 
-require "nova.table"
+require "lux.table"
 require "vec2"
 require "ui.layout"
 require "ui.component"

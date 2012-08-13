@@ -1,7 +1,7 @@
 
-require "nova.object"
+require "lux.object"
 
-vec2 = nova.object.new {}
+vec2 = lux.object.new {}
 
   -- Vector coordinates.
   vec2[1] = 0

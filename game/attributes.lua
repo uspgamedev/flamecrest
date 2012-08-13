@@ -1,12 +1,12 @@
 
-require "nova.object"
+require "lux.object"
 
 local attributelist = { "maxhp", "str", "mag", "def", "res", "spd", "skl", "lck" }
 local extendedattributelist = { "mv", "con" }
 
 --TODO: Link list of attributes to attributes present?
 
-attributes = nova.object.new {
+attributes = lux.object.new {
   maxhp = 20,
   str = 10,
   mag = 10,
@@ -17,7 +17,7 @@ attributes = nova.object.new {
   lck = 10
 }
 
-extendedattributes = nova.object.new {
+extendedattributes = lux.object.new {
   mv = 5,
   con = 7
 }

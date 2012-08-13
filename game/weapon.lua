@@ -1,7 +1,7 @@
 
-require "nova.object"
+require "lux.object"
 
-weapon = nova.object.new {
+weapon = lux.object.new {
   mt = 5,
   hit = 60,
   wgt = 3,

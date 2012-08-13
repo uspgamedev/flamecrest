@@ -1,11 +1,11 @@
 
-require "nova.table"
+require "lux.table"
 
 require "ui.button"
 
 module ("ui.layout", package.seeall) do
 
-  components = nova.table:new {}
+  components = lux.table:new {}
 
   function addcomponent (component)
     components:insert(component)

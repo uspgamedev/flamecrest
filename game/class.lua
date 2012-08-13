@@ -1,8 +1,8 @@
 
-require "nova.object"
+require "lux.object"
 require "attributes"
 
-class = nova.object.new{
+class = lux.object.new{
    name = "Soldier",
    weapons = {"lance"},
    caps = nil,
