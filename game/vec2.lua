@@ -1,8 +1,8 @@
 
 require "nova.object"
 
-module("vec2", nova.object.inherit()) do
-  
+vec2 = nova.object.new {}
+
   -- Vector coordinates.
   vec2[1] = 0
   vec2[2] = 0
@@ -58,5 +58,4 @@ module("vec2", nova.object.inherit()) do
     self[2] = self[2] - v[2]
   end
   
-end
 

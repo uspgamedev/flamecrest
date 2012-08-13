@@ -4,6 +4,7 @@ require "vec2"
 require "ui.layout"
 require "ui.component"
 require "game"
+require "attributes"
 
 layout = ui.component:new {
   margin = { left = 32, top = 96 },
@@ -13,7 +14,7 @@ layout = ui.component:new {
 local function drawlabels (g, ox, oy)
   g.print("lv", ox, oy)
   g.print("exp", ox+128+8, oy+8)
-  unit.foreachattr(
+  attributes.foreachattr(
     function (i, attr)
       g.print(attr, ox, oy+32*i)
     end
@@ -84,7 +85,7 @@ local function addunitbuttons (unit, offset)
     spinner(unit, offset+vec2:new{0,32+32*(i-1)}, attr, 0, 30)
     -- TODO: actually, luck's max is 40
   end
-  unit.foreachattr(addspinner)
+  attributes.foreachattr(addspinner)
   ui.layout.addbutton {
     text = "+30",
     pos = offset+vec2:new{128,0},

@@ -4,7 +4,7 @@ require "class"
 require "attributes"
 require "ui.component"
 
-unit = nova.object:new {
+unit = nova.object.new {
   name = "Unit",
   lv = 1,
   exp = 0,
@@ -18,24 +18,16 @@ unit = nova.object:new {
 }
 
 function unit:__init ()
-  print(">>>", self.extendedattributes)
-  table.foreach(self.extendedattributes, print)
-  print(">>>", self.class.defaultextendedattributes)
   if not self.class then
     self.class = class:new{}
   end
   if not self.attributes then
     self.attributes = self.class.defaultattributes:clone()
   end
-  print(">>>", self.extendedattributes)
-  table.foreach(self.extendedattributes, print)
-  print(">>>", self.class.defaultextendedattributes)
   if not self.extendedattributes then
-    print "YO"
     self.extendedattributes =
       self.class.defaultextendedattributes:clone()
   end
-  table.foreach(class, print)
   if not self.growths then
     self.growths = self.class.defaultgrowths:clone()
   end
@@ -148,7 +140,7 @@ function unit.display:draw (graphics)
   graphics.print("name: "..self.unit.name, 0, 0)
   graphics.print("lv: "..self.unit.lv, 0, 20)
   graphics.print("exp: "..self.unit.exp, 0, 40)
-  graphics.print("hp: "..self.unit.hp.."/"..self.unit.maxhp, 0, 60)
+  graphics.print("hp: "..self.unit.hp.."/"..self.unit.attributes.maxhp, 0, 60)
   graphics.print("str: "..self.unit.attributes.str, 0, 80)
   graphics.print("mag: "..self.unit.attributes.mag, 0, 100)
   graphics.print("def: "..self.unit.attributes.def, 0, 120)

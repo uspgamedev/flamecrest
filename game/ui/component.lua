@@ -6,7 +6,7 @@ require "vec2"
 
 module ("ui", package.seeall)
 
-ui.component = nova.object:new {
+ui.component = nova.object.new {
   pos = nil,
   size = nil
 }

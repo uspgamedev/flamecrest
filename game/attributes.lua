@@ -6,7 +6,7 @@ local extendedattributelist = { "mv", "con" }
 
 --TODO: Link list of attributes to attributes present?
 
-attributes = nova.object:new {
+attributes = nova.object.new {
   maxhp = 20,
   str = 10,
   mag = 10,
@@ -17,7 +17,7 @@ attributes = nova.object:new {
   lck = 10
 }
 
-extendedattributes = nova.object:new {
+extendedattributes = nova.object.new {
   mv = 5,
   con = 7
 }

@@ -2,7 +2,7 @@
 require "nova.object"
 require "attributes"
 
-class = nova.object:new{
+class = nova.object.new{
    name = "Soldier",
    weapons = {"lance"},
    caps = nil,
