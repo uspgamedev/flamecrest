@@ -84,6 +84,13 @@ function unit:isdead ()
   return self.hp <= 0
 end
 
+function unit:canattackatrange (range)
+  if range >= self.weapon.minrange and range <= self.weapon.maxrange then
+    return true
+  end
+  return false
+end
+
 function unit:combatspeed ()
   local wgtmod = math.max(0, (self.weapon.wgt - self.attributes.str + self.extendedattributes.con)/2)
   return self.attributes.spd - wgtmod

@@ -51,7 +51,7 @@ local function strike (attacker, defender)
   return dealtdamage
 end
 
-function combat (attacker, defender)
+function combat (attacker, defender, range)
   local exp = 1
   local info = {
     [attacker] = {
@@ -65,14 +65,18 @@ function combat (attacker, defender)
       enemy = attacker
     }
   }
-  info[attacker].dealtdmg = strike(attacker, defender)
+  if attacker:canattackatrange(range) then
+    info[attacker].dealtdmg = strike(attacker, defender)
+  end
   if (defender:isdead()) then
     print (defender.name.." is dead!")
     exp = killexp(attacker, defender)
     attacker:gainexp(exp)
     return
   end
-  info[defender].dealtdmg = strike(defender, attacker)
+  if defender:canattackatrange(range) then
+    info[defender].dealtdmg = strike(defender, attacker)
+  end
   if (attacker:isdead()) then
     print (attacker.name.." is dead!")
     exp = killexp(attacker, defender)
@@ -80,7 +84,7 @@ function combat (attacker, defender)
     return
   end
   local faster, slower = muchfaster(attacker, defender)
-  if (faster) then
+  if (faster and faster:canattackatrange(range)) then
     print("moreattack")
     local fastdealt = strike(info[faster].unit, info[slower].unit)
     info[faster].dealtdmg = info[faster].dealtdmg or fastdealt

@@ -12,6 +12,8 @@ weapon = lux.object.new {
   atkattribute = "str",
   defattribute = "def",
   useexp = nil, --for staves
+  minrange = 1,
+  maxrange = 1,
   weapontypelist = {
     "sword", "lance", "axe", "bow",
     "light", "dark", "fire", "thunder", "wind",

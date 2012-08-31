@@ -17,7 +17,9 @@ module ("game", package.seeall) do
     },
     weapon = weapon:new{
       weapontype = "lance",
-      useexp = 11
+      useexp = 11,
+      minrange = 1,
+      maxrange = 2
     }
   }
 
@@ -30,7 +32,9 @@ module ("game", package.seeall) do
     },
     weapon = weapon:new {
       hit = 40,
-      useexp = 100
+      useexp = 100,
+      minrange = 2,
+      maxrange = 2
     }
   }
 
@@ -38,12 +42,12 @@ module ("game", package.seeall) do
 
   function keyactions.a ()
     if unit1:isdead() or unit2:isdead() then return end
-    combat(unit1, unit2)
+    combat(unit1, unit2, unit1.weapon.minrange)
   end
   
   function keyactions.s ()
     if unit1:isdead() or unit2:isdead() then return end
-    combat(unit2, unit1)
+    combat(unit2, unit1, unit2.weapon.minrange)
   end
   
   function keyactions.x ()
