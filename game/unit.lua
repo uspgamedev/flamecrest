@@ -14,7 +14,8 @@ unit = lux.object.new {
   growths = nil,
   class = nil,
   weapon = nil,
-  bossexpbonus = 0
+  bossexpbonus = 0,
+  rescuedunit = nil
 }
 
 function unit:__init ()
@@ -80,6 +81,46 @@ function unit:lvup ()
   print("")
 end
 
+function unit:canrescue (otherunit)
+  if self.rescuedunit == nil and self.extendedattributes.con -2 >= otherunit.extendedattributes.con then
+    return true
+  else
+    return false
+  end
+end
+
+function unit:getspd()
+  local speed = self.attributes.spd
+  if self.rescuedunit then
+    speed = math.ceiling(speed/2)
+  end
+  return speed
+end
+
+function unit:getskl()
+  local skill = self.attributes.skl
+  if self.rescuedunit then
+     skill = math.ceiling(skill/2)
+  end 
+  return skill
+end
+
+function unit:getrescuedunit ()
+  return self.rescuedunit
+end
+
+function unit:unrescue ()
+  local rescuedunit = self.rescuedunit
+  self.rescuedunit = nil
+  return rescuedunit
+end
+
+function unit:rescue (otherunit)
+  if self:canrescue(otherunit) then
+    self.rescuedunit = otherunit
+  end
+end
+
 function unit:isdead ()
   return self.hp <= 0
 end
@@ -93,7 +134,7 @@ end
 
 function unit:combatspeed ()
   local wgtmod = math.max(0, (self.weapon.wgt - self.attributes.str + self.extendedattributes.con)/2)
-  return self.attributes.spd - wgtmod
+  return self:getspd() - wgtmod
 end
 
 function unit:mt ()
@@ -101,7 +142,7 @@ function unit:mt ()
 end
 
 function unit:hit ()
-  return 2 * self.attributes.skl + self.attributes.lck + self.weapon.hit
+  return 2 * self:getskl() + self.attributes.lck + self.weapon.hit
 end
 
 function unit:evade ()
@@ -113,7 +154,7 @@ function unit:defattr ()
 end
 
 function unit:crit ()
-  return self.attributes.skl/2 + self.weapon.crt
+  return self:getskl()/2 + self.weapon.crt
 end
 
 function unit:dodge ()
