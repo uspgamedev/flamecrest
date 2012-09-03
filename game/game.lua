@@ -38,6 +38,18 @@ module ("game", package.seeall) do
     }
   }
 
+  unit3 = unit:new {
+    extendedattributes = extendedattributes:new{
+      con = 30
+    }
+  }
+  
+  unit4 = unit:new {
+    extendedattributes = extendedattributes:new{
+      con = 1
+    }
+  }
+
   keyactions = {}
 
   function keyactions.a ()
@@ -65,5 +77,51 @@ module ("game", package.seeall) do
   function keyactions.w ()
     heal(unit2, unit1)
   end
+  
+  function keyactions.r ()
+    rescue(unit1, unit3)
+  end
+
+  function keyactions.t ()
+    rescue(unit1, unit4)
+  end
+  
+  function keyactions.y ()
+    unrescue(unit1)
+  end
+
+  function keyactions.f ()
+    rescue(unit2, unit3)
+  end
+
+  function keyactions.g ()
+    rescue(unit2, unit4)
+  end
+  
+  function keyactions.h ()
+    unrescue(unit2)
+  end 
+  
+  function rescue(rescuer, rescuee)
+    if rescuer:canrescue(rescuee) then
+      print ("Looks like it can rescue")
+      rescuer:rescue(rescuee)
+      if rescuer:getrescuedunit() == rescuee then
+	print("success!")
+      else
+	print("oh no")
+      end
+    else
+      print ("no can rescue")
+    end
+    print("")
+  end
+
+  function unrescue(rescuer)
+    rescuer:unrescue()
+    print("dropped")
+    print("")
+  end
+
 end
 

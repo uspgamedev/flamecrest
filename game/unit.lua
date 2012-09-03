@@ -92,16 +92,19 @@ end
 function unit:getspd()
   local speed = self.attributes.spd
   if self.rescuedunit then
-    speed = math.ceiling(speed/2)
+    speed = math.ceil(speed/2)
   end
   return speed
 end
 
 function unit:getskl()
   local skill = self.attributes.skl
+  print ("skil "..skill)
   if self.rescuedunit then
-     skill = math.ceiling(skill/2)
+     skill = math.ceil(skill/2)
+     print("rescuedskill "..skill)
   end 
+  print("")
   return skill
 end
 
@@ -133,8 +136,13 @@ function unit:canattackatrange (range)
 end
 
 function unit:combatspeed ()
-  local wgtmod = math.max(0, (self.weapon.wgt - self.attributes.str + self.extendedattributes.con)/2)
-  return self:getspd() - wgtmod
+   local wgtmod = math.floor(math.max(0, (self.weapon.wgt - self.attributes.str + self.extendedattributes.con)/2))
+  local cspeed = self:getspd() - wgtmod
+  print ("unitspeed "..self.attributes.spd)
+  print ("combastspeed "..cspeed)
+  print ("modifiedspeedduetorescue "..self:getspd())
+  print ("")
+  return cspeed
 end
 
 function unit:mt ()
@@ -142,7 +150,8 @@ function unit:mt ()
 end
 
 function unit:hit ()
-  return 2 * self:getskl() + self.attributes.lck + self.weapon.hit
+  local hit = 2 * self:getskl() + self.attributes.lck + self.weapon.hit 
+  return hit
 end
 
 function unit:evade ()
