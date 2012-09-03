@@ -64,7 +64,7 @@ local function dec (pos, obj, attrname, min)
     size = vec2:new { 16, 16 },
     action = function ()
       obj[attrname] = min and
-        math.max(obj[attrname] - 1, min) or
+	 math.max(obj[attrname] - 1, min) or
         obj[attrname] - 1
       -- TODO this is ugly
       if attrname == "maxhp" then
@@ -82,7 +82,7 @@ end
 local function addunitbuttons (unit, offset)
   spinner(unit, offset, "lv", 1, 20)
   local function addspinner (i, attr)
-    spinner(unit, offset+vec2:new{0,32+32*(i-1)}, attr, 0, 30)
+    spinner(unit.attributes, offset+vec2:new{0,32+32*(i-1)}, attr, 0, 30)
     -- TODO: actually, luck's max is 40
   end
   attributes.foreachattr(addspinner)
