@@ -87,7 +87,7 @@ module ("game", package.seeall) do
   end
   
   function keyactions.y ()
-    unrescue(unit1)
+    dropunit(unit1)
   end
 
   function keyactions.f ()
@@ -99,7 +99,7 @@ module ("game", package.seeall) do
   end
   
   function keyactions.h ()
-    unrescue(unit2)
+    dropunit(unit2)
   end 
   
   function rescue(rescuer, rescuee)
@@ -117,8 +117,8 @@ module ("game", package.seeall) do
     print("")
   end
 
-  function unrescue(rescuer)
-    rescuer:unrescue()
+  function dropunit(rescuer)
+    rescuer:dropunit()
     print("dropped")
     print("")
   end

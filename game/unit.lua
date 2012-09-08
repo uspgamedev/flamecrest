@@ -112,10 +112,10 @@ function unit:getrescuedunit ()
   return self.rescuedunit
 end
 
-function unit:unrescue ()
-  local rescuedunit = self.rescuedunit
+function unit:dropunit ()
+  local droppedunit = self.rescuedunit
   self.rescuedunit = nil
-  return rescuedunit
+  return droppedunit
 end
 
 function unit:rescue (otherunit)
