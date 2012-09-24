@@ -50,6 +50,13 @@ module ("game", package.seeall) do
     }
   }
 
+  awesomeclass = class:new{
+    name = "SuperSoldier",
+    caps = attributes:new{
+      str = 30
+    }
+  }
+
   keyactions = {}
 
   function keyactions.a ()
@@ -101,6 +108,14 @@ module ("game", package.seeall) do
   function keyactions.h ()
     dropunit(unit2)
   end 
+  
+  function keyactions.p ()
+    unit1:promote(awesomeclass)
+  end
+
+  function keyactions.o ()
+    unit2:promote(awesomeclass)
+  end
   
   function rescue(rescuer, rescuee)
     if rescuer:canrescue(rescuee) then

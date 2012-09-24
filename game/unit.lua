@@ -81,6 +81,28 @@ function unit:lvup ()
   print("")
 end
 
+function unit:promote(class)
+  print("WILL PROMOTE!!!!")
+  if not class then return end
+  print("PROMOTING") 
+  self.class = class
+  attributes.foreachattr(
+    function (_,attr)
+      if self.attributes[attr] < self.class.caps[attr] then
+         self.attributes[attr] = self.attributes[attr] + self.class.promotionbonus.att[attr] --GRAA LINHA HORRIVEL 
+      end
+    end
+  )
+  extendedattributes.foreachattr(
+    function (_,attr)
+      --if self.extendedattributes[attr] < self.class.caps[attr] then
+       self.extendedattributes[attr] = self.extendedattributes[attr] + self.class.promotionbonus.ext[attr] --GRAA LINHA HORRIVEL DINOVO 
+      --end
+    end
+  )
+  self.lv = 1
+end
+
 function unit:canrescue (otherunit)
   if self.rescuedunit == nil and self.extendedattributes.con -2 >= otherunit.extendedattributes.con then
     return true
