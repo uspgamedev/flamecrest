@@ -122,9 +122,9 @@ module ("game", package.seeall) do
       print ("Looks like it can rescue")
       rescuer:rescue(rescuee)
       if rescuer:getrescuedunit() == rescuee then
-	print("success!")
+        print("success!")
       else
-	print("oh no")
+        print("oh no")
       end
     else
       print ("no can rescue")
