@@ -9,7 +9,9 @@ local object  = lux.object
 
 module "ui" do
   
-  component = object.new {}
+  component = object.new {
+    visible = true
+  }
   
   component.__init = {
     pos = vec2:new { 0, 0 },

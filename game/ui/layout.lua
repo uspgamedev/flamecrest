@@ -17,15 +17,17 @@ module ("ui.layout", package.seeall) do
   
   function draw (graphics)
     for _,component in pairs(components) do
-      -- store current graphics state
-      local currentcolor = { graphics.getColor() }
-      graphics.push()
-      -- move to component's position and draw it
-      graphics.translate(component.pos.x, component.pos.y)
-      component:draw(graphics)
-      -- restore previous graphics state
-      graphics.pop()
-      graphics.setColor(currentcolor)
+      if component.visible then
+        -- store current graphics state
+        local currentcolor = { graphics.getColor() }
+        graphics.push()
+        -- move to component's position and draw it
+        graphics.translate(component.pos.x, component.pos.y)
+        component:draw(graphics)
+        -- restore previous graphics state
+        graphics.pop()
+        graphics.setColor(currentcolor)
+      end
     end
   end
 

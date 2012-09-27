@@ -3,8 +3,13 @@ require "game"
 require "ui.layout"
 require "ui.mouse"
 require "layout"
+require "vec2"
 
 math.randomseed( os.time() )
+
+local hextile, stickman
+local w,h = 6,8
+local man_pos = vec2:new {4,3}
 
 function love.load ()
   love.graphics.setFont(love.graphics.newFont("fonts/Verdana.ttf", 14))
@@ -15,6 +20,8 @@ function love.load ()
   ui.layout.addcomponent(
     game.unit2:makedisplay(vec2:new{layout.middle, layout.margin.top})
   )
+  hextile = love.graphics.newImage "resources/images/hextile-border.png"
+  stickman = love.graphics.newImage "resources/images/stick-man.png"
 end
 
 function love.update (dt)
@@ -35,7 +42,19 @@ function love.mousereleased (x, y, button)
   ui.mouse.release(button, vec2:new{x,y})
 end
 
+local origin = vec2:new {100, 50}
+local tilesize = vec2:new {128, 64}
+
 function love.draw()
   ui.layout.draw(love.graphics)
+  love.graphics.setBackgroundColor(180,120,40)
+  for i=1,w do
+    for j=1,h do
+      local pos = origin + vec2:new{96*i,63*j+32*i}
+      love.graphics.draw(hextile, pos.x, pos.y, 0, 1, 1, tilesize.x/2, tilesize.y/2)
+    end
+  end
+  local final_pos = origin + vec2:new{96*man_pos.x, 63*man_pos.y+32*man_pos.x}
+  love.graphics.draw(stickman, final_pos.x, final_pos.y, 0, 1, 1, 32, 84)
 end
 
