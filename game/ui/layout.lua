@@ -1,22 +1,28 @@
 
-require "lux.table"
+local object  = require "lux.object"
+local array   = require "lux.table"
 
 require "ui.button"
 
-module ("ui.layout", package.seeall) do
+module "ui" do
 
-  components = lux.table:new {}
+  layout = object.new {
 
-  function addcomponent (component)
-    components:insert(component)
+  }
+
+  layout.__init = {
+    components = array:new {}
+  }
+
+  function layout:addcomponent (component)
+    self.components:insert(component)
   end
   
-  function addbutton (buttoninfo)
-    addcomponent(ui.button:new(buttoninfo))
+  function layout:addbutton (buttoninfo)
+    self:addcomponent(button:new(buttoninfo))
   end
-  
-  function draw (graphics)
-    for _,component in pairs(components) do
+
+  function layout.drawcomponent (_, component, graphics)
       if component.active then
         -- store current graphics state
         local currentcolor = { graphics.getColor() }
@@ -28,7 +34,10 @@ module ("ui.layout", package.seeall) do
         graphics.pop()
         graphics.setColor(currentcolor)
       end
-    end
+  end
+  
+  function layout:draw (graphics)
+    self.components:foreach(function (_,c) drawcomponent(_,c,graphics) end)
   end
 
 end

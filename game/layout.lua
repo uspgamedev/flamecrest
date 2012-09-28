@@ -5,7 +5,7 @@ require "ui.layout"
 require "ui.component"
 require "attributes"
 
-layout = ui.component:new {
+battlelayout = ui.layout:new {
   margin = { left = 32, top = 96 },
   middle = 512 + 32
 }
@@ -24,27 +24,26 @@ local function drawlabels (g, ox, oy)
   g.print("crt", ox+256, oy+160)
 end
 
-function layout:__init ()
+function battlelayout:__init ()
   self:placebuttons()
 end
 
-function layout:draw (g)
-
+function battlelayout:draw (g)
   -- draw lines of basic layout
   g.setColor { 50, 50, 50, 255 }
   g.line(32, 64, 1024-32, 64)
   g.line(512, 64, 512, 768-16)
   g.line(32, 768/2, 1024-32, 768/2)
   g.setColor { 255, 255, 255, 255 }
-
   -- draw button labels
   drawlabels(g, 32+16+40, 384+16)
   drawlabels(g, 512+16+40, 384+16)
-
+  -- draw components
+  self.components:foreach(function (_,c) ui.layout.drawcomponent(_,c,g) end)
 end
 
-local function inc (pos, obj, attrname, max)
-  ui.layout.addbutton {
+function battlelayout:inc (pos, obj, attrname, max)
+  self:addbutton {
     text = "+",
     pos = pos,
     size = vec2:new { 16, 16 },
@@ -56,8 +55,8 @@ local function inc (pos, obj, attrname, max)
   }
 end
 
-local function dec (pos, obj, attrname, min)
-  ui.layout.addbutton {
+function battlelayout:dec (pos, obj, attrname, min)
+  self:addbutton {
     text = "-",
     pos = pos,
     size = vec2:new { 16, 16 },
@@ -73,41 +72,41 @@ local function dec (pos, obj, attrname, min)
   }
 end
 
-local function spinner (obj, pos, attrname, min, max)
-  inc(pos+vec2:new{16,0}, obj, attrname, max)
-  dec(pos, obj, attrname, min)
+function battlelayout:spinner (obj, pos, attrname, min, max)
+  self:inc(pos+vec2:new{16,0}, obj, attrname, max)
+  self:dec(pos, obj, attrname, min)
 end
 
-local function addunitbuttons (unit, offset)
-  spinner(unit, offset, "lv", 1, 20)
+function battlelayout:addunitbuttons (unit, offset)
+  self:spinner(unit, offset, "lv", 1, 20)
   local function addspinner (i, attr)
-    spinner(unit.attributes, offset+vec2:new{0,32+32*(i-1)}, attr, 0, 30)
+    self:spinner(unit.attributes, offset+vec2:new{0,32+32*(i-1)}, attr, 0, 30)
     -- TODO: actually, luck's max is 40
   end
   attributes.foreachattr(addspinner)
-  ui.layout.addbutton {
+  self:addbutton {
     text = "+30",
     pos = offset+vec2:new{128,0},
     size = vec2:new {40,16},
     action = function () unit:gainexp(30) end
   }
-  ui.layout.addbutton {
+  self:addbutton {
     text = "reset",
     pos = offset+vec2:new{128,16},
     size = vec2:new {40,16},
     action = function () unit.exp = 0 end
   }
-  ui.layout.addbutton {
+  self:addbutton {
     text = "heal",
     pos = offset+vec2:new{128,64},
     size = vec2:new {40,16},
     action = function () unit.hp = unit.attributes.maxhp end
   }
-  spinner(unit.weapon, offset+vec2:new{256,64}, "mt")
-  spinner(unit.weapon, offset+vec2:new{256,96}, "hit")
-  spinner(unit.weapon, offset+vec2:new{256,128}, "wgt", 0)
-  spinner(unit.weapon, offset+vec2:new{256,160}, "crt")
-  ui.layout.addbutton {
+  self:spinner(unit.weapon, offset+vec2:new{256,64}, "mt")
+  self:spinner(unit.weapon, offset+vec2:new{256,96}, "hit")
+  self:spinner(unit.weapon, offset+vec2:new{256,128}, "wgt", 0)
+  self:spinner(unit.weapon, offset+vec2:new{256,160}, "crt")
+  self:addbutton {
     text = "change weapon",
     pos = offset+vec2:new {256,0},
     size = vec2:new {128,32},
@@ -115,9 +114,9 @@ local function addunitbuttons (unit, offset)
   }
 end
 
-function layout:placebuttons ()
+function battlelayout:placebuttons ()
   -- quit button
-  ui.layout.addbutton {
+  self:addbutton {
     text = "QUIT",
     pos = vec2:new { 928, 16 },
     size = vec2:new { 64, 32 },
@@ -126,41 +125,41 @@ function layout:placebuttons ()
     end
   }
   -- reset all to initial state
-  ui.layout.addbutton {
+  self:addbutton {
     text = "RESET ALL",
     pos = vec2:new { 32, 16 },
     size = vec2:new { 128, 32 },
     action = function () end
   }
   -- unit1 attacks unit2
-  ui.layout.addbutton {
+  self:addbutton {
     text = "FIGHT >>>",
     pos = vec2:new { 512-16-128, 16 },
     size = vec2:new { 128, 32 },
     action = self.game.keyactions.a
   }
   -- unit2 attacks unit1
-  ui.layout.addbutton {
+  self:addbutton {
     text = "<<< FIGHT",
     pos = vec2:new { 512+16, 16 },
     size = vec2:new { 128, 32 },
     action = self.game.keyactions.s
   }
   -- unit1 attacks unit2
-  ui.layout.addbutton {
+  self:addbutton {
     text = "HEAL >>>",
     pos = vec2:new { 512-32-256, 16 },
     size = vec2:new { 128, 32 },
     action = self.game.keyactions.q
   }
   -- unit2 attacks unit1
-  ui.layout.addbutton {
+  self:addbutton {
     text = "<<< HEAL",
     pos = vec2:new { 512+32+128, 16 },
     size = vec2:new { 128, 32 },
     action = self.game.keyactions.w
   }
-  addunitbuttons(self.game.unit1, vec2:new{32+16, 384+16})
-  addunitbuttons(self.game.unit2, vec2:new{512+16, 384+16})
+  self:addunitbuttons(self.game.unit1, vec2:new{32+16, 384+16})
+  self:addunitbuttons(self.game.unit2, vec2:new{512+16, 384+16})
 end
 
