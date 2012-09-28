@@ -126,7 +126,7 @@ module ("game", package.seeall) do
     unit2:promote(awesomeclass)
   end
 
-  battlelayout = battlelayout:new { game = _M }
+  combatlayout = combatlayout:new { game = _M }
   
   function rescue(rescuer, rescuee)
     if rescuer:canrescue(rescuee) then

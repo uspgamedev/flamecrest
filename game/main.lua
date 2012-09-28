@@ -14,12 +14,12 @@ local currentlayout = nil
 
 function love.load ()
   love.graphics.setFont(love.graphics.newFont("fonts/Verdana.ttf", 14))
-  currentlayout = game.battlelayout
+  currentlayout = game.combatlayout
   currentlayout:addcomponent(
-    game.unit1:makedisplay(vec2:new{battlelayout.margin.left, battlelayout.margin.top})
+    game.unit1:makedisplay(vec2:new{combatlayout.margin.left, combatlayout.margin.top})
   )
   currentlayout:addcomponent(
-    game.unit2:makedisplay(vec2:new{battlelayout.middle, battlelayout.margin.top})
+    game.unit2:makedisplay(vec2:new{combatlayout.middle, combatlayout.margin.top})
   )
   --hextile = love.graphics.newImage "resources/images/hextile-border.png"
   --stickman = love.graphics.newImage "resources/images/stick-man.png"
