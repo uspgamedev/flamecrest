@@ -16,7 +16,10 @@ module "battlemap" do
   }
   
   function layout:draw (graphics)
-    -- body
+    graphics.push()
+    graphics.translate(origin.x, origin.y)
+    ui.layout.draw(self, graphics)
+    graphics.pop()
   end
   --love.graphics.setBackgroundColor(180,120,40)
   --for i=1,w do
