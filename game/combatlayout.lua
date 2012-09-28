@@ -5,7 +5,7 @@ require "ui.layout"
 require "ui.component"
 require "attributes"
 
-battlelayout = ui.layout:new {
+combatlayout = ui.layout:new {
   margin = { left = 32, top = 96 },
   middle = 512 + 32
 }
@@ -24,11 +24,11 @@ local function drawlabels (g, ox, oy)
   g.print("crt", ox+256, oy+160)
 end
 
-function battlelayout:__init ()
+function combatlayout:__init ()
   self:placebuttons()
 end
 
-function battlelayout:draw (g)
+function combatlayout:draw (g)
   -- draw lines of basic layout
   g.setColor { 50, 50, 50, 255 }
   g.line(32, 64, 1024-32, 64)
@@ -39,10 +39,10 @@ function battlelayout:draw (g)
   drawlabels(g, 32+16+40, 384+16)
   drawlabels(g, 512+16+40, 384+16)
   -- draw components
-  self.components:foreach(function (_,c) ui.layout.drawcomponent(_,c,g) end)
+  combatlayout:__super().draw(self, g)
 end
 
-function battlelayout:inc (pos, obj, attrname, max)
+function combatlayout:inc (pos, obj, attrname, max)
   self:addbutton {
     text = "+",
     pos = pos,
@@ -55,7 +55,7 @@ function battlelayout:inc (pos, obj, attrname, max)
   }
 end
 
-function battlelayout:dec (pos, obj, attrname, min)
+function combatlayout:dec (pos, obj, attrname, min)
   self:addbutton {
     text = "-",
     pos = pos,
@@ -72,12 +72,12 @@ function battlelayout:dec (pos, obj, attrname, min)
   }
 end
 
-function battlelayout:spinner (obj, pos, attrname, min, max)
+function combatlayout:spinner (obj, pos, attrname, min, max)
   self:inc(pos+vec2:new{16,0}, obj, attrname, max)
   self:dec(pos, obj, attrname, min)
 end
 
-function battlelayout:addunitbuttons (unit, offset)
+function combatlayout:addunitbuttons (unit, offset)
   self:spinner(unit, offset, "lv", 1, 20)
   local function addspinner (i, attr)
     self:spinner(unit.attributes, offset+vec2:new{0,32+32*(i-1)}, attr, 0, 30)
@@ -114,7 +114,7 @@ function battlelayout:addunitbuttons (unit, offset)
   }
 end
 
-function battlelayout:placebuttons ()
+function combatlayout:placebuttons ()
   -- quit button
   self:addbutton {
     text = "QUIT",

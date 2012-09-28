@@ -3,7 +3,9 @@ require "unit"
 require "combat"
 require "weapon"
 require "effects"
-require "layout"
+require "combatlayout"
+
+local _combatlayout = combatlayout
 
 module ("game", package.seeall) do
 
@@ -126,7 +128,7 @@ module ("game", package.seeall) do
     unit2:promote(awesomeclass)
   end
 
-  combatlayout = combatlayout:new { game = _M }
+  combatlayout = _combatlayout:new { game = _M }
   
   function rescue(rescuer, rescuee)
     if rescuer:canrescue(rescuee) then

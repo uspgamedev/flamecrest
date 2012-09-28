@@ -37,7 +37,7 @@ module "ui" do
   end
   
   function layout:draw (graphics)
-    self.components:foreach(function (_,c) drawcomponent(_,c,graphics) end)
+    self.components:foreach(function (_,c) layout.drawcomponent(_,c,graphics) end)
   end
 
 end
