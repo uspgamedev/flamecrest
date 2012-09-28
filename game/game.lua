@@ -3,6 +3,7 @@ require "unit"
 require "combat"
 require "weapon"
 require "effects"
+require "layout"
 
 module ("game", package.seeall) do
 
@@ -64,7 +65,7 @@ module ("game", package.seeall) do
   end
 
   function keyactions.tab ()
-    
+
   end
 
   function keyactions.a ()
@@ -124,6 +125,8 @@ module ("game", package.seeall) do
   function keyactions.o ()
     unit2:promote(awesomeclass)
   end
+
+  battlelayout = layout:new { game = _M }
   
   function rescue(rescuer, rescuee)
     if rescuer:canrescue(rescuee) then

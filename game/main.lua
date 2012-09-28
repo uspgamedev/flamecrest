@@ -13,7 +13,7 @@ local man_pos = vec2:new {4,3}
 
 function love.load ()
   love.graphics.setFont(love.graphics.newFont("fonts/Verdana.ttf", 14))
-  ui.layout.addcomponent(layout:new{})
+  ui.layout.addcomponent(game.battlelayout)
   ui.layout.addcomponent(
     game.unit1:makedisplay(vec2:new{layout.margin.left, layout.margin.top})
   )

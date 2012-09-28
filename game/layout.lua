@@ -3,7 +3,6 @@ require "lux.table"
 require "vec2"
 require "ui.layout"
 require "ui.component"
-require "game"
 require "attributes"
 
 layout = ui.component:new {
@@ -138,30 +137,30 @@ function layout:placebuttons ()
     text = "FIGHT >>>",
     pos = vec2:new { 512-16-128, 16 },
     size = vec2:new { 128, 32 },
-    action = game.keyactions.a
+    action = self.game.keyactions.a
   }
   -- unit2 attacks unit1
   ui.layout.addbutton {
     text = "<<< FIGHT",
     pos = vec2:new { 512+16, 16 },
     size = vec2:new { 128, 32 },
-    action = game.keyactions.s
+    action = self.game.keyactions.s
   }
   -- unit1 attacks unit2
   ui.layout.addbutton {
     text = "HEAL >>>",
     pos = vec2:new { 512-32-256, 16 },
     size = vec2:new { 128, 32 },
-    action = game.keyactions.q
+    action = self.game.keyactions.q
   }
   -- unit2 attacks unit1
   ui.layout.addbutton {
     text = "<<< HEAL",
     pos = vec2:new { 512+32+128, 16 },
     size = vec2:new { 128, 32 },
-    action = game.keyactions.w
+    action = self.game.keyactions.w
   }
-  addunitbuttons(game.unit1, vec2:new{32+16, 384+16})
-  addunitbuttons(game.unit2, vec2:new{512+16, 384+16})
+  addunitbuttons(self.game.unit1, vec2:new{32+16, 384+16})
+  addunitbuttons(self.game.unit2, vec2:new{512+16, 384+16})
 end
 
