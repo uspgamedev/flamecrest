@@ -17,7 +17,7 @@ module ("ui.layout", package.seeall) do
   
   function draw (graphics)
     for _,component in pairs(components) do
-      if component.visible then
+      if component.active then
         -- store current graphics state
         local currentcolor = { graphics.getColor() }
         graphics.push()

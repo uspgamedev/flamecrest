@@ -10,7 +10,7 @@ local object  = lux.object
 module "ui" do
   
   component = object.new {
-    visible = true
+    active = true
   }
   
   component.__init = {
