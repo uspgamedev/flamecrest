@@ -21,7 +21,7 @@ attributes = lux.object.new {
 }
 
 function attributes.foreachbasattr (f)
-  table.foreach(attributelist, f)
+  table.foreach(basicattributelist, f)
 end
 
 function attributes.foreachextattr (f)
