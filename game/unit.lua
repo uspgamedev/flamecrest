@@ -84,7 +84,7 @@ function unit:promote(class)
   attributes.foreachattr(
     function (_,attr)
       if self.attributes[attr] < self.class.caps[attr] then
-         self.attributes[attr] = self.attributes[attr] + self.class.promotionbonus.att[attr] --GRAA LINHA HORRIVEL 
+         self.attributes[attr] = self.attributes[attr] + self.class.promotionbonus[attr] --GRAA LINHA HORRIVEL 
       end
     end
   )
