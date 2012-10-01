@@ -23,7 +23,9 @@ class.__init = {
       skl = 20,
       def = 20,
       res = 20,
-      lck = 40
+      lck = 40,
+      mv  = 99, -- lol
+      con = 60  -- lol
    },
   defaultgrowths = attributes:new{
       maxhp = 50,
