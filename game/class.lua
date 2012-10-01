@@ -8,7 +8,6 @@ class = lux.object.new{
    caps = nil,
    defaultgrowths = nil,
    defaultattributes = nil,
-   defaultextendedattributes = nil,
    promotionbonus = nil,
    exptierbonus = 0,
    expclasspower = 3,
@@ -24,7 +23,9 @@ class.__init = {
       skl = 20,
       def = 20,
       res = 20,
-      lck = 40
+      lck = 40,
+      mv  = 99, -- lol
+      con = 60  -- lol
    },
   defaultgrowths = attributes:new{
       maxhp = 50,
@@ -44,28 +45,20 @@ class.__init = {
       skl = 10,
       def = 10,
       res = 10,
-      lck = 10
+      lck = 10,
+      mv = 5,
+      con = 8
    },
-  
-  defaultextendedattributes = extendedattributes:new{
-    mv = 5,
-    con = 8
-  },
-
-  promotionbonus = {
-    att = attributes:new{
-      maxhp = 4,
-      str = 2,
-      mag = 2,
-      spd = 2,
-      skl = 2,
-      def = 2,
-      res = 2,
-      lck = 2
-    },
-    ext = extendedattributes:new {
-      mv = 1,
-      con = 2
-    }
+  promotionbonus = attributes:new{
+    maxhp = 4,
+    str = 2,
+    mag = 2,
+    spd = 2,
+    skl = 2,
+    def = 2,
+    res = 2,
+    lck = 2,
+    mv = 1,
+    con = 2
   }
 }
