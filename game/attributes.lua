@@ -29,7 +29,7 @@ function attributes.foreachextattr (f)
 end
 
 function attributes.foreachattr (f)
-  for j=1,#allttributes do
+  for j=1,#allattributes do
     for i = 1, #allattributes[j] do
       f(i, allattributes[j][i])
     end
