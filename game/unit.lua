@@ -9,8 +9,7 @@ unit = lux.object.new {
   lv = 1,
   exp = 0,
   hp = nil,
-  attributes = nil, --maxhp, str, mag, def, res, spd, skl, lck
-  extendedattributes = nil, --mv, con
+  attributes = nil, --maxhp, str, mag, def, res, spd, skl, lck, mv, con
   growths = nil,
   class = nil,
   weapon = nil,
@@ -24,10 +23,6 @@ function unit:__init ()
   end
   if not self.attributes then
     self.attributes = self.class.defaultattributes:clone()
-  end
-  if not self.extendedattributes then
-    self.extendedattributes =
-      self.class.defaultextendedattributes:clone()
   end
   if not self.growths then
     self.growths = self.class.defaultgrowths:clone()
@@ -65,7 +60,7 @@ end
 function unit:lvup ()
   if self.lv >= 20 then return end
   self.lv = self.lv + 1
-  attributes.foreachattr(
+  attributes.foreachbasattr(
     function (_,attr)
       if self.attributes[attr] < self.class.caps[attr] then
         rand = math.random(100)
@@ -93,18 +88,11 @@ function unit:promote(class)
       end
     end
   )
-  extendedattributes.foreachattr(
-    function (_,attr)
-      --if self.extendedattributes[attr] < self.class.caps[attr] then
-       self.extendedattributes[attr] = self.extendedattributes[attr] + self.class.promotionbonus.ext[attr] --GRAA LINHA HORRIVEL DINOVO 
-      --end
-    end
-  )
   self.lv = 1
 end
 
 function unit:canrescue (otherunit)
-  if self.rescuedunit == nil and self.extendedattributes.con -2 >= otherunit.extendedattributes.con then
+  if self.rescuedunit == nil and self.attributes.con -2 >= otherunit.attributes.con then
     return true
   else
     return false
@@ -160,7 +148,7 @@ function unit:canattackatrange (range)
 end
 
 function unit:combatspeed ()
-  local wgtmod = math.floor(math.max(0, (self.weapon.wgt - self.attributes.str + self.extendedattributes.con)/2))
+  local wgtmod = math.floor(math.max(0, (self.weapon.wgt - self.attributes.str + self.attributes.con)/2))
   local cspeed = self:getspd() - wgtmod
   print ("combastspeed "..cspeed)
   print ("")
