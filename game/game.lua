@@ -39,13 +39,13 @@ module ("game", package.seeall) do
   }
 
   unit3 = unit:new {
-    extendedattributes = extendedattributes:new{
+    attributes = attributes:new{
       con = 30
     }
   }
   
   unit4 = unit:new {
-    extendedattributes = extendedattributes:new{
+    attributes = attributes:new{
       con = 1
     }
   }
