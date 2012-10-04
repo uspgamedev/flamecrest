@@ -4,8 +4,8 @@ require "ui.layout"
 require "ui.mouse"
 require "combatlayout"
 require "vec2"
-require "battlemap.layout"
-require "battlemap.tile"
+require "battle.layout"
+require "battle.tile"
 
 math.randomseed( os.time() )
 

@@ -13,14 +13,17 @@ module "battlemap" do
   }
 
   layout.__init = {
-    origin = vec2:new {512,384}
+    origin = vec2:new {512,384},
+    map = {
+      
+    }
   }
   
   function layout:draw (graphics)
     graphics.push()
     graphics.translate(origin.x, origin.y)
-    ui.layout.draw(self, graphics)
     graphics.pop()
+    ui.layout.draw(self, graphics)
   end
   --love.graphics.setBackgroundColor(180,120,40)
   --for i=1,w do
