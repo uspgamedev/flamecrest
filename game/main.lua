@@ -10,16 +10,21 @@ math.randomseed( os.time() )
 
 local currentlayout = nil
 
+local function makecombatlayout ()
+  local newlayout = game.combatlayout
+  newlayout:addcomponent(
+    game.unit1:makedisplay(vec2:new{combatlayout.margin.left, combatlayout.margin.top})
+  )
+  newlayout:addcomponent(
+    game.unit2:makedisplay(vec2:new{combatlayout.middle, combatlayout.margin.top})
+  )
+  return newlayout
+end
+
 function love.load ()
   love.graphics.setFont(love.graphics.newFont("fonts/Verdana.ttf", 14))
   battlemap.tile:load(love.graphics)
-  currentlayout = game.combatlayout
-  currentlayout:addcomponent(
-    game.unit1:makedisplay(vec2:new{combatlayout.margin.left, combatlayout.margin.top})
-  )
-  currentlayout:addcomponent(
-    game.unit2:makedisplay(vec2:new{combatlayout.middle, combatlayout.margin.top})
-  )
+  currentlayout = makecombatlayout()
 end
 
 function love.update (dt)
