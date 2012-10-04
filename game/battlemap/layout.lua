@@ -2,7 +2,8 @@
 require "ui.layout"
 require "vec2"
 
-local ui = ui
+local ui    = ui
+local vec2  = vec2
 
 module "battlemap" do
 
