@@ -6,8 +6,8 @@ require "battle.tile"
 module "battle" do
 
   map = object.new {
-    width   = 8,
-    height  = 8
+    width   = 5,
+    height  = 5
   }
 
   function map:__init ()

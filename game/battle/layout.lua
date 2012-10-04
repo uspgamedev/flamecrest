@@ -9,7 +9,7 @@ module "battle" do
 
   layout = ui.layout:new {
     map = nil,
-    origin = vec2:new {512,384},
+    origin = vec2:new {512,32},
     tileset = {}
   }
 
@@ -22,7 +22,7 @@ module "battle" do
     graphics.translate(self.origin.x, self.origin.y)
     for i = 1,self.map.height do
       for j = 1,self.map.width do
-        local pos   = vec2:new{96*i,63*j+32*i}
+        local pos   = vec2:new{97*(i-1)-97*(j-1), 32*(i-1)+32*(j-1)}
         local image = self.tileset[self.map.tiles[i][j].type]
         graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
       end
