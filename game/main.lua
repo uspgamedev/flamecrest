@@ -4,6 +4,7 @@ require "ui.layout"
 require "ui.mouse"
 require "combatlayout"
 require "vec2"
+require "battlemap.tile"
 
 math.randomseed( os.time() )
 
@@ -11,6 +12,7 @@ local currentlayout = nil
 
 function love.load ()
   love.graphics.setFont(love.graphics.newFont("fonts/Verdana.ttf", 14))
+  battlemap.tile:load(love.graphics)
   currentlayout = game.combatlayout
   currentlayout:addcomponent(
     game.unit1:makedisplay(vec2:new{combatlayout.margin.left, combatlayout.margin.top})
