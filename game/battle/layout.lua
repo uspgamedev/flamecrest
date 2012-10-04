@@ -5,7 +5,7 @@ require "vec2"
 local ui    = ui
 local vec2  = vec2
 
-module "battlemap" do
+module "battle" do
 
   layout = ui.layout:new {
     width = 8,

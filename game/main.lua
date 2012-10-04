@@ -23,12 +23,12 @@ local function makecombatlayout ()
 end
 
 local function makebattlemaplayout ()
-  return battlemap.layout
+  return battle.layout
 end
 
 function love.load ()
   love.graphics.setFont(love.graphics.newFont("fonts/Verdana.ttf", 14))
-  battlemap.tile:load(love.graphics)
+  battle.tile:load(love.graphics)
   currentlayout = makecombatlayout()
   --currentlayout = makebattlemaplayout()
 end

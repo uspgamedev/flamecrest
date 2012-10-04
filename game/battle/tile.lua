@@ -5,7 +5,7 @@ require "vec2"
 
 local vec2 = vec2
 
-module "battlemap" do
+module "battle" do
 
   tile = object.new {
     types = {},
