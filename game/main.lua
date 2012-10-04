@@ -23,7 +23,14 @@ local function makecombatlayout ()
 end
 
 local function makebattlemaplayout ()
-  battle.layout.map = battle.map:new {}
+  local map = battle.map:new { width = 9, height = 9 }
+  for i=6,9 do
+    for j=1,i-5 do
+      map.tiles[i][j] = nil
+      map.tiles[j][i] = nil
+    end
+  end
+  battle.layout.map = map
   return battle.layout
 end
 
