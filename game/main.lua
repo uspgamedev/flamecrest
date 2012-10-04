@@ -59,6 +59,10 @@ function love.mousereleased (x, y, button)
   ui.mouse.release(currentlayout, button, vec2:new{x,y})
 end
 
+function love.mousepressed (x, y, button)
+  ui.mouse.press(currentlayout, button, vec2:new{x,y})
+end
+
 local origin = vec2:new {100, 50}
 local tilesize = vec2:new {128, 64}
 
