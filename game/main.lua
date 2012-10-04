@@ -5,7 +5,7 @@ require "ui.mouse"
 require "combatlayout"
 require "vec2"
 require "battle.layout"
-require "battle.tile"
+require "battle.map"
 
 math.randomseed( os.time() )
 
@@ -23,14 +23,15 @@ local function makecombatlayout ()
 end
 
 local function makebattlemaplayout ()
+  battle.layout.map = battle.map:new {}
   return battle.layout
 end
 
 function love.load ()
   love.graphics.setFont(love.graphics.newFont("fonts/Verdana.ttf", 14))
-  battle.tile:load(love.graphics)
-  currentlayout = makecombatlayout()
-  --currentlayout = makebattlemaplayout()
+  battle.layout:load(love.graphics)
+  --currentlayout = makecombatlayout()
+  currentlayout = makebattlemaplayout()
 end
 
 function love.update (dt)

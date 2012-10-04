@@ -8,23 +8,29 @@ local vec2  = vec2
 module "battle" do
 
   layout = ui.layout:new {
-    width = 8,
-    height = 8
+    map = nil,
+    origin = vec2:new {512,384},
+    tileset = {}
   }
 
-  layout.__init = {
-    origin = vec2:new {512,384},
-    map = {
-      
-    }
-  }
+  function layout:load (graphics)
+    self.tileset.plains = graphics.newImage "resources/images/hextile-border.png"
+  end
   
   function layout:draw (graphics)
     graphics.push()
-    graphics.translate(origin.x, origin.y)
+    graphics.translate(self.origin.x, self.origin.y)
+    for i = 1,self.map.height do
+      for j = 1,self.map.width do
+        local pos   = vec2:new{96*i,63*j+32*i}
+        local image = self.tileset[self.map.tiles[i][j].type]
+        graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
+      end
+    end
     graphics.pop()
     ui.layout.draw(self, graphics)
   end
+
   --love.graphics.setBackgroundColor(180,120,40)
   --for i=1,w do
   --  for j=1,h do
