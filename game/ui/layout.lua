@@ -40,5 +40,13 @@ module "ui" do
     self.components:foreach(function (_,c) layout.drawcomponent(_,c,graphics) end)
   end
 
+  function layout:pressed (b, pos)
+    -- Unimplemented layout event.
+  end
+  
+  function layout:released (b, pos)
+    -- Unimplemented layout event.
+  end
+
 end
 

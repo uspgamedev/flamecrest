@@ -11,6 +11,7 @@ module ("ui.mouse", package.seeall) do
         return
       end
     end
+    focusedlayout:pressed(button, pos)
   end
 
   function release (focusedlayout, button, pos)
@@ -21,6 +22,7 @@ module ("ui.mouse", package.seeall) do
         return
       end
     end
+    focusedlayout:released(button, pos)
   end
 
 end
