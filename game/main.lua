@@ -6,6 +6,7 @@ require "combatlayout"
 require "vec2"
 require "battle.layout"
 require "battle.map"
+require "battle.hexpos"
 
 math.randomseed( os.time() )
 

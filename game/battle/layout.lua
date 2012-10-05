@@ -1,18 +1,20 @@
 
 require "ui.layout"
+require "battle.hexpos"
 require "vec2"
 
-local ui    = ui
-local vec2  = vec2
-local floor = math.floor
-local print = print
+local ui      = ui
+local vec2    = vec2
+local floor   = math.floor
+local print   = print
+local unpack  = unpack
 
 module "battle" do
 
   layout = ui.layout:new {
     map     = nil,
     origin  = vec2:new {512,0},
-    focus   = { i = 1, j = 1 },
+    focus = hexpos:new{1,1},
     tileset = {}
   }
 
@@ -45,23 +47,25 @@ module "battle" do
   function layout:released (button, pos)
     if button == 'l' then
       local relpos = pos-self.origin
+      local focus = hexpos:new {}
       relpos = relpos.x/192*vec2:new{1,-1} + relpos.y/64*vec2:new{1,1}
-      self.focus.i = floor(relpos.y+0.5)
-      self.focus.j = floor(relpos.x+0.5)
-      local x,y = relpos.x-self.focus.j+0.5, relpos.y-self.focus.i+0.5
+      focus.i = floor(relpos.y+0.5)
+      focus.j = floor(relpos.x+0.5)
+      local x,y = relpos.x-focus.j+0.5, relpos.y-focus.i+0.5
       if y > 2*x + 0.5 or y > x/2 + 0.75 then
         if x + y < 1 then
-          self.focus.j = self.focus.j-1
+          focus.j = focus.j-1
         else
-          self.focus.i = self.focus.i+1
+          focus.i = focus.i+1
         end
       elseif x > 2*y + 0.5 or x > y/2 + 0.75 then
         if x + y < 1 then
-          self.focus.i = self.focus.i-1
+          focus.i = focus.i-1
         else
-          self.focus.j = self.focus.j+1
+          focus.j = focus.j+1
         end
       end
+      self.focus:set(unpack(focus))
     end
   end
 

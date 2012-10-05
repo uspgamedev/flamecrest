@@ -7,7 +7,8 @@ module "battle" do
 
   map = object.new {
     width   = 5,
-    height  = 5
+    height  = 5,
+    tiles   = nil
   }
 
   function map:__init ()
