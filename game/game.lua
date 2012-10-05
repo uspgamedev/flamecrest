@@ -4,8 +4,10 @@ require "combat"
 require "weapon"
 require "effects"
 require "combatlayout"
+require "battle.layout"
 
 local _combatlayout = combatlayout
+local battlelayout = battle.layout
 
 module ("game", package.seeall) do
 
@@ -128,7 +130,17 @@ module ("game", package.seeall) do
     unit2:promote(awesomeclass)
   end
 
+  function keyactions.tab ()
+    if currentlayout == combatlayout then
+      currentlayout = battlelayout
+    else
+      currentlayout = combatlayout
+    end
+  end
+
   combatlayout = _combatlayout:new { game = _M }
+
+  currentlayout = combatlayout
   
   function rescue(rescuer, rescuee)
     if rescuer:canrescue(rescuee) then

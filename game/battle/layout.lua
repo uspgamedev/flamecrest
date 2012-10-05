@@ -17,7 +17,7 @@ module "battle" do
   }
 
   function layout:load (graphics)
-    self.tileset.plains = graphics.newImage "resources/images/hextile-border.png"
+    self.tileset.plains = graphics.newImage "resources/images/hextile.png"
   end
   
   function layout:draw (graphics)
