@@ -43,7 +43,7 @@ module "battle" do
             graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
             graphics.setColor(255,255,255,255)
           end
-          if tile.unit then
+          if tile.unit and not tile.unit:isdead() then
             graphics.draw(tile.unit.sprite, pos.x, pos.y, 0, 1, 1, 32, 85)
           end
         end
@@ -82,6 +82,10 @@ module "battle" do
 
   function layout:targetedunit ()
     return self.map:tile(self.target).unit
+  end
+
+  function layout:selectiondistance ()
+    return (self.target - self.focus):size()
   end
 
   function layout:released (button, pos)

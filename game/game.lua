@@ -141,10 +141,15 @@ module ("game", package.seeall) do
   keyactions["return"] = function ()
     if currentlayout == battlelayout then
       local attacker  = battlelayout:focusedunit()
-      local target    = battlelayout:targetedunit() 
+      local target    = battlelayout:targetedunit()
+      local distance  = battlelayout:selectiondistance()
       if not attacker or not target then return end
       if attacker:isdead() or target:isdead() then return end
-      combat(attacker, target, attacker.weapon.minrange)
+      if distance < attacker.weapon.minrange
+        or distance > attacker.weapon.maxrange then
+        return
+      end
+      combat(attacker, target, distance)
     end
   end
 
