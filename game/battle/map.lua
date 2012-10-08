@@ -22,16 +22,24 @@ module "battle" do
     end
   end
 
+  function map:inside (pos)
+    return hexpos:new{1,1} <= pos and pos <= hexpos:new{self.height,self.width}
+  end
+
   function map:tile (pos)
-    return hexpos:new{1,1} <= pos and pos <= hexpos:new{self.width,self.height}
-      and self.tiles[pos.i][pos.j]
+    return self:inside(pos) and self.tiles[pos.i][pos.j]
+  end
+
+  function map:putunit (pos, unit)
+    if self:inside(pos) then
+      self.tiles[pos.i][pos.j].unit = unit
+    end
   end
 
   function map:moveunit (originpos, targetpos)
     if self:tile(targetpos).unit then return end
-    self.tiles[targetpos.i][targetpos.j].unit =
-      self.tiles[originpos.i][originpos.j].unit
-    self.tiles[originpos.i][originpos.j].unit = nil
+    self:putunit(targetpos, self:tile(originpos).unit)
+    self:putunit(originpos, nil)
   end
 
 end
