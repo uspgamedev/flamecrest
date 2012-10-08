@@ -55,7 +55,7 @@ module "battle" do
     return lhs.i < rhs.i and lhs.j < rhs.j
   end
 
-  function hexpos.__lg (lhs, rhs)
+  function hexpos.__le (lhs, rhs)
     return lhs.i <= rhs.i and lhs.j <= rhs.j
   end
 
