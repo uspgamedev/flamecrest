@@ -153,6 +153,12 @@ module ("game", package.seeall) do
     end
   end
 
+  function keyactions.m ()
+    if currentlayout == battlelayout then
+      battlelayout.map:moveunit(battlelayout.focus, battlelayout.target)
+    end
+  end
+
   combatlayout = _combatlayout:new { game = _M }
 
   currentlayout = combatlayout

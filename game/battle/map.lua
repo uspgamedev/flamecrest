@@ -27,4 +27,11 @@ module "battle" do
       and self.tiles[pos.i][pos.j]
   end
 
+  function map:moveunit (originpos, targetpos)
+    if self:tile(targetpos).unit then return end
+    self.tiles[targetpos.i][targetpos.j].unit =
+      self.tiles[originpos.i][originpos.j].unit
+    self.tiles[originpos.i][originpos.j].unit = nil
+  end
+
 end
