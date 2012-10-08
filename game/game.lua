@@ -138,6 +138,16 @@ module ("game", package.seeall) do
     end
   end
 
+  keyactions["return"] = function ()
+    if currentlayout == battlelayout then
+      local attacker  = battlelayout:focusedunit()
+      local target    = battlelayout:targetedunit() 
+      if not attacker or not target then return end
+      if attacker:isdead() or target:isdead() then return end
+      combat(attacker, target, attacker.weapon.minrange)
+    end
+  end
+
   combatlayout = _combatlayout:new { game = _M }
 
   currentlayout = combatlayout

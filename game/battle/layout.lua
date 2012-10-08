@@ -76,6 +76,14 @@ module "battle" do
     return focus
   end
 
+  function layout:focusedunit ()
+    return self.map:tile(self.focus).unit
+  end
+
+  function layout:targetedunit ()
+    return self.map:tile(self.target).unit
+  end
+
   function layout:released (button, pos)
     if button == 'l' then
       local selected = self:gettile(pos)
