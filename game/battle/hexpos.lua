@@ -51,6 +51,14 @@ module "battle" do
     end
   end
 
+  function hexpos.__lt (lhs, rhs)
+    return lhs.i < rhs.i and lhs.j < rhs.j
+  end
+
+  function hexpos.__lg (lhs, rhs)
+    return lhs.i <= rhs.i and lhs.j <= rhs.j
+  end
+
   function hexpos:size ()
     return self[1]*self[2] >= 0
       and max(abs(self[1]), abs(self[2]))

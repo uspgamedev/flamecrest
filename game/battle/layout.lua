@@ -13,7 +13,7 @@ module "battle" do
 
   layout = ui.layout:new {
     map     = nil,
-    origin  = vec2:new {512,0},
+    origin  = vec2:new {512,100},
     focus   = hexpos:new{1,1},
     tileset = {}
   }
@@ -31,14 +31,13 @@ module "battle" do
         if tile then
           local pos   = vec2:new{96*j-96*i, 32*j+32*i}
           local image = self.tileset[tile.type]
+          graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
           if i == self.focus.i and j == self.focus.j then
-            graphics.setColor(255,0,0,255)
-          else
+            graphics.setColor(255,0,0,100)
+            graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
             graphics.setColor(255,255,255,255)
           end
-          graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
           if tile.unit then
-            graphics.setColor(255,255,255,255)
             graphics.draw(tile.unit.sprite, pos.x, pos.y, 0, 1, 1, 32, 85)
           end
         end
@@ -48,28 +47,35 @@ module "battle" do
     ui.layout.draw(self, graphics)
   end
 
+  function layout:gettile (pos)
+    local relpos = pos-self.origin
+    local focus = hexpos:new {}
+    relpos = relpos.x/192*vec2:new{1,-1} + relpos.y/64*vec2:new{1,1}
+    focus.i = floor(relpos.y+0.5)
+    focus.j = floor(relpos.x+0.5)
+    local x,y = relpos.x-focus.j+0.5, relpos.y-focus.i+0.5
+    if y > 2*x + 0.5 or y > x/2 + 0.75 then
+      if x + y < 1 then
+        focus.j = focus.j-1
+      else
+        focus.i = focus.i+1
+      end
+    elseif x > 2*y + 0.5 or x > y/2 + 0.75 then
+      if x + y < 1 then
+        focus.i = focus.i-1
+      else
+        focus.j = focus.j+1
+      end
+    end
+    return focus
+  end
+
   function layout:released (button, pos)
     if button == 'l' then
-      local relpos = pos-self.origin
-      local focus = hexpos:new {}
-      relpos = relpos.x/192*vec2:new{1,-1} + relpos.y/64*vec2:new{1,1}
-      focus.i = floor(relpos.y+0.5)
-      focus.j = floor(relpos.x+0.5)
-      local x,y = relpos.x-focus.j+0.5, relpos.y-focus.i+0.5
-      if y > 2*x + 0.5 or y > x/2 + 0.75 then
-        if x + y < 1 then
-          focus.j = focus.j-1
-        else
-          focus.i = focus.i+1
-        end
-      elseif x > 2*y + 0.5 or x > y/2 + 0.75 then
-        if x + y < 1 then
-          focus.i = focus.i-1
-        else
-          focus.j = focus.j+1
-        end
+      local selected = self:gettile(pos)
+      if self.map:tile(selected) then
+        self.focus:set(selected:get())
       end
-      self.focus:set(focus:get())
     end
   end
 

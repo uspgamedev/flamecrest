@@ -1,7 +1,8 @@
 
 local object = require "lux.object"
 
-require "battle.tile"
+require "battle.tile" 
+require "battle.hexpos"
 
 module "battle" do
 
@@ -21,5 +22,9 @@ module "battle" do
     end
   end
 
+  function map:tile (pos)
+    return hexpos:new{1,1} <= pos and pos <= hexpos:new{self.width,self.height}
+      and self.tiles[pos.i][pos.j]
+  end
 
 end
