@@ -14,7 +14,7 @@ module "battle" do
   layout = ui.layout:new {
     map     = nil,
     origin  = vec2:new {512,0},
-    focus = hexpos:new{1,1},
+    focus   = hexpos:new{1,1},
     tileset = {}
   }
 
@@ -37,6 +37,10 @@ module "battle" do
             graphics.setColor(255,255,255,255)
           end
           graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
+          if tile.unit then
+            graphics.setColor(255,255,255,255)
+            graphics.draw(tile.unit.sprite, pos.x, pos.y, 0, 1, 1, 32, 85)
+          end
         end
       end
     end

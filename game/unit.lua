@@ -28,6 +28,7 @@ function unit:__init ()
     self.growths = self.class.defaultgrowths:clone()
   end
   self.hp = self.attributes.maxhp
+  self.sprite = love.graphics.newImage "resources/images/stick-man.png"
 end
 
 function unit:takedamage (dmg)

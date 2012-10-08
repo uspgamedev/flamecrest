@@ -4,7 +4,8 @@ local object = require "lux.object"
 module "battle" do
 
   tile = object.new {
-    type  = "plains"
+    type  = "plains",
+    unit  = nil
   }
 
 end
