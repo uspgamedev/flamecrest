@@ -65,7 +65,7 @@ module "battle" do
           focus.j = focus.j+1
         end
       end
-      self.focus:set(unpack(focus))
+      self.focus:set(focus:get())
     end
   end
 

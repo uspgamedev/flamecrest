@@ -58,7 +58,7 @@ module "battle" do
   end
 
   function hexpos:get ()
-    return unpack(Self)
+    return unpack(self)
   end
  
   function hexpos:set (i, j)
