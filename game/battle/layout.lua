@@ -15,6 +15,7 @@ module "battle" do
     map     = nil,
     origin  = vec2:new {512,100},
     focus   = hexpos:new{1,1},
+    target  = hexpos:new{2,2},
     tileset = {}
   }
 
@@ -33,6 +34,11 @@ module "battle" do
           local image = self.tileset[tile.type]
           graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
           if i == self.focus.i and j == self.focus.j then
+            graphics.setColor(0,0,255,100)
+            graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
+            graphics.setColor(255,255,255,255)
+          end
+          if i == self.target.i and j == self.target.j then
             graphics.setColor(255,0,0,100)
             graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
             graphics.setColor(255,255,255,255)
@@ -75,6 +81,11 @@ module "battle" do
       local selected = self:gettile(pos)
       if self.map:tile(selected) then
         self.focus:set(selected:get())
+      end
+    elseif button == 'r' then
+      local selected = self:gettile(pos)
+      if self.map:tile(selected) then
+        self.target:set(selected:get())
       end
     end
   end
