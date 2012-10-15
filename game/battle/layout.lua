@@ -57,9 +57,9 @@ module "battle" do
   end
 
   function layout:update (dt)
-    local focused = self:gettile(vec2:new{mouse.getPosition()})
-    if self.map:tile(focused) then
-      self.focus:set(focused:get())
+    local targeted = self:gettile(vec2:new{mouse.getPosition()})
+    if self.map:tile(targeted) then
+      self.target:set(targeted:get())
     end
   end
 
@@ -100,14 +100,9 @@ module "battle" do
 
   function layout:released (button, pos)
     if button == 'l' then
-      --local selected = self:gettile(pos)
-      --if self.map:tile(selected) then
-      --  self.focus:set(selected:get())
-      --end
-    elseif button == 'r' then
-      local selected = self:gettile(pos)
-      if self.map:tile(selected) then
-        self.target:set(selected:get())
+      local focused = self:gettile(pos)
+      if self.map:tile(focused) then
+        self.focus:set(focused:get())
       end
     end
   end
