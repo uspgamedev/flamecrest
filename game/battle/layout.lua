@@ -8,6 +8,7 @@ local vec2    = vec2
 local floor   = math.floor
 local print   = print
 local unpack  = unpack
+local mouse   = love.mouse
 
 module "battle" do
 
@@ -55,6 +56,13 @@ module "battle" do
     ui.layout.draw(self, graphics)
   end
 
+  function layout:update (dt)
+    local focused = self:gettile(vec2:new{mouse.getPosition()})
+    if self.map:tile(focused) then
+      self.focus:set(focused:get())
+    end
+  end
+
   function layout:gettile (pos)
     local relpos = pos-self.origin
     local focus = hexpos:new {}
@@ -92,10 +100,10 @@ module "battle" do
 
   function layout:released (button, pos)
     if button == 'l' then
-      local selected = self:gettile(pos)
-      if self.map:tile(selected) then
-        self.focus:set(selected:get())
-      end
+      --local selected = self:gettile(pos)
+      --if self.map:tile(selected) then
+      --  self.focus:set(selected:get())
+      --end
     elseif button == 'r' then
       local selected = self:gettile(pos)
       if self.map:tile(selected) then
