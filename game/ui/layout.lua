@@ -35,9 +35,17 @@ module "ui" do
         graphics.setColor(currentcolor)
       end
   end
-  
+
   function layout:draw (graphics)
-    self.components:foreach(function (_,c) layout.drawcomponent(_,c,graphics) end)
+    self.components:foreach(
+      function (_,c)
+        layout.drawcomponent(_,c,graphics)
+      end
+    )
+  end
+
+  function layout:update (dt)
+    -- Unimplemented layout update logic.
   end
 
   function layout:pressed (b, pos)

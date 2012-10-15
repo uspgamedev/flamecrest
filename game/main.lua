@@ -43,7 +43,7 @@ function love.load ()
 end
 
 function love.update (dt)
-  -- NOTHING
+  game.currentlayout:update(dt)
 end
 
 function love.keypressed (key)
