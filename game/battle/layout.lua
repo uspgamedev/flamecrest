@@ -23,6 +23,8 @@ module "battle" do
     self.tileset.plains = graphics.newImage "resources/images/hextile.png"
     self.tileset.focus  = graphics.newImage "resources/images/focus.png"
     self.tileset.focus:setFilter("linear","linear")
+    self.tileset.cursor  = graphics.newImage "resources/images/cursor.png"
+    self.tileset.cursor:setFilter("linear","linear")
   end
   
   function layout:draw (graphics)
@@ -35,17 +37,13 @@ module "battle" do
           local pos         = vec2:new{96*j-96*i, 32*j+32*i}
           local image       = self.tileset[tile.type]
           local focusimage  = self.tileset.focus
+          local cursorimage = self.tileset.cursor
           graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
           if i == self.focus.i and j == self.focus.j then
-            --graphics.setColor(0,0,255,100)
-            --graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
             graphics.draw(focusimage, pos.x, pos.y, 0, 1, 1, 64, 35)
-            --graphics.setColor(255,255,255,255)
           end
           if i == self.target.i and j == self.target.j then
-            graphics.setColor(255,0,0,100)
-            graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
-            graphics.setColor(255,255,255,255)
+            graphics.draw(cursorimage, pos.x, pos.y, 0, 1, 1, 64, 35)
           end
           if tile.unit and not tile.unit:isdead() then
             graphics.draw(tile.unit.sprite, pos.x, pos.y, 0, 1, 1, 32, 85)
