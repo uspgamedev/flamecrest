@@ -71,15 +71,16 @@ module "battle" do
 
   function layout:update (dt)
     local targeted = self:gettile(vec2:new{mouse.getPosition()})
-    if targeted == self.cursortarget and self.delay > 0 then
-      if dt > self.delay then dt = self.delay end
-      self.cursor = self.cursor + dt*self.step
-      self.delay = self.delay - dt
+    if targeted == self.cursortarget then
+      if self.delay > 0 then
+        if dt > self.delay then dt = self.delay end
+        self.cursor = self.cursor + dt*self.step
+        self.delay = self.delay - dt
+      end
     elseif self.map:tile(targeted) then
       self.cursortarget = targeted
       self.delay        = 0.1
       self.step         = (targeted - self.cursor)*(1/self.delay)
-      --self.cursor:set(targeted:get())
     end
   end
 
@@ -126,8 +127,5 @@ module "battle" do
       end
     end
   end
-
-  --local final_pos = origin + vec2:new{96*man_pos.x, 63*man_pos.y+32*man_pos.x}
-  --love.graphics.draw(stickman, final_pos.x, final_pos.y, 0, 1, 1, 32, 84)
   
 end
