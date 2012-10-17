@@ -30,6 +30,17 @@ module "battle" do
     return self:inside(pos) and self.tiles[pos.i][pos.j]
   end
 
+  function map:pertile (action)
+    for i = 1,self.height do
+      for j = 1,self.width do
+        local tile  = self.tiles[i][j]
+        if tile then
+          action(i, j, tile)
+        end
+      end
+    end
+  end
+
   function map:putunit (pos, unit)
     if self:inside(pos) then
       self.tiles[pos.i][pos.j].unit = unit

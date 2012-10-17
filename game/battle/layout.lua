@@ -16,51 +16,53 @@ module "battle" do
     map     = nil,
     origin  = vec2:new {512,100},
     focus   = hexpos:new{1,1},
-    target  = hexpos:new{2,2},
+    cursor  = hexpos:new{2,2},
     tileset = {}
   }
 
   function layout:load (graphics)
+    -- Load tileset images
     self.tileset.plains = graphics.newImage "resources/images/hextile.png"
     self.tileset.focus  = graphics.newImage "resources/images/focus.png"
     self.tileset.focus:setFilter("linear","linear")
     self.tileset.cursor  = graphics.newImage "resources/images/cursor.png"
     self.tileset.cursor:setFilter("linear","linear")
+    -- Load drawing action functions
+    function self.drawtileaction (i, j, tile)
+      self:drawtile(i,j,tile,graphics)
+    end
+    function self.drawunitaction (i, j, tile)
+      self:drawunit(i,j,tile,graphics)
+    end
+  end
+
+  function layout:drawtile (i, j, tile, graphics)
+    local pos   = vec2:new{96*j-96*i, 32*j+32*i}
+    local image = self.tileset[tile.type]
+    graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
+  end
+
+  function layout:drawunit (i, j, tile, graphics)
+    local pos = vec2:new{96*j-96*i, 32*j+32*i}
+    if tile.unit and not tile.unit:isdead() then
+      graphics.draw(tile.unit.sprite, pos.x, pos.y, 0, 1, 1, 32, 85)
+    end
+  end
+
+  function layout:drawmodifier (name, graphics)
+    local pos   = self[name]:tovec2()
+    local image = self.tileset[name]
+    graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 35)
   end
   
   function layout:draw (graphics)
     graphics.push()
-    graphics.translate(self.origin.x, self.origin.y)
-    for i = 1,self.map.height do
-      for j = 1,self.map.width do
-        local tile  = self.map.tiles[i][j]
-        if tile then
-          local pos   = vec2:new{96*j-96*i, 32*j+32*i}
-          local image = self.tileset[tile.type]
-          graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
-        end
-      end
-    end
     do
-      local pos   = self.focus:tovec2()
-      local image = self.tileset.focus
-      graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 35)
-    end
-    do
-      local pos   = self.target:tovec2()
-      local image = self.tileset.cursor
-      graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 35)
-    end
-    for i = 1,self.map.height do
-      for j = 1,self.map.width do
-        local tile  = self.map.tiles[i][j]
-        if tile then
-          local pos = vec2:new{96*j-96*i, 32*j+32*i}
-          if tile.unit and not tile.unit:isdead() then
-            graphics.draw(tile.unit.sprite, pos.x, pos.y, 0, 1, 1, 32, 85)
-          end
-        end
-      end
+      graphics.translate(self.origin.x, self.origin.y)
+      self.map:pertile(self.drawtileaction)
+      self:drawmodifier("focus", graphics)
+      self:drawmodifier("cursor", graphics)
+      self.map:pertile(self.drawunitaction)
     end
     graphics.pop()
     ui.layout.draw(self, graphics)
@@ -69,7 +71,7 @@ module "battle" do
   function layout:update (dt)
     local targeted = self:gettile(vec2:new{mouse.getPosition()})
     if self.map:tile(targeted) then
-      self.target:set(targeted:get())
+      self.cursor:set(targeted:get())
     end
   end
 
@@ -101,11 +103,11 @@ module "battle" do
   end
 
   function layout:targetedunit ()
-    return self.map:tile(self.target).unit
+    return self.map:tile(self.cursor).unit
   end
 
   function layout:selectiondistance ()
-    return (self.target - self.focus):size()
+    return (self.cursor - self.focus):size()
   end
 
   function layout:released (button, pos)

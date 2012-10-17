@@ -155,7 +155,7 @@ module ("game", package.seeall) do
 
   function keyactions.m ()
     if currentlayout == battlelayout then
-      battlelayout.map:moveunit(battlelayout.focus, battlelayout.target)
+      battlelayout.map:moveunit(battlelayout.focus, battlelayout.cursor)
     end
   end
 
