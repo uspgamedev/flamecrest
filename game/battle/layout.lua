@@ -122,7 +122,8 @@ module "battle" do
   function layout:released (button, pos)
     if button == 'l' then
       local focused = self:gettile(pos)
-      if self.map:tile(focused) then
+      local tile    = self.map:tile(focused)
+      if tile then
         self.focus:set(focused:get())
       end
     end
