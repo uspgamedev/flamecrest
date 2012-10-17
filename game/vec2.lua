@@ -43,6 +43,10 @@ vec2 = lux.object.new {}
     end
   end
  
+  function vec2:get ()
+    return unpack(self)
+  end
+
   function vec2:set (x, y)
     self[1] = x
     self[2] = y

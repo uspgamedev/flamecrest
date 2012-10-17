@@ -58,7 +58,7 @@ module "battle" do
   function layout:draw (graphics)
     graphics.push()
     do
-      graphics.translate(self.origin.x, self.origin.y)
+      graphics.translate(self.origin:get())
       self.map:pertile(self.drawtileaction)
       self:drawmodifier("focus", graphics)
       self:drawmodifier("cursor", graphics)
