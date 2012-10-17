@@ -1,5 +1,6 @@
 
 local object = require "lux.object"
+require "vec2"
 
 local type          = type
 local getmetatable  = getmetatable
@@ -8,6 +9,8 @@ local rawset        = rawset
 local unpack        = unpack
 local max           = math.max
 local abs           = math.abs
+local floor         = math.floor
+local vec2          = vec2
 
 module "battle" do
 
@@ -67,6 +70,10 @@ module "battle" do
 
   function hexpos:get ()
     return unpack(self)
+  end
+
+  function hexpos:tovec2 ()
+    return vec2:new{96*self.j-96*self.i, 32*self.j+32*self.i}
   end
  
   function hexpos:set (i, j)

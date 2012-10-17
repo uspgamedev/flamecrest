@@ -35,17 +35,27 @@ module "battle" do
       for j = 1,self.map.width do
         local tile  = self.map.tiles[i][j]
         if tile then
-          local pos         = vec2:new{96*j-96*i, 32*j+32*i}
-          local image       = self.tileset[tile.type]
-          local focusimage  = self.tileset.focus
-          local cursorimage = self.tileset.cursor
+          local pos   = vec2:new{96*j-96*i, 32*j+32*i}
+          local image = self.tileset[tile.type]
           graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
-          if i == self.focus.i and j == self.focus.j then
-            graphics.draw(focusimage, pos.x, pos.y, 0, 1, 1, 64, 35)
-          end
-          if i == self.target.i and j == self.target.j then
-            graphics.draw(cursorimage, pos.x, pos.y, 0, 1, 1, 64, 35)
-          end
+        end
+      end
+    end
+    do
+      local pos   = self.focus:tovec2()
+      local image = self.tileset.focus
+      graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 35)
+    end
+    do
+      local pos   = self.target:tovec2()
+      local image = self.tileset.cursor
+      graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 35)
+    end
+    for i = 1,self.map.height do
+      for j = 1,self.map.width do
+        local tile  = self.map.tiles[i][j]
+        if tile then
+          local pos = vec2:new{96*j-96*i, 32*j+32*i}
           if tile.unit and not tile.unit:isdead() then
             graphics.draw(tile.unit.sprite, pos.x, pos.y, 0, 1, 1, 32, 85)
           end
