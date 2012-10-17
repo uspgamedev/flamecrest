@@ -54,6 +54,10 @@ module "battle" do
     end
   end
 
+  function hexpos.__eq (lhs, rhs)
+    return lhs.i == rhs.i and lhs.j == rhs.j
+  end
+
   function hexpos.__lt (lhs, rhs)
     return lhs.i < rhs.i and lhs.j < rhs.j
   end
@@ -66,6 +70,10 @@ module "battle" do
     return self[1]*self[2] >= 0
       and max(abs(self[1]), abs(self[2]))
       or  abs(self[1]) + abs(self[2])
+  end
+
+  function hexpos:truncated ()
+    return hexpos:new {floor(self[1]+0.5), floor(self[2]+0.5)}
   end
 
   function hexpos:get ()

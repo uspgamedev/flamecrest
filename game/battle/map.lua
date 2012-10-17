@@ -27,6 +27,7 @@ module "battle" do
   end
 
   function map:tile (pos)
+    pos = pos:truncated()
     return self:inside(pos) and self.tiles[pos.i][pos.j]
   end
 
@@ -42,6 +43,7 @@ module "battle" do
   end
 
   function map:putunit (pos, unit)
+    pos = pos:truncated()
     if self:inside(pos) then
       self.tiles[pos.i][pos.j].unit = unit
     end

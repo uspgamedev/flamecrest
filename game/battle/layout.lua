@@ -17,6 +17,7 @@ module "battle" do
     origin  = vec2:new {512,100},
     focus   = hexpos:new{1,1},
     cursor  = hexpos:new{2,2},
+    delay   = 0,
     tileset = {}
   }
 
@@ -70,8 +71,15 @@ module "battle" do
 
   function layout:update (dt)
     local targeted = self:gettile(vec2:new{mouse.getPosition()})
-    if self.map:tile(targeted) then
-      self.cursor:set(targeted:get())
+    if targeted == self.cursortarget and self.delay > 0 then
+      if dt > self.delay then dt = self.delay end
+      self.cursor = self.cursor + dt*self.step
+      self.delay = self.delay - dt
+    elseif self.map:tile(targeted) then
+      self.cursortarget = targeted
+      self.delay        = 0.1
+      self.step         = (targeted - self.cursor)*(1/self.delay)
+      --self.cursor:set(targeted:get())
     end
   end
 
