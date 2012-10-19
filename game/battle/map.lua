@@ -3,13 +3,16 @@ local object = require "lux.object"
 
 require "battle.tile" 
 require "battle.hexpos"
+require "battle.cursor"
 
 module "battle" do
 
   map = object.new {
     width   = 5,
     height  = 5,
-    tiles   = nil
+    tiles   = nil,
+    cursor  = nil,
+    focus   = nil
   }
 
   function map:__init ()
@@ -17,9 +20,11 @@ module "battle" do
     for i = 1,self.height do
       self.tiles[i] = {}
       for j = 1,self.width do
-        self.tiles[i][j] = tile:new {}
+        self.tiles[i][j] = tile:new{}
       end
     end
+    self.cursor = cursor:new{}
+    self.focus  = hexpos:new{1,1}
   end
 
   function map:inside (pos)
@@ -29,6 +34,10 @@ module "battle" do
   function map:tile (pos)
     pos = pos:truncated()
     return self:inside(pos) and self.tiles[pos.i][pos.j]
+  end
+
+  function map:focusedtile ()
+    return self:tile(self.focus)
   end
 
   function map:pertile (action)
@@ -42,6 +51,10 @@ module "battle" do
     end
   end
 
+  function map:selectiondistance ()
+    return (self.cursor.pos - self.focus):size()
+  end
+
   function map:putunit (pos, unit)
     pos = pos:truncated()
     if self:inside(pos) then
@@ -49,7 +62,9 @@ module "battle" do
     end
   end
 
-  function map:moveunit (originpos, targetpos)
+  function map:moveunit ()
+    local originpos = self.focus
+    local targetpos = self.cursor.pos
     if self:tile(targetpos).unit then return end
     self:putunit(targetpos, self:tile(originpos).unit)
     self:putunit(originpos, nil)

@@ -142,7 +142,7 @@ module ("game", package.seeall) do
     if currentlayout == battlelayout then
       local attacker  = battlelayout:focusedunit()
       local target    = battlelayout:targetedunit()
-      local distance  = battlelayout:selectiondistance()
+      local distance  = battlelayout.map:selectiondistance()
       if not attacker or not target then return end
       if attacker:isdead() or target:isdead() then return end
       if distance < attacker.weapon.minrange
@@ -155,7 +155,7 @@ module ("game", package.seeall) do
 
   function keyactions.m ()
     if currentlayout == battlelayout then
-      battlelayout.map:moveunit(battlelayout.focus, battlelayout.cursor)
+      battlelayout.map:moveunit()
     end
   end
 
