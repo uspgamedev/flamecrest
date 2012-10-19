@@ -72,12 +72,16 @@ module "battle" do
       or  abs(self[1]) + abs(self[2])
   end
 
-  function hexpos:truncated ()
-    return hexpos:new {floor(self[1]+0.5), floor(self[2]+0.5)}
-  end
-
   function hexpos:get ()
     return unpack(self)
+  end
+
+  function hexpos:gettruncated ()
+    return floor(self[1]+0.5), floor(self[2]+0.5)
+  end
+
+  function hexpos:truncated ()
+    return hexpos:new {self:gettruncated()}
   end
 
   function hexpos:tovec2 ()

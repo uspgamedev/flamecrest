@@ -13,12 +13,14 @@ local mouse   = love.mouse
 module "battle" do
 
   layout = ui.layout:new {
-    map     = nil,
-    origin  = vec2:new {512,100},
-    focus   = hexpos:new{1,1},
-    cursor  = hexpos:new{2,2},
-    delay   = 0,
-    tileset = {}
+    map           = nil,
+    origin        = vec2:new {512,100},
+    focus         = hexpos:new{1,1},
+    cursor        = hexpos:new{2,2},
+    delay         = 0,
+    step          = hexpos:new{0,0},
+    cursortarget  = hexpos:new{1,1},
+    tileset       = {}
   }
 
   function layout:load (graphics)
@@ -71,17 +73,13 @@ module "battle" do
 
   function layout:update (dt)
     local targeted = self:gettile(vec2:new{mouse.getPosition()})
-    if targeted == self.cursortarget then
-      if self.delay > 0 then
-        if dt > self.delay then dt = self.delay end
-        self.cursor = self.cursor + dt*self.step
-        self.delay = self.delay - dt
-      end
-    elseif self.map:tile(targeted) then
-      self.cursortarget = targeted
-      self.delay        = 0.1
-      self.step         = (targeted - self.cursor)*(1/self.delay)
+    self.cursor = self.cursor + dt*self.step
+    if not self.map:tile(targeted) then
+      targeted:set(self.cursortarget:gettruncated())
     end
+    self.cursortarget = targeted
+    self.delay        = 20
+    self.step         = (targeted - self.cursor)*self.delay
   end
 
   function layout:gettile (pos)
