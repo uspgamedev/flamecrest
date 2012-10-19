@@ -15,11 +15,6 @@ module "battle" do
   layout = ui.layout:new {
     map           = nil,
     origin        = vec2:new {512,100},
-    focus         = hexpos:new{1,1},
-    cursor        = hexpos:new{2,2},
-    delay         = 0,
-    step          = hexpos:new{0,0},
-    cursortarget  = hexpos:new{1,1},
     tileset       = {}
   }
 
@@ -52,8 +47,7 @@ module "battle" do
     end
   end
 
-  function layout:drawmodifier (name, graphics)
-    local pos   = self[name]:tovec2()
+  function layout:drawmodifier (name, pos, graphics)
     local image = self.tileset[name]
     graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 35)
   end
@@ -63,8 +57,8 @@ module "battle" do
     do
       graphics.translate(self.origin:get())
       self.map:pertile(self.drawtileaction)
-      self:drawmodifier("focus", graphics)
-      self:drawmodifier("cursor", graphics)
+      self:drawmodifier("focus", self.map.focus:tovec2(), graphics)
+      self:drawmodifier("cursor", self.map.cursor.pos:tovec2(), graphics)
       self.map:pertile(self.drawunitaction)
     end
     graphics.pop()
@@ -72,14 +66,7 @@ module "battle" do
   end
 
   function layout:update (dt)
-    local targeted = self:gettile(vec2:new{mouse.getPosition()})
-    self.cursor = self.cursor + dt*self.step
-    if not self.map:tile(targeted) then
-      targeted:set(self.cursortarget:gettruncated())
-    end
-    self.cursortarget = targeted
-    self.delay        = 20
-    self.step         = (targeted - self.cursor)*self.delay
+    self.map.cursor:update(dt)
   end
 
   function layout:gettile (pos)
@@ -106,23 +93,19 @@ module "battle" do
   end
 
   function layout:focusedunit ()
-    return self.map:tile(self.focus).unit
+    return self.map:focusedtile().unit
   end
 
   function layout:targetedunit ()
-    return self.map:tile(self.cursor).unit
-  end
-
-  function layout:selectiondistance ()
-    return (self.cursor - self.focus):size()
+    return self.map:tile(self.map.cursor.pos).unit
   end
 
   function layout:released (button, pos)
     if button == 'l' then
       local focused = self:gettile(pos)
-      local tile    = self.map:tile(focused)
+      local tile    = self.map:focusedtile()
       if tile then
-        self.focus:set(focused:get())
+        self.map.focus:set(focused:get())
       end
     end
   end
