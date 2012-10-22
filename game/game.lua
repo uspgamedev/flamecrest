@@ -1,7 +1,7 @@
 
 require "vec2"
 require "unit"
-require "combat.fight"
+require "class"
 require "weapon"
 require "effects"
 
@@ -10,9 +10,6 @@ local unit          = unit
 local attributes    = attributes
 local weapon        = weapon
 local class         = class
-local heal          = heal
-local fight         = combat.fight
-local event         = love.event
 
 module "game" do
 
