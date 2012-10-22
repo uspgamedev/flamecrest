@@ -10,13 +10,12 @@ require "battle.hexpos"
 
 math.randomseed( os.time() )
 
-local currentlayout = nil
-
 local function loadcombatlayout ()
-  game.combatlayout:addcomponent(
+  combatlayout:load(game)
+  combatlayout:addcomponent(
     game.unit1:makedisplay(vec2:new{combatlayout.margin.left, combatlayout.margin.top})
   )
-  game.combatlayout:addcomponent(
+  combatlayout:addcomponent(
     game.unit2:makedisplay(vec2:new{combatlayout.middle, combatlayout.margin.top})
   )
 end
@@ -40,6 +39,7 @@ function love.load ()
   loadbattlemaplayout()
   battle.layout.map.tiles[5][1].unit = game.unit1
   battle.layout.map.tiles[5][9].unit = game.unit2
+  game.state.layout = combatlayout
 end
 
 function love.update (dt)

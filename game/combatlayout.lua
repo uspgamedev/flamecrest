@@ -24,7 +24,8 @@ local function drawlabels (g, ox, oy)
   g.print("crt", ox+256, oy+160)
 end
 
-function combatlayout:__init ()
+function combatlayout:load (game)
+  self.game = game
   self:placebuttons()
 end
 
