@@ -2,6 +2,7 @@
 require "ui.controller"
 require "battle.cursor"
 require "combat.fight"
+require "game"
 
 local event         = love.event
 local ui            = ui
@@ -48,6 +49,10 @@ module "battle" do
 
   function controller.keyactions.released.m ()
     layout.map:moveunit()
+  end
+
+  function controller.keyactions.released.tab ()
+    game.changetolayout "combat"
   end
 
 end

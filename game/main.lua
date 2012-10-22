@@ -37,6 +37,8 @@ function love.load ()
   loadbattlemaplayout()
   battle.layout.map.tiles[5][1].unit = game.unit1
   battle.layout.map.tiles[5][9].unit = game.unit2
+  game.layouts.battle = battle.layout
+  game.layouts.combat = combatlayout
   game.state.layout = combatlayout
 end
 

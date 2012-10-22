@@ -17,6 +17,12 @@ module "game" do
     layout = nil
   }
 
+  layouts = {}
+
+  function changetolayout (name)
+    state.layout = layouts[name]
+  end
+
   function update (dt)
     state.layout.controller:update(dt)
   end
