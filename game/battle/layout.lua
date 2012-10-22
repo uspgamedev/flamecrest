@@ -6,10 +6,8 @@ require "vec2"
 
 local ui      = ui
 local vec2    = vec2
-local floor   = math.floor
 local print   = print
 local unpack  = unpack
-local mouse   = love.mouse
 
 module "battle" do
 
@@ -69,29 +67,6 @@ module "battle" do
 
   function layout:update (dt)
     self.map.cursor:update(dt)
-  end
-
-  function layout:screentotile (pos)
-    local relpos = pos-self.origin
-    local focus = hexpos:new {}
-    relpos = relpos.x/192*vec2:new{1,-1} + relpos.y/64*vec2:new{1,1}
-    focus.i = floor(relpos.y+0.5)
-    focus.j = floor(relpos.x+0.5)
-    local x,y = relpos.x-focus.j+0.5, relpos.y-focus.i+0.5
-    if y > 2*x + 0.5 or y > x/2 + 0.75 then
-      if x + y < 1 then
-        focus.j = focus.j-1
-      else
-        focus.i = focus.i+1
-      end
-    elseif x > 2*y + 0.5 or x > y/2 + 0.75 then
-      if x + y < 1 then
-        focus.i = focus.i-1
-      else
-        focus.j = focus.j+1
-      end
-    end
-    return focus
   end
 
   function layout:focusedunit ()

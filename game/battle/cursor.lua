@@ -1,12 +1,7 @@
 
 local object = require "lux.object"
 
-require "vec2"
-require "battle"
 require "battle.hexpos"
-
-local mouse = love.mouse
-local vec2  = vec2
 
 module "battle" do
 
@@ -20,8 +15,7 @@ module "battle" do
     step    = hexpos:new {0,0}
   }
 
-  function cursor:update (dt)
-    local targeted = layout:screentotile(vec2:new{mouse.getPosition()})
+  function cursor:update (targeted, dt)
     self.pos = self.pos + dt*self.step
     if not layout.map:tile(targeted) then
       targeted:set(self.target:gettruncated())
