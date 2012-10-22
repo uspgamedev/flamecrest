@@ -1,7 +1,7 @@
 
 require "vec2"
 require "unit"
-require "combat"
+require "combat.fight"
 require "weapon"
 require "effects"
 require "combatlayout"
@@ -15,7 +15,7 @@ local attributes    = attributes
 local weapon        = weapon
 local class         = class
 local heal          = heal
-local combat        = combat
+local fight         = combat.fight
 local event         = love.event
 
 module "game" do
@@ -107,12 +107,12 @@ module "game" do
 
   function keyactions.a ()
     if unit1:isdead() or unit2:isdead() then return end
-    combat(unit1, unit2, unit1.weapon.minrange)
+    fight(unit1, unit2, unit1.weapon.minrange)
   end
   
   function keyactions.s ()
     if unit1:isdead() or unit2:isdead() then return end
-    combat(unit2, unit1, unit2.weapon.minrange)
+    fight(unit2, unit1, unit2.weapon.minrange)
   end
   
   function keyactions.x ()
@@ -182,7 +182,7 @@ module "game" do
         or distance > attacker.weapon.maxrange then
         return
       end
-      combat(attacker, target, distance)
+      fight(attacker, target, distance)
     end
   end
 
