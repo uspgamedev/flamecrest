@@ -21,7 +21,7 @@ module "battle" do
       targeted:set(self.target:gettruncated())
     end
     self.target = targeted
-    self.accel  = 20
+    self.accel  = 25
     self.step   = (targeted - self.pos)*self.accel
   end
 
