@@ -3,7 +3,8 @@ require "ui.component"
 require "ui.controller"
 require "vec2"
 
-local vec2 = vec2
+local vec2  = vec2
+local print = print
 
 module "ui" do
 

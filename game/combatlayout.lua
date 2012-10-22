@@ -4,13 +4,14 @@ require "vec2"
 require "ui.layout"
 require "ui.component"
 require "attributes"
+require "combat.controller"
 
 combatlayout = ui.layout:new {
   margin = { left = 32, top = 96 },
   middle = 512 + 32
 }
 
-combatlayout:newcontroller()
+combatlayout:setcontroller(combat.controller)
 
 local function drawlabels (g, ox, oy)
   g.print("lv", ox, oy)
@@ -139,28 +140,28 @@ function combatlayout:placebuttons ()
     text = "FIGHT >>>",
     pos = vec2:new { 512-16-128, 16 },
     size = vec2:new { 128, 32 },
-    action = self.game.keyactions.a
+    action = self.controller.keyactions.released.a
   }
   -- unit2 attacks unit1
   self:addbutton {
     text = "<<< FIGHT",
     pos = vec2:new { 512+16, 16 },
     size = vec2:new { 128, 32 },
-    action = self.game.keyactions.s
+    action = self.controller.keyactions.released.s
   }
   -- unit1 attacks unit2
   self:addbutton {
     text = "HEAL >>>",
     pos = vec2:new { 512-32-256, 16 },
     size = vec2:new { 128, 32 },
-    action = self.game.keyactions.q
+    action = self.controller.keyactions.released.q
   }
   -- unit2 attacks unit1
   self:addbutton {
     text = "<<< HEAL",
     pos = vec2:new { 512+32+128, 16 },
     size = vec2:new { 128, 32 },
-    action = self.game.keyactions.w
+    action = self.controller.keyactions.released.w
   }
   self:addunitbuttons(self.game.unit1, vec2:new{32+16, 384+16})
   self:addunitbuttons(self.game.unit2, vec2:new{512+16, 384+16})

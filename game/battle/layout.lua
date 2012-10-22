@@ -1,6 +1,7 @@
 
 require "ui.layout"
 require "battle.hexpos"
+require "battle.controller"
 require "vec2"
 
 local ui      = ui
@@ -19,6 +20,7 @@ module "battle" do
   }
 
   function layout:load (graphics)
+    self:setcontroller(controller)
     -- Load tileset images
     self.tileset.plains = graphics.newImage "resources/images/hextile.png"
     self.tileset.focus  = graphics.newImage "resources/images/focus.png"
@@ -98,16 +100,6 @@ module "battle" do
 
   function layout:targetedunit ()
     return self.map:tile(self.map.cursor.pos).unit
-  end
-
-  function layout:released (button, pos)
-    if button == 'l' then
-      local focused = self:screentotile(pos)
-      local tile    = self.map:focusedtile()
-      if tile then
-        self.map.focus:set(focused:get())
-      end
-    end
   end
 
 end

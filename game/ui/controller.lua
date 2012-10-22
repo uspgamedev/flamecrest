@@ -5,6 +5,7 @@ require "vec2"
 
 local vec2  = vec2
 local mouse = love.mouse
+local print = print
 
 module "ui" do
 

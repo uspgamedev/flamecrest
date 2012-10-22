@@ -3,7 +3,7 @@ local object = require "lux.object"
 
 require "battle.tile" 
 require "battle.hexpos"
-require "battle.cursor"
+require "battle.controller"
 
 module "battle" do
 
@@ -23,7 +23,7 @@ module "battle" do
         self.tiles[i][j] = tile:new{}
       end
     end
-    self.cursor = cursor:new{}
+    self.cursor = controller.cursor
     self.focus  = hexpos:new{1,1}
   end
 
