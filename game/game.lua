@@ -1,4 +1,5 @@
 
+require "vec2"
 require "unit"
 require "combat"
 require "weapon"
@@ -6,6 +7,7 @@ require "effects"
 require "combatlayout"
 require "battle.layout"
 
+local vec2          = vec2
 local _combatlayout = combatlayout
 local battlelayout  = battle.layout
 local unit          = unit
@@ -17,6 +19,34 @@ local combat        = combat
 local event         = love.event
 
 module "game" do
+
+  state = {
+    layout = nil
+  }
+
+  function update (dt)
+    state.layout.controller:update(dt)
+  end
+
+  function draw (graphics)
+    state.layout:draw(graphics)
+  end
+  
+  function mousereleased (x, y, button)
+    state.layout.controller:pressmouse(button, vec2:new{x,y})
+  end
+  
+  function mousepressed (x, y, button)
+    state.layout.controller:releasemouse(button, vec2:new{x,y})
+  end
+
+  function keypressed (key)
+    state.layout.controller:presskey(key)
+  end
+  
+  function keyreleased (key)
+    state.layout.controller:releasekey(key)
+  end
 
   unit1 = unit:new {
     name = "Juaum",
