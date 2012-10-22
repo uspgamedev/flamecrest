@@ -53,17 +53,5 @@ module "ui" do
     )
   end
 
-  function layout:update (dt)
-    -- Unimplemented layout update logic.
-  end
-
-  function layout:pressed (b, pos)
-    -- Unimplemented layout event.
-  end
-  
-  function layout:released (b, pos)
-    -- Unimplemented layout event.
-  end
-
 end
 
