@@ -11,7 +11,6 @@ module "battle" do
     width   = 5,
     height  = 5,
     tiles   = nil,
-    cursor  = nil,
     focus   = nil
   }
 
@@ -23,7 +22,6 @@ module "battle" do
         self.tiles[i][j] = tile:new{}
       end
     end
-    self.cursor = controller.cursor
     self.focus  = hexpos:new{1,1}
   end
 
@@ -52,7 +50,7 @@ module "battle" do
   end
 
   function map:selectiondistance ()
-    return (self.cursor.pos - self.focus):size()
+    return (controller.cursor.pos - self.focus):size()
   end
 
   function map:putunit (pos, unit)
@@ -64,7 +62,7 @@ module "battle" do
 
   function map:moveunit ()
     local originpos = self.focus
-    local targetpos = self.cursor.pos
+    local targetpos = controller.cursor.pos
     if self:tile(targetpos).unit then return end
     self:putunit(targetpos, self:tile(originpos).unit)
     self:putunit(originpos, nil)

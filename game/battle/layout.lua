@@ -58,15 +58,11 @@ module "battle" do
       graphics.translate(self.origin:get())
       self.map:pertile(self.drawtileaction)
       self:drawmodifier("focus", self.map.focus:tovec2(), graphics)
-      self:drawmodifier("cursor", self.map.cursor.pos:tovec2(), graphics)
+      self:drawmodifier("cursor", controller.cursor.pos:tovec2(), graphics)
       self.map:pertile(self.drawunitaction)
     end
     graphics.pop()
     ui.layout.draw(self, graphics)
-  end
-
-  function layout:update (dt)
-    self.map.cursor:update(dt)
   end
 
   function layout:focusedunit ()
@@ -74,7 +70,7 @@ module "battle" do
   end
 
   function layout:targetedunit ()
-    return self.map:tile(self.map.cursor.pos).unit
+    return self.map:tile(controller.cursor.pos).unit
   end
 
 end
