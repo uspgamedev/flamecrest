@@ -10,13 +10,25 @@ local object  = lux.object
 module "ui" do
   
   component = object.new {
-    active = true
+    active      = true,
+    controller  = nil
   }
   
   component.__init = {
     pos = vec2:new { 0, 0 },
     size = vec2:new { 32, 32 }
   }
+
+  function component:setcontroller (controller)
+    self.controller = controller
+    controller.layout = self
+  end
+
+  function component:newcontroller ()
+    self.controller = controller:new {
+      layout = self
+    }
+  end
   
   function component:left ()
     return self.pos.x
@@ -52,7 +64,7 @@ module "ui" do
     -- Unimplemented component event.
   end
   
-  function component:draw ()
+  function component:draw (graphics)
     -- Unimplemented component event.
   end
   

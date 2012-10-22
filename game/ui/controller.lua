@@ -44,22 +44,26 @@ module "ui" do
   end
 
   function controller:pressmouse (button, pos)
-    for i = #self.layout.components,1,-1 do
-      local component = self.layout.components[i]
-      if component.active and component:inside(pos) then
-        component.controller:pressmouse(button, pos)
-        return
+    if self.layout.components then
+      for i = #self.layout.components,1,-1 do
+        local component = self.layout.components[i]
+        if component.controller and component:inside(pos) then
+          component.controller:pressmouse(button, pos)
+          return
+        end
       end
     end
     self:mousepressed(button, pos)
   end
 
   function controller:releasemouse (button, pos)
-    for i = #self.layout.components,1,-1 do
-      local component = self.layout.components[i]
-      if component.active and component:inside(pos) then
-        component.contoller:releasemouse(button, pos)
-        return
+    if self.layout.components then
+      for i = #self.layout.components,1,-1 do
+        local component = self.layout.components[i]
+        if component.controller and component:inside(pos) then
+          component.controller:releasemouse(button, pos)
+          return
+        end
       end
     end
     self:mousereleased(button, pos)

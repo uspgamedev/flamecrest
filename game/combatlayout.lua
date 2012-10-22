@@ -10,6 +10,8 @@ combatlayout = ui.layout:new {
   middle = 512 + 32
 }
 
+combatlayout:newcontroller()
+
 local function drawlabels (g, ox, oy)
   g.print("lv", ox, oy)
   g.print("exp", ox+128+8, oy+8)
@@ -63,7 +65,7 @@ function combatlayout:dec (pos, obj, attrname, min)
     size = vec2:new { 16, 16 },
     action = function ()
       obj[attrname] = min and
-	 math.max(obj[attrname] - 1, min) or
+	      math.max(obj[attrname] - 1, min) or
         obj[attrname] - 1
       -- TODO this is ugly
       if attrname == "maxhp" then

@@ -105,10 +105,6 @@ module "game" do
     event.push "quit"
   end
 
-  function keyactions.tab ()
-
-  end
-
   function keyactions.a ()
     if unit1:isdead() or unit2:isdead() then return end
     combat(unit1, unit2, unit1.weapon.minrange)

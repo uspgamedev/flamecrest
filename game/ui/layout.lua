@@ -6,13 +6,22 @@ require "ui.button"
 
 module "ui" do
 
-  layout = object.new {
-
-  }
+  layout = object.new {}
 
   layout.__init = {
     components = array:new {}
   }
+
+  function layout:setcontroller (controller)
+    self.controller = controller
+    controller.layout = self
+  end
+
+  function layout:newcontroller ()
+    self.controller = controller:new {
+      layout = self
+    }
+  end
 
   function layout:addcomponent (component)
     self.components:insert(component)
