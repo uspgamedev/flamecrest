@@ -7,9 +7,16 @@ require "combatlayout"
 require "battle.layout"
 
 local _combatlayout = combatlayout
-local battlelayout = battle.layout
+local battlelayout  = battle.layout
+local unit          = unit
+local attributes    = attributes
+local weapon        = weapon
+local class         = class
+local heal          = heal
+local combat        = combat
+local event         = love.event
 
-module ("game", package.seeall) do
+module "game" do
 
   unit1 = unit:new {
     name = "Juaum",
@@ -65,7 +72,7 @@ module ("game", package.seeall) do
   keyactions = {}
 
   function keyactions.escape ()
-    love.event.push "quit"
+    event.push "quit"
   end
 
   function keyactions.tab ()
