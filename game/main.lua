@@ -1,7 +1,5 @@
 
 require "game"
-require "ui.layout"
-require "ui.mouse"
 require "combatlayout"
 require "vec2"
 require "battle.layout"
@@ -42,35 +40,13 @@ function love.load ()
   game.state.layout = combatlayout
 end
 
---function love.update (dt)
---  game.currentlayout:update(dt)
---end
-
 love.update         = game.update
 love.keypressed     = game.keypressed
 love.keyreleased    = game.keyreleased
 love.mousepressed   = game.mousepressed
 love.mousereleased  = game.mousereleased
 
---function love.keyreleased (key)
---  if game.keyactions[key] then
---    game.keyactions[key]()
---  end
---end
-
---function love.mousereleased (x, y, button)
---  ui.mouse.release(game.currentlayout, button, vec2:new{x,y})
---end
-
---function love.mousepressed (x, y, button)
---  ui.mouse.press(game.currentlayout, button, vec2:new{x,y})
---end
-
-local origin = vec2:new {100, 50}
-local tilesize = vec2:new {128, 64}
-
 function love.draw()
-  --game.currentlayout:draw(love.graphics)
   game.state.layout:draw(love.graphics)
 end
 
