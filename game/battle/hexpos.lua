@@ -84,6 +84,10 @@ module "battle" do
     return hexpos:new {self:gettruncated()}
   end
 
+  function hexpos:floor ()
+    return hexpos:new {floor(self[1]), floor(self[2])}
+  end
+
   function hexpos:tovec2 ()
     return vec2:new{96*self.j-96*self.i, 32*self.j+32*self.i}
   end
