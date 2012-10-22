@@ -21,7 +21,7 @@ module "battle" do
   }
 
   function cursor:update (dt)
-    local targeted = layout:gettile(vec2:new{mouse.getPosition()})
+    local targeted = layout:screentotile(vec2:new{mouse.getPosition()})
     self.pos = self.pos + dt*self.step
     if not layout.map:tile(targeted) then
       targeted:set(self.target:gettruncated())

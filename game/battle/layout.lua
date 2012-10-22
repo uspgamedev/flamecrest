@@ -69,7 +69,7 @@ module "battle" do
     self.map.cursor:update(dt)
   end
 
-  function layout:gettile (pos)
+  function layout:screentotile (pos)
     local relpos = pos-self.origin
     local focus = hexpos:new {}
     relpos = relpos.x/192*vec2:new{1,-1} + relpos.y/64*vec2:new{1,1}
