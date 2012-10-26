@@ -56,14 +56,6 @@ module "ui" do
     return true
   end
   
-  function component:pressed (b, pos)
-    -- Unimplemented component event.
-  end
-  
-  function component:released (b, pos)
-    -- Unimplemented component event.
-  end
-  
   function component:draw (graphics)
     -- Unimplemented component event.
   end
