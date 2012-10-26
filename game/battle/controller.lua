@@ -55,7 +55,7 @@ module "battle" do
   function controller:mousereleased (button, pos)
     if button == 'l' then
       local focused = self:screentotile(pos)
-      local tile    = layout.map:focusedtile()
+      local tile    = layout.map:tile(focused)
       if tile then
         layout.map.focus:set(focused:get())
       end
