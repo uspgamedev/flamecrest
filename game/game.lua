@@ -14,7 +14,9 @@ local class         = class
 module "game" do
 
   state = {
-    layout = nil
+    layout = nil,
+    battle = nil,
+    combat = nil
   }
 
   layouts = {}
@@ -22,6 +24,18 @@ module "game" do
   function changetolayout (name)
     state.layout = layouts[name]
   end
+
+  function state:startbattle (map)
+    self.battle = {
+      map = map
+    }
+  end
+
+  function state:endbattle ()
+    self.battle = nil
+  end
+
+  -- LÖVE callbacks --
 
   function update (dt)
     state.layout.controller:update(dt)
@@ -46,6 +60,8 @@ module "game" do
   function keyreleased (key)
     state.layout.controller:releasekey(key)
   end
+
+  -- STUFF --
 
   unit1 = unit:new {
     name = "Juaum",
