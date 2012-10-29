@@ -14,25 +14,13 @@ local class         = class
 module "game" do
 
   state = {
-    layout = nil,
-    battle = nil,
-    combat = nil
+    layout = nil
   }
 
   layouts = {}
 
   function changetolayout (name)
     state.layout = layouts[name]
-  end
-
-  function state:startbattle (map)
-    self.battle = {
-      map = map
-    }
-  end
-
-  function state:endbattle ()
-    self.battle = nil
   end
 
   -- LÖVE callbacks --
