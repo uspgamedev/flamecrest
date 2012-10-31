@@ -34,11 +34,11 @@ module "game" do
   end
   
   function mousereleased (x, y, button)
-    state.layout.controller:pressmouse(button, vec2:new{x,y})
+    state.layout.controller:releasemouse(button, vec2:new{x,y})
   end
   
   function mousepressed (x, y, button)
-    state.layout.controller:releasemouse(button, vec2:new{x,y})
+    state.layout.controller:pressmouse(button, vec2:new{x,y})
   end
 
   function keypressed (key)
