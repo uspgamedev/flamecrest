@@ -9,7 +9,7 @@ module "battle.menu" do
 
   unit = component:new {
     active = false,
-    size = vec2:new{64, 256}
+    size = vec2:new{128, 256}
   }
 
   function unit:draw (graphics)

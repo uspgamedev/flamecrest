@@ -5,6 +5,7 @@ require "battle.controller"
 require "battle.menu.unit"
 require "vec2"
 
+local mouse   = love.mouse
 local ui      = ui
 local vec2    = vec2
 local print   = print
@@ -37,13 +38,13 @@ module "battle" do
   end
 
   function layout:drawtile (i, j, tile, graphics)
-    local pos   = vec2:new{96*j-96*i, 32*j+32*i}
+    local pos   = hexpos:new{i,j}:tovec2()
     local image = self.tileset[tile.type]
     graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
   end
 
   function layout:drawunit (i, j, tile, graphics)
-    local pos = vec2:new{96*j-96*i, 32*j+32*i}
+    local pos = hexpos:new{i,j}:tovec2()
     if tile.unit and not tile.unit:isdead() then
       graphics.draw(tile.unit.sprite, pos.x, pos.y, 0, 1, 1, 32, 85)
     end
@@ -65,6 +66,7 @@ module "battle" do
     end
     graphics.pop()
     menu.unit.active = not not self:focusedunit()
+    menu.unit.pos = self.origin + self.map.focus:tovec2()
     ui.layout.draw(self, graphics)
   end
 
