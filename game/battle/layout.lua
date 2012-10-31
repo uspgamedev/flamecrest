@@ -2,6 +2,7 @@
 require "ui.layout"
 require "battle.hexpos"
 require "battle.controller"
+require "battle.menu.unit"
 require "vec2"
 
 local ui      = ui
@@ -32,6 +33,7 @@ module "battle" do
     function self.drawunitaction (i, j, tile)
       self:drawunit(i,j,tile,graphics)
     end
+    self:addcomponent(menu.unit)
   end
 
   function layout:drawtile (i, j, tile, graphics)
@@ -62,6 +64,7 @@ module "battle" do
       self.map:pertile(self.drawunitaction)
     end
     graphics.pop()
+    menu.unit.active = not not self:focusedunit()
     ui.layout.draw(self, graphics)
   end
 
