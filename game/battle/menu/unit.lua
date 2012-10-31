@@ -18,7 +18,7 @@ module "battle.menu" do
   unit:newcontroller()
 
   function unit.controller:mousereleased (button, pos)
-    print "HEY"
+    print(pos:get())
   end
 
   function unit:draw (graphics)

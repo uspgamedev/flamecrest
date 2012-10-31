@@ -48,8 +48,9 @@ module "ui" do
     if self.layout.components then
       for i = #self.layout.components,1,-1 do
         local component = self.layout.components[i]
-        if component.controller and component:inside(pos) then
-          component.controller:pressmouse(button, pos)
+        if component.active and component.controller and
+           component:inside(pos) then
+          component.controller:pressmouse(button, pos-component.pos)
           return
         end
       end
@@ -61,8 +62,9 @@ module "ui" do
     if self.layout.components then
       for i = #self.layout.components,1,-1 do
         local component = self.layout.components[i]
-        if component.controller and component:inside(pos) then
-          component.controller:releasemouse(button, pos)
+        if component.active and component.controller and
+           component:inside(pos) then
+          component.controller:releasemouse(button, pos-component.pos)
           return
         end
       end
