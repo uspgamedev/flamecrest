@@ -65,8 +65,17 @@ module "battle" do
       self.map:pertile(self.drawunitaction)
     end
     graphics.pop()
-    menu.unit.active = not not self:focusedunit()
-    menu.unit.pos = self.origin + self.map.focus:tovec2()
+    do
+      local pos = self.origin + self.map.focus:tovec2()
+      menu.unit.active = not not self:focusedunit()
+      if pos.x > 512 then
+        pos = pos - vec2:new{128,0}
+      end
+      if pos.y > 768/2 then
+        pos = pos - vec2:new{0,256}
+      end
+      menu.unit.pos = pos
+    end
     ui.layout.draw(self, graphics)
   end
 
