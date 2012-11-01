@@ -28,7 +28,7 @@ module "battle.menu" do
   unit.addbutton    = layout.addbutton
 
   unit:addbutton{
-    text = "WAT",
+    text = "Move",
     size = vec2:new{128, 32}
   }
 
