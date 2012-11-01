@@ -57,7 +57,7 @@ module "battle" do
       local focused = self:screentotile(pos)
       local tile    = layout.map:tile(focused)
       if tile then
-        layout.map.focus:set(focused:get())
+        layout.map.focus = tile.unit and focused or nil
       end
     end
   end

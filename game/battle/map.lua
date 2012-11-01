@@ -22,7 +22,7 @@ module "battle" do
         self.tiles[i][j] = tile:new{}
       end
     end
-    self.focus  = hexpos:new{1,1}
+    --self.focus  = hexpos:new{1,1}
   end
 
   function map:inside (pos)

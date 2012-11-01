@@ -60,12 +60,14 @@ module "battle" do
     do
       graphics.translate(self.origin:get())
       self.map:pertile(self.drawtileaction)
-      self:drawmodifier("focus", self.map.focus:tovec2(), graphics)
+      if self.map.focus then
+        self:drawmodifier("focus", self.map.focus:tovec2(), graphics)
+      end
       self:drawmodifier("cursor", controller.cursor.pos:tovec2(), graphics)
       self.map:pertile(self.drawunitaction)
     end
     graphics.pop()
-    do
+    if self.map.focus then
       local pos = self.origin + self.map.focus:tovec2()
       menu.unit.active = not not self:focusedunit()
       if pos.x > 512 then
@@ -75,6 +77,8 @@ module "battle" do
         pos = pos - vec2:new{0,256}
       end
       menu.unit.pos = pos
+    else
+      menu.unit.active = false
     end
     ui.layout.draw(self, graphics)
   end

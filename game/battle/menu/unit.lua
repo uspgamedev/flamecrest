@@ -18,11 +18,11 @@ module "battle.menu" do
   unit:newcontroller()
 
   function unit.controller:mousereleased (button, pos)
-    print(pos:get())
+    --print(pos:get())
   end
 
   function unit:draw (graphics)
-    graphics.setColor(25, 25, 25, 255)
+    graphics.setColor(25, 25, 50, 255)
     graphics.rectangle("fill", 0, 0, self.size.x, self.size.y)
   end
 
