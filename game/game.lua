@@ -13,6 +13,7 @@ local class         = class
 
 module "game" do
 
+  -- TODO: Give game state as argument to domain-specific functions
   state = {
     layout = nil
   }
