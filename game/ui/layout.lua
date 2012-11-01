@@ -45,6 +45,10 @@ module "ui" do
       end
   end
 
+  function layout:update (dt)
+    -- Optionally implementable.
+  end
+
   function layout:draw (graphics)
     self.components:foreach(
       function (_,c)

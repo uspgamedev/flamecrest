@@ -27,6 +27,7 @@ module "game" do
 
   function update (dt)
     state.layout.controller:update(dt)
+    state.layout:update(dt)
   end
 
   function draw (graphics)

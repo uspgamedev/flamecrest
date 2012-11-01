@@ -54,19 +54,8 @@ module "battle" do
     local image = self.tileset[name]
     graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 35)
   end
-  
-  function layout:draw (graphics)
-    graphics.push()
-    do
-      graphics.translate(self.origin:get())
-      self.map:pertile(self.drawtileaction)
-      if self.map.focus then
-        self:drawmodifier("focus", self.map.focus:tovec2(), graphics)
-      end
-      self:drawmodifier("cursor", controller.cursor.pos:tovec2(), graphics)
-      self.map:pertile(self.drawunitaction)
-    end
-    graphics.pop()
+
+  function layout:update (dt)
     if self.map.focus then
       local pos = self.origin + self.map.focus:tovec2()
       menu.unit.active = not not self:focusedunit()
@@ -80,6 +69,20 @@ module "battle" do
     else
       menu.unit.active = false
     end
+  end
+  
+  function layout:draw (graphics)
+    graphics.push()
+    do
+      graphics.translate(self.origin:get())
+      self.map:pertile(self.drawtileaction)
+      if self.map.focus then
+        self:drawmodifier("focus", self.map.focus:tovec2(), graphics)
+      end
+      self:drawmodifier("cursor", controller.cursor.pos:tovec2(), graphics)
+      self.map:pertile(self.drawunitaction)
+    end
+    graphics.pop()
     ui.layout.draw(self, graphics)
   end
 
