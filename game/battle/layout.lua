@@ -78,8 +78,9 @@ module "battle" do
       self.map:pertile(self.drawtileaction)
       if self.map.focus then
         self:drawmodifier("focus", self.map.focus:tovec2(), graphics)
+      else
+        self:drawmodifier("cursor", controller.cursor.pos:tovec2(), graphics)
       end
-      self:drawmodifier("cursor", controller.cursor.pos:tovec2(), graphics)
       self.map:pertile(self.drawunitaction)
     end
     graphics.pop()
