@@ -60,10 +60,10 @@ module "battle" do
       local pos = self.origin + self.map.focus:tovec2()
       menu.unit.active = not not self:focusedunit()
       if pos.x > 512 then
-        pos = pos - vec2:new{128,0}
+        pos.x = pos.x - menu.unit.size.x
       end
       if pos.y > 768/2 then
-        pos = pos - vec2:new{0,256}
+        pos.y = pos.y - menu.unit.size.y
       end
       menu.unit.pos = pos
     else
