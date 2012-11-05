@@ -3,6 +3,7 @@ require "ui.layout"
 require "battle.hexpos"
 require "battle.controller"
 require "battle.menu.unit"
+require "ui.listmenu"
 require "vec2"
 
 local mouse   = love.mouse
@@ -35,6 +36,9 @@ module "battle" do
       self:drawunit(i,j,tile,graphics)
     end
     self:addcomponent(menu.unit)
+    local test = ui.listmenu:new{ size = vec2:new {128,0} }
+    test:addaction "hello" (function () print "duh" end)
+    self:addcomponent(test)
   end
 
   function layout:setmap (map)
