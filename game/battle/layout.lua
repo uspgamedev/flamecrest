@@ -90,6 +90,10 @@ module "battle" do
       self.map:pertile(self.drawunitaction)
     end
     graphics.pop()
+    do
+      local width = graphics.getFont():getWidth(self.map.mode)
+      graphics.print(self.map.mode, 512-width/2, 0)
+    end
     ui.layout.draw(self, graphics)
   end
 
