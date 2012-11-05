@@ -26,7 +26,7 @@ local function loadbattlemaplayout ()
       map.tiles[j][i] = nil
     end
   end
-  battle.layout.map = map
+  battle.layout:setmap(map)
 end
 
 function love.load ()

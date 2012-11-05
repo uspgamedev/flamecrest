@@ -37,6 +37,11 @@ module "battle" do
     self:addcomponent(menu.unit)
   end
 
+  function layout:setmap (map)
+    self.map = map
+    menu.unit.map = map
+  end
+
   function layout:drawtile (i, j, tile, graphics)
     local pos   = hexpos:new{i,j}:tovec2()
     local image = self.tileset[tile.type]
@@ -58,7 +63,7 @@ module "battle" do
   function layout:update (dt)
     if self.map.focus then
       local pos = self.origin + self.map.focus:tovec2()
-      menu.unit.active = not not self:focusedunit()
+      menu.unit.active = self:focusedunit() and self.map.mode == "select"
       if pos.x > 512 then
         pos.x = pos.x - menu.unit.size.x
       end
@@ -78,7 +83,8 @@ module "battle" do
       self.map:pertile(self.drawtileaction)
       if self.map.focus then
         self:drawmodifier("focus", self.map.focus:tovec2(), graphics)
-      else
+      end
+      if not menu.unit.active then
         self:drawmodifier("cursor", controller.cursor.pos:tovec2(), graphics)
       end
       self.map:pertile(self.drawunitaction)

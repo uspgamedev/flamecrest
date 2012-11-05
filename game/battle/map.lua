@@ -11,7 +11,8 @@ module "battle" do
     width   = 5,
     height  = 5,
     tiles   = nil,
-    focus   = nil
+    focus   = nil,
+    mode    = "select"
   }
 
   function map:__init ()

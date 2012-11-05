@@ -19,7 +19,8 @@ module "battle.menu" do
   unit = component:new {
     active = false,
     size = vec2:new{128, 128},
-    components = array:new{}
+    components = array:new{},
+    map = nil
   }
 
   unit:newcontroller()
@@ -27,9 +28,17 @@ module "battle.menu" do
   unit.addcomponent = layout.addcomponent
   unit.addbutton    = layout.addbutton
 
+  local function getmap ()
+    return unit.map
+  end
+
   unit:addbutton{
     text = "Move",
-    size = vec2:new{128, 32}
+    size = vec2:new{128, 32},
+    action = function ()
+      getmap().mode = "move"
+      unit.active = false
+    end
   }
 
   function unit.controller:mousereleased (button, pos)
