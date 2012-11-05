@@ -33,7 +33,7 @@ module "ui" do
     self.layout.size:add(vec2:new{0,32})
   end
 
-  function listmenucontroller:mousepressed (button, pos)
+  function listmenucontroller:mousereleased (button, pos)
     if button == "l" then
       local index = modf(pos.y/32)+1
       self.actions[index].action()
@@ -49,12 +49,12 @@ module "ui" do
   end
   
   function listmenu:draw (graphics)
-    -- draw button rectangle
+    -- draw menu bounds
     graphics.setColor { 25, 25, 50, 255 }
     graphics.rectangle("fill", 0, 0, self.size.x, self.size.y)
   
     for i,action in ipairs(self.controller.actions) do
-      -- draw button text
+      -- draw action text
       local width, height = graphics.getFont():getWidth(action.name),
                             graphics.getFont():getHeight()
       graphics.setColor { 255, 255, 255, 255 }
