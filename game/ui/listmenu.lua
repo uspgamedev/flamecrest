@@ -58,12 +58,10 @@ module "ui" do
     graphics.rectangle("fill", 0, 0, self.size.x, self.size.y)
 
     local mousepos = vec2:new{mouse.getPosition()}
-    local focused
+    local focused = 0
     mousepos = mousepos - self.pos
     if mousepos.x >= 0 and mousepos.x <= self.size.x then
       focused = self.controller:getaction(mousepos.y)
-    else
-      focused = 0
     end
   
     for i,action in ipairs(self.controller.actions) do
