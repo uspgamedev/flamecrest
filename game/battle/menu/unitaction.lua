@@ -12,20 +12,27 @@ local vec2        = vec2
 
 module "battle.menu" do
 
-  unit = listmenu:new {
+  unitaction = listmenu:new {
     active = false,
     size = vec2:new{128, 0},
     map = nil
   }
 
   local function getmap ()
-    return unit.map
+    return unitaction.map
   end
 
-  unit:addaction "Move" (
+  unitaction:addaction "Fight" (
+    function ()
+      --getmap().mode = "move"
+      --unitaction.active = false
+    end
+  )
+
+  unitaction:addaction "Move" (
     function ()
       getmap().mode = "move"
-      unit.active = false
+      unitaction.active = false
     end
   )
 

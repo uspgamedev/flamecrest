@@ -2,7 +2,7 @@
 require "ui.layout"
 require "battle.hexpos"
 require "battle.controller"
-require "battle.menu.unit"
+require "battle.menu.unitaction"
 require "vec2"
 
 local mouse   = love.mouse
@@ -34,12 +34,12 @@ module "battle" do
     function self.drawunitaction (i, j, tile)
       self:drawunit(i,j,tile,graphics)
     end
-    self:addcomponent(menu.unit)
+    self:addcomponent(menu.unitaction)
   end
 
   function layout:setmap (map)
     self.map = map
-    menu.unit.map = map
+    menu.unitaction.map = map
   end
 
   function layout:drawtile (i, j, tile, graphics)
@@ -63,16 +63,16 @@ module "battle" do
   function layout:update (dt)
     if self.map.focus then
       local pos = self.origin + self.map.focus:tovec2()
-      menu.unit.active = self:focusedunit() and self.map.mode == "select"
+      menu.unitaction.active = self:focusedunit() and self.map.mode == "select"
       if pos.x > 512 then
-        pos.x = pos.x - menu.unit.size.x
+        pos.x = pos.x - menu.unitaction.size.x
       end
       if pos.y > 768/2 then
-        pos.y = pos.y - menu.unit.size.y
+        pos.y = pos.y - menu.unitaction.size.y
       end
-      menu.unit.pos = pos
+      menu.unitaction.pos = pos
     else
-      menu.unit.active = false
+      menu.unitaction.active = false
     end
   end
   
@@ -84,7 +84,7 @@ module "battle" do
       if self.map.focus then
         self:drawmodifier("focus", self.map.focus:tovec2(), graphics)
       end
-      if not menu.unit.active then
+      if not menu.unitaction.active then
         self:drawmodifier("cursor", controller.cursor.pos:tovec2(), graphics)
       end
       self.map:pertile(self.drawunitaction)
