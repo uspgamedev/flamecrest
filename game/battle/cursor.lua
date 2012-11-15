@@ -6,7 +6,7 @@ require "battle.hexpos"
 module "battle" do
 
   cursor = object.new {
-    accel   = 20
+    accel   = 25
   }
 
   cursor.__init = {
