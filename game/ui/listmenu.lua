@@ -33,10 +33,14 @@ module "ui" do
     self.layout.size:add(vec2:new{0,32})
   end
 
+  function listmenucontroller:getaction (y)
+    local index = modf(y/32)+1
+    return self.actions[index]
+  end
+
   function listmenucontroller:mousereleased (button, pos)
     if button == "l" then
-      local index = modf(pos.y/32)+1
-      self.actions[index].action()
+      self:getaction(pos.y).action()
     end
   end
 
