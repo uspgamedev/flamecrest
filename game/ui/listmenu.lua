@@ -9,6 +9,7 @@ local vec2    = vec2
 local print   = print
 local ipairs  = ipairs
 local modf    = math.modf
+local mouse   = love.mouse
 
 module "ui" do
 
@@ -34,13 +35,12 @@ module "ui" do
   end
 
   function listmenucontroller:getaction (y)
-    local index = modf(y/32)+1
-    return self.actions[index]
+    return modf(y/32)+1
   end
 
   function listmenucontroller:mousereleased (button, pos)
     if button == "l" then
-      self:getaction(pos.y).action()
+      self.actions[self:getaction(pos.y)].action()
     end
   end
 
@@ -56,13 +56,28 @@ module "ui" do
     -- draw menu bounds
     graphics.setColor { 25, 25, 50, 255 }
     graphics.rectangle("fill", 0, 0, self.size.x, self.size.y)
+
+    local mousepos = vec2:new{mouse.getPosition()}
+    local focused
+    mousepos = mousepos - self.pos
+    if mousepos.x >= 0 and mousepos.x <= self.size.x then
+      focused = self.controller:getaction(mousepos.y)
+    else
+      focused = 0
+    end
   
     for i,action in ipairs(self.controller.actions) do
+      -- draw brighter if it is the focused action
+      if focused == i then
+        graphics.setColor(50, 50, 100, 255)
+        graphics.rectangle("fill", 0, (i-1)*32, self.size.x, 32)
+      end
       -- draw action text
       local width, height = graphics.getFont():getWidth(action.name),
                             graphics.getFont():getHeight()
+      local textpos = vec2:new{(self.size.x-width)/2, (i-1)*32+(32-height)/2}
       graphics.setColor { 255, 255, 255, 255 }
-      graphics.print(action.name, (self.size.x-width)/2, (i-1)*32+(32-height)/2)
+      graphics.print(action.name, textpos:get())
     end
   end
 
