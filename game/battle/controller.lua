@@ -1,7 +1,6 @@
 
 require "ui.controller"
 require "battle.cursor"
-require "combat.fight"
 require "game"
 require "vec2"
 
@@ -13,7 +12,6 @@ local ui            = ui
 local game          = game
 local vec2          = vec2
 local combatlayout  = combatlayout
-local fight         = combat.fight
 
 module "battle" do
 
@@ -60,6 +58,7 @@ module "battle" do
         if layout.map.mode == "select" then
           layout.map.focus = tile.unit and focused or nil
         elseif layout.map.mode == "fight" then
+          layout.map:startcombat()
           layout.map.focus = nil
           layout.map.mode = "select"
         elseif layout.map.mode == "move" then
@@ -78,9 +77,9 @@ module "battle" do
   controller.keyactions.released["return"] = function ()
     local attacker  = layout:focusedunit()
     local target    = layout:targetedunit()
-    local distance  = layout.map:selectiondistance()
     if not attacker or not target then return end
     if attacker:isdead() or target:isdead() then return end
+    local distance  = layout.map:selectiondistance()
     if distance < attacker.weapon.minrange
       or distance > attacker.weapon.maxrange then
       return

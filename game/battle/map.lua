@@ -4,6 +4,10 @@ local object = require "lux.object"
 require "battle.tile" 
 require "battle.hexpos"
 require "battle.controller"
+require "combat.fight"
+
+local print = print
+local fight = combat.fight
 
 module "battle" do
 
@@ -51,7 +55,7 @@ module "battle" do
   end
 
   function map:selectiondistance ()
-    return (controller.cursor.pos - self.focus):size()
+    return (controller.cursor.pos:truncated() - self.focus:truncated()):size()
   end
 
   function map:putunit (pos, unit)
@@ -67,6 +71,21 @@ module "battle" do
     if self:tile(targetpos).unit then return end
     self:putunit(targetpos, self:tile(originpos).unit)
     self:putunit(originpos, nil)
+  end
+
+  function map:startcombat ()
+    local originpos = self:focusedtile()
+    local targetpos = controller.cursor.pos
+    local attacker  = originpos.unit
+    local target    = self:tile(targetpos).unit
+    if not attacker or not target then return end
+    if attacker:isdead() or target:isdead() then return end
+    local distance  = self:selectiondistance()
+    if distance < attacker.weapon.minrange
+      or distance > attacker.weapon.maxrange then
+      return
+    end
+    fight(attacker, target, distance)
   end
 
 end
