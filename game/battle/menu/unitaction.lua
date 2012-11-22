@@ -24,8 +24,8 @@ module "battle.menu" do
 
   unitaction:addaction "Fight" (
     function ()
-      --getmap().mode = "move"
-      --unitaction.active = false
+      getmap().mode = "fight"
+      unitaction.active = false
     end
   )
 

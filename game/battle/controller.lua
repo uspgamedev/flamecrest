@@ -59,6 +59,9 @@ module "battle" do
       if tile then
         if layout.map.mode == "select" then
           layout.map.focus = tile.unit and focused or nil
+        elseif layout.map.mode == "fight" then
+          layout.map.focus = nil
+          layout.map.mode = "select"
         elseif layout.map.mode == "move" then
           layout.map:moveunit()
           layout.map.focus = nil
