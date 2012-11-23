@@ -160,6 +160,11 @@ function unit:mt ()
   return self.weapon.mt + self.attributes[self.weapon.atkattribute]
 end
 
+function unit:mtagainst (other)
+  return self.weapon:mtagainst(other) + self.attributes[self.weapon.atkattribute]
+end
+
+
 function unit:hit ()
   local hit = 2 * self:getskl() + self.attributes.lck + self.weapon.hit 
   return hit
