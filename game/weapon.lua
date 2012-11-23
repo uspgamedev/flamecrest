@@ -11,6 +11,7 @@ weapon = lux.object.new {
   weapontype = "sword",
   atkattribute = "str",
   defattribute = "def",
+  bonusagainst = nil,
   useexp = nil, --for staves
   minrange = 1,
   maxrange = 1,
