@@ -35,6 +35,13 @@ module "battle" do
       self:drawunit(i,j,tile,graphics)
     end
     self:addcomponent(menu.unitaction)
+    self.blueeffect = graphics.newPixelEffect [[
+      vec4 effect (vec4 color, Image texture, vec2 tex_pos, vec2 pix_pos) {
+        vec4 result = Texel(texture, tex_pos)*color;
+        number bright = 0.8+0.2*distance(tex_pos, vec2(0.5, 0.5));
+        return result.a*vec4(0.0, 0.0, bright, 0.6);
+      }
+    ]]
   end
 
   function layout:setmap (map)
@@ -43,9 +50,18 @@ module "battle" do
   end
 
   function layout:drawtile (i, j, tile, graphics)
-    local pos   = hexpos:new{i,j}:tovec2()
-    local image = self.tileset[tile.type]
+    local mappos  = hexpos:new{i,j}
+    local pos     = mappos:tovec2()
+    local image   = self.tileset[tile.type]
     graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
+    if self.map.mode == "move" then
+      local unit = self:focusedunit()
+      if (self.map.focus - mappos):size() <= unit.attributes.mv then
+        graphics.setPixelEffect(self.blueeffect)
+        graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
+        graphics.setPixelEffect()
+      end
+    end
   end
 
   function layout:drawunit (i, j, tile, graphics)
