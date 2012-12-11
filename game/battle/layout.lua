@@ -56,6 +56,7 @@ module "battle" do
     graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
     if self.map.mode == "move" then
       local unit = self:focusedunit()
+      -- TODO really reachable tiles
       if (self.map.focus - mappos):size() <= unit.attributes.mv then
         graphics.setPixelEffect(self.blueeffect)
         graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
