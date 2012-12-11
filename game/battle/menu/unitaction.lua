@@ -29,9 +29,10 @@ module "battle.menu" do
     end
   )
 
-  unitaction:addaction "Move" (
+  unitaction:addaction "Wait" (
     function ()
-      getmap().mode = "move"
+      getmap().focus = nil
+      getmap().mode = "select"
       unitaction.active = false
     end
   )

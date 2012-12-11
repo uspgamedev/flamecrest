@@ -63,7 +63,7 @@ module "battle" do
   function layout:update (dt)
     if self.map.focus then
       local pos = self.origin + self.map.focus:tovec2()
-      menu.unitaction.active = self:focusedunit() and self.map.mode == "select"
+      menu.unitaction.active = self:focusedunit() and self.map.mode == "action"
       if pos.x > 512 then
         pos.x = pos.x - menu.unitaction.size.x
       end

@@ -6,8 +6,9 @@ require "battle.hexpos"
 require "battle.controller"
 require "combat.fight"
 
-local print = print
-local fight = combat.fight
+local assert  = assert
+local print   = print
+local fight   = combat.fight
 
 module "battle" do
 
@@ -66,11 +67,17 @@ module "battle" do
   end
 
   function map:moveunit ()
-    local originpos = self.focus
-    local targetpos = controller.cursor.pos
-    if self:tile(targetpos).unit then return end
-    self:putunit(targetpos, self:tile(originpos).unit)
+    local originpos   = self.focus
+    local targetpos   = controller.cursor.pos
+    local unit        = self:tile(originpos).unit
+    local targettile  = self:tile(targetpos)
+    assert(unit)
+    if targettile.unit then
+      return targettile.unit == unit and originpos:truncated() or nil
+    end
+    self:putunit(targetpos, unit)
     self:putunit(originpos, nil)
+    return targetpos:truncated()
   end
 
   function map:startcombat ()
