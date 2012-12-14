@@ -3,7 +3,7 @@ require "ui.layout"
 require "battle.hexpos"
 require "battle.controller"
 require "battle.menu.unitaction"
-require "battle.component.tiles"
+require "battle.component.mapinterface"
 require "vec2"
 
 local mouse   = love.mouse
@@ -17,70 +17,20 @@ module "battle" do
   layout = ui.layout:new {
     map           = nil,
     origin        = vec2:new {512,100},
-    --tileset       = {}
   }
 
-  layout:addcomponent(component.tiles)
+  layout:addcomponent(component.mapinterface)
 
   function layout:load (map, graphics)
     self:setcontroller(controller)
     self.map = map
     menu.unitaction.map = map
-    component.tiles:load({map=map,layout=self}, graphics)
-    -- Load tileset images
-    --self.tileset.plains = graphics.newImage "resources/images/hextile.png"
-    --self.tileset.focus  = graphics.newImage "resources/images/focus.png"
-    --self.tileset.focus:setFilter("linear","linear")
-    --self.tileset.cursor  = graphics.newImage "resources/images/cursor.png"
-    --self.tileset.cursor:setFilter("linear","linear")
-    ---- Load drawing action functions
-    --function self.drawtileaction (i, j, tile)
-    --  self:drawtile(i,j,tile,graphics)
-    --end
+    component.mapinterface:load({map=map,layout=self}, graphics)
     --function self.drawunitaction (i, j, tile)
     --  self:drawunit(i,j,tile,graphics)
     --end
     self:addcomponent(menu.unitaction)
-    --self.moveglow = graphics.newPixelEffect [[
-    --  vec4 effect (vec4 color, Image texture, vec2 tex_pos, vec2 pix_pos) {
-    --    vec4 result = Texel(texture, tex_pos)*color;
-    --    number bright = 0.8+0.2*distance(tex_pos, vec2(0.5, 0.5));
-    --    return result.a*vec4(0.0, 0.0, bright, 0.6);
-    --  }
-    --]]
-    --self.atkglow = graphics.newPixelEffect [[
-    --  vec4 effect (vec4 color, Image texture, vec2 tex_pos, vec2 pix_pos) {
-    --    vec4 result = Texel(texture, tex_pos)*color;
-    --    number bright = 0.8+0.2*distance(tex_pos, vec2(0.5, 0.5));
-    --    return result.a*vec4(bright, bright/2.0, 0.0, 0.6);
-    --  }
-    --]]
   end
-
-  --function layout:drawtile (i, j, tile, graphics)
-  --  local mappos  = hexpos:new{i,j}
-  --  local pos     = mappos:tovec2()
-  --  local image   = self.tileset[tile.type]
-  --  graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
-  --  if self.map.mode == "move" then
-  --    -- TODO really reachable tiles
-  --    local unit = self:focusedunit()
-  --    local dist = (self.map.focus - mappos):size()
-  --    local haseffect = false
-  --    local mvrange = unit.attributes.mv
-  --    if dist <= mvrange then
-  --      graphics.setPixelEffect(self.moveglow)
-  --      haseffect = true
-  --    elseif unit.weapon and dist <= mvrange + unit.weapon.maxrange then
-  --      graphics.setPixelEffect(self.atkglow)
-  --      haseffect = true
-  --    end
-  --    if haseffect then
-  --      graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 32)
-  --      graphics.setPixelEffect()
-  --    end
-  --  end
-  --end
 
   --function layout:drawunit (i, j, tile, graphics)
   --  local pos = hexpos:new{i,j}:tovec2()
