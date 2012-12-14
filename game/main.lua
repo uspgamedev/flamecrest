@@ -26,13 +26,12 @@ local function loadbattlemaplayout ()
       map.tiles[j][i] = nil
     end
   end
-  battle.layout:setmap(map)
+  battle.layout:load(map, love.graphics)
 end
 
 function love.load ()
   love.graphics.setFont(love.graphics.newFont("fonts/Verdana.ttf", 14))
   love.graphics.setDefaultImageFilter("nearest", "nearest")
-  battle.layout:load(love.graphics)
   loadcombatlayout()
   loadbattlemaplayout()
   battle.layout.map.tiles[5][1].unit = game.unit1
