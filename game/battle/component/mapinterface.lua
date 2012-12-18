@@ -30,12 +30,6 @@ function mapinterface:load (context, graphics)
   end
 end
 
-local function drawunit (pos, tile, graphics)
-  if tile.unit and not tile.unit:isdead() then
-    graphics.draw(tile.unit.sprite, pos.x, pos.y, 0, 1, 1, 32, 85)
-  end
-end
-
 local function drawmodifier (name, pos, graphics)
   local image = mapinterface.tileset[name]
   graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 35)
@@ -49,9 +43,4 @@ function mapinterface:do_draw (context, graphics)
   if not unitmenu.active then
     drawmodifier("cursor", controller.cursor.pos:tovec2(), graphics)
   end
-  context.map:pertile(
-    function (i, j, tile)
-      drawunit(hexpos:new{i,j}:tovec2(), tile, graphics)
-    end
-  )
 end

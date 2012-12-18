@@ -3,8 +3,9 @@ require "ui.layout"
 require "battle.hexpos"
 require "battle.controller"
 require "battle.menu.unitaction"
-require "battle.component.mapinterface"
 require "battle.component.background"
+require "battle.component.mapinterface"
+require "battle.component.foreground"
 require "vec2"
 
 local mouse   = love.mouse
@@ -22,6 +23,7 @@ module "battle" do
 
   layout:addcomponent(component.background)
   layout:addcomponent(component.mapinterface)
+  layout:addcomponent(component.foreground)
 
   function layout:load (map, graphics)
     self:setcontroller(controller)
@@ -29,6 +31,7 @@ module "battle" do
     menu.unitaction.map = map
     component.background:load({map=map,layout=self}, graphics)
     component.mapinterface:load({map=map,layout=self}, graphics)
+    component.foreground:load({map=map,layout=self}, graphics)
     self:addcomponent(menu.unitaction)
   end
 
