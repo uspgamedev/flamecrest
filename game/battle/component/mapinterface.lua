@@ -42,7 +42,6 @@ local function drawmodifier (name, pos, graphics)
 end
 
 function mapinterface:do_draw (context, graphics)
-  graphics.push()
   graphics.translate(context.layout.origin:get())
   if context.map.focus then
     drawmodifier("focus", context.map.focus:tovec2(), graphics)
@@ -55,5 +54,4 @@ function mapinterface:do_draw (context, graphics)
       drawunit(hexpos:new{i,j}:tovec2(), tile, graphics)
     end
   )
-  graphics.pop()
 end

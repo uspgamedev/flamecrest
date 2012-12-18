@@ -9,12 +9,12 @@ local hexpos  = battle.hexpos
 
 module "battle.component"
 
-ground = ui.component:new {
+background = ui.component:new {
   pos     = vec2:new{0,0},
   tileset = {}
 }
 
-function ground:load (context, graphics)
+function background:load (context, graphics)
   self.size = vec2:new{graphics.getWidth(), graphics.getHeight()}
   -- Load tileset images
   self.tileset.plains = graphics.newImage "resources/images/hextile.png"
@@ -53,10 +53,10 @@ local function drawtile (mappos, image, context, graphics)
     local haseffect = false
     local mvrange = unit.attributes.mv
     if dist <= mvrange then
-      graphics.setPixelEffect(ground.moveglow)
+      graphics.setPixelEffect(background.moveglow)
       haseffect = true
     elseif unit.weapon and dist <= mvrange + unit.weapon.maxrange then
-      graphics.setPixelEffect(ground.atkglow)
+      graphics.setPixelEffect(background.atkglow)
       haseffect = true
     end
     if haseffect then
@@ -66,7 +66,7 @@ local function drawtile (mappos, image, context, graphics)
   end
 end
 
-function ground:do_draw (context, graphics)
+function background:do_draw (context, graphics)
   graphics.translate(context.layout.origin:get())
   context.map:pertile(
     function (i, j, tile)
