@@ -4,7 +4,7 @@ require "battle.hexpos"
 require "battle.controller"
 require "battle.menu.unitaction"
 require "battle.component.background"
-require "battle.component.mapinterface"
+require "battle.component.hud"
 require "battle.component.foreground"
 require "vec2"
 
@@ -22,7 +22,7 @@ module "battle" do
   }
 
   layout:addcomponent(component.background)
-  layout:addcomponent(component.mapinterface)
+  layout:addcomponent(component.hud)
   layout:addcomponent(component.foreground)
 
   function layout:load (map, graphics)
@@ -30,7 +30,7 @@ module "battle" do
     self.map = map
     menu.unitaction.map = map
     component.background:load({map=map,layout=self}, graphics)
-    component.mapinterface:load({map=map,layout=self}, graphics)
+    component.hud:load({map=map,layout=self}, graphics)
     component.foreground:load({map=map,layout=self}, graphics)
     self:addcomponent(menu.unitaction)
   end
