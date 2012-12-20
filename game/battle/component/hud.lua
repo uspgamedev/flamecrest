@@ -22,7 +22,7 @@ hud = ui.component:new {
 local markereffectcode = [[
   vec4 effect (vec4 color, Image texture, vec2 tex_pos, vec2 pix_pos) {
     vec4 result = Texel(texture, tex_pos)*color;
-    number bright = 0.8+0.2*distance(tex_pos, vec2(0.5, 0.5));
+    number bright = 0.7+0.3*distance(tex_pos, vec2(0.5, 0.5));
     return result.a*vec4(bright*%f, bright*%f, bright*%f, 0.6);
   }
 ]]
