@@ -4,6 +4,7 @@ local array     = require "lux.table"
 local graphics  = love.graphics
 local ipairs    = ipairs
 
+--- Module that manages the game layout.
 module "ui.layout" do
 
   --[[ Component management ]]--
@@ -11,11 +12,18 @@ module "ui.layout" do
   local components    = array:new {}
   local reverseindex  = {}
 
+  --- Adds a component to the layout.
+  -- Nothing happens if the component is currently in the layout.
+  -- @param component The added component. Cannot be <code>nil</code>.
   function add (component)
+    if reverseindex[component] then return end
     components:insert(component)
     reverseindex[component] = #components
   end
 
+  --- Removes a component from the layout.
+  -- Nothing happens if the component is not curently in the layout.
+  -- @param component The removed component. Cannot be <code>nil</code>
   function remove (component)
     assert(component, "Cannot remove nil component.")
     components:removecomponent(reverseindex[component])
@@ -33,7 +41,7 @@ module "ui.layout" do
   function mouseevent (type, pos, info)
     for i = #components,1,-1 do
       local component = components[i]
-      if component.active and component:inside(pos) and component[type] then
+      if component.active and component:inside(pos) then
         component[type] (component, pos-component.pos, info)
         return
       end
