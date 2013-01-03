@@ -2,8 +2,11 @@
 local object    = require "lux.object"
 local array     = require "lux.table"
 local graphics  = love.graphics
+local ipairs    = ipairs
 
 module "ui.layout" do
+
+  --[[ Component management ]]--
 
   local components    = array:new {}
   local reverseindex  = {}
@@ -18,6 +21,26 @@ module "ui.layout" do
     components:removecomponent(reverseindex[component])
     reverseindex[component] = nil
   end
+
+  --[[ Component events ]]--
+
+  function updateevent (dt)
+    for _,component in ipairs(components) do
+        if component.active then component:update(dt) end
+    end
+  end
+
+  function mouseevent (type, pos, info)
+    for i = #components,1,-1 do
+      local component = components[i]
+      if component.active and component:inside(pos) and component[type] then
+        component[type] (component, pos-component.pos, info)
+        return
+      end
+    end
+  end
+
+  --[[ Component drawing ]]--
 
   local function drawcomponent (_, component)
     if component.active then
