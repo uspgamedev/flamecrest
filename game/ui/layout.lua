@@ -1,61 +1,32 @@
 
-local object  = require "lux.object"
-local array   = require "lux.table"
+local object    = require "lux.object"
+local array     = require "lux.table"
+local graphics  = love.graphics
 
-require "ui.button"
+module "ui.layout" do
 
-module "ui" do
+  local components = array:new {}
 
-  layout = object.new {}
-
-  layout.__init = {
-    components = array:new {}
-  }
-
-  function layout:setcontroller (controller)
-    self.controller = controller
-    controller.layout = self
+  function addcomponent (component)
+    components:insert(component)
   end
 
-  function layout:newcontroller ()
-    self.controller = controller:new {
-      layout = self
-    }
+  local function drawcomponent (_, component)
+    if component.active then
+      -- store current graphics state
+      local currentcolor = { graphics.getColor() }
+      graphics.push()
+      -- move to component's position and draw it
+      graphics.translate(component.pos.x, component.pos.y)
+      component:draw(graphics)
+      -- restore previous graphics state
+      graphics.pop()
+      graphics.setColor(currentcolor)
+    end
   end
 
-  function layout:addcomponent (component)
-    self.components:insert(component)
-  end
-  
-  function layout:addbutton (buttoninfo)
-    self:addcomponent(button:new(buttoninfo))
-  end
-
-  function layout.drawcomponent (_, component, graphics)
-      if component.active then
-        -- store current graphics state
-        local currentcolor = { graphics.getColor() }
-        graphics.push()
-        -- move to component's position and draw it
-        graphics.translate(component.pos.x, component.pos.y)
-        component:draw(graphics)
-        -- restore previous graphics state
-        graphics.pop()
-        graphics.setColor(currentcolor)
-      end
-  end
-
-  function layout:update (dt)
-    -- Optionally implementable.
-  end
-
-  function layout:draw (graphics)
-    self.components:foreach(
-      function (_,c)
-        layout.drawcomponent(_,c,graphics)
-      end
-    )
+  function draw ()
+    self.components:foreach(drawcomponent)
   end
 
 end
-
