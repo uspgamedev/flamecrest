@@ -5,10 +5,18 @@ local graphics  = love.graphics
 
 module "ui.layout" do
 
-  local components = array:new {}
+  local components    = array:new {}
+  local reverseindex  = {}
 
-  function addcomponent (component)
+  function add (component)
     components:insert(component)
+    reverseindex[component] = #components
+  end
+
+  function remove (component)
+    assert(component, "Cannot remove nil component.")
+    components:removecomponent(reverseindex[component])
+    reverseindex[component] = nil
   end
 
   local function drawcomponent (_, component)
