@@ -38,7 +38,7 @@ function love.load ()
   battle.layout.map.tiles[5][9].unit = game.unit2
   game.layouts.battle = battle.layout
   game.layouts.combat = combat.layout
-  game.changetolayout "combat"
+  game.changetolayout "battle"
 end
 
 love.update         = game.update
