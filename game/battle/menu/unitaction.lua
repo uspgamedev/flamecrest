@@ -1,12 +1,7 @@
 
-local array = require "lux.table"
-
-require "ui.layout"
 require "ui.listmenu"
 require "vec2"
 
-local print       = print
-local layout      = ui.layout
 local listmenu    = ui.listmenu
 local vec2        = vec2
 

@@ -1,15 +1,9 @@
 
-require "ui.controller"
 require "battle.cursor"
-require "game"
+require "battle.hexpos"
 require "vec2"
 
-
-local mouse         = love.mouse
-local event         = love.event
 local floor         = math.floor
-local ui            = ui
-local game          = game
 local vec2          = vec2
 local hexpos        = battle.hexpos
 local cursor        = battle.cursor
@@ -74,7 +68,7 @@ module "battle.controller" do
   local keyactions = { released = {} }
 
   function keyactions.released.escape ()
-    event.push "quit"
+    --event.push "quit"
   end
 
   keyactions.released["return"] = function ()
@@ -95,7 +89,7 @@ module "battle.controller" do
   end
 
   function keyactions.released.tab ()
-    game.changetolayout "combat"
+    --game.changetolayout "combat"
   end
 
 end

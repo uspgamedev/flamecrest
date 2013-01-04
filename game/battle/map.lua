@@ -3,11 +3,9 @@ local object = require "lux.object"
 
 require "battle.tile" 
 require "battle.hexpos"
-require "battle.controller"
 require "combat.fight"
 
 local assert  = assert
-local print   = print
 local fight   = combat.fight
 
 module "battle" do

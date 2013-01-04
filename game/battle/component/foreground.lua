@@ -1,10 +1,8 @@
 
 require "vec2"
-require "ui.component"
 require "battle.hexpos"
 
 local vec2    = vec2
-local ui      = ui
 local hexpos  = battle.hexpos
 
 module "battle.component.foreground"

@@ -1,6 +1,4 @@
 
-local object = require "lux.object"
-
 require "battle.hexpos"
 
 local hexpos = battle.hexpos

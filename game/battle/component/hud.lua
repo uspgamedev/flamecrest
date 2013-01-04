@@ -1,18 +1,14 @@
 
 require "vec2"
-require "ui.component"
 require "battle.hexpos"
-require "battle.controller"
 require "battle.cursor"
 require "battle.menu.unitaction"
 
 local string      = string
 local vec2        = vec2
-local ui          = ui
 local hexpos      = battle.hexpos
 local cursor      = battle.cursor
 local unitmenu    = battle.menu.unitaction
-local controller  = battle.controller
 
 module "battle.component.hud"
 

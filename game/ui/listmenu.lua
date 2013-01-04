@@ -5,10 +5,9 @@ require "ui.component"
 require "vec2"
 
 local vec2    = vec2
-local print   = print
 local ipairs  = ipairs
 local modf    = math.modf
-local mouse   = love.mouse
+local mouse   = love.mouse -- TODO
 
 module "ui" do
 

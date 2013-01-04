@@ -1,7 +1,5 @@
 
 require "lux.object"
-require "lux.table"
-
 require "vec2"
 
 local vec2    = vec2

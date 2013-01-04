@@ -9,11 +9,8 @@ require "battle.component.hud"
 require "battle.component.foreground"
 require "vec2"
 
-local mouse   = love.mouse
 local ui      = ui
 local vec2    = vec2
-local print   = print
-local unpack  = unpack
 local layout  = ui.layout
 
 module "battle" do

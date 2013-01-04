@@ -3,7 +3,6 @@ local object    = require "lux.object"
 local array     = require "lux.table"
 local graphics  = love.graphics
 local ipairs    = ipairs
-local print     = print
 
 --- Module that manages the game layout.
 module "ui.layout" do
