@@ -5,7 +5,7 @@ require "battle.hexpos"
 local vec2    = vec2
 local hexpos  = battle.hexpos
 
-module "battle.component.background"
+module "ui.battle.background"
 
 local tileset = {}
 

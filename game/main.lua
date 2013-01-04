@@ -2,7 +2,7 @@
 require "game"
 --require "combat.layout"
 require "vec2"
-require "battle.layout"
+require "ui.battle.mapscene"
 require "battle.map"
 require "battle.hexpos"
 require "ui.layout"
@@ -27,18 +27,18 @@ local function loadbattlemaplayout ()
       map.tiles[j][i] = nil
     end
   end
-  battle.mapscene:load(love.graphics)
-  battle.mapscene:setup(map, love.graphics)
+  ui.battle.mapscene:load(love.graphics)
+  ui.battle.mapscene:setup(map, love.graphics)
 end
 
 function love.load ()
   love.graphics.setFont(love.graphics.newFont("fonts/Verdana.ttf", 14))
   love.graphics.setDefaultImageFilter("nearest", "nearest")
   --loadcombatlayout()
-  ui.layout.add(battle.mapscene)
+  ui.layout.add(ui.battle.mapscene)
   loadbattlemaplayout()
-  battle.mapscene.map.tiles[5][1].unit = game.unit1
-  battle.mapscene.map.tiles[5][9].unit = game.unit2
+  ui.battle.mapscene.map.tiles[5][1].unit = game.unit1
+  ui.battle.mapscene.map.tiles[5][9].unit = game.unit2
   --game.layouts.battle = battle.layout
   --game.layouts.combat = combat.layout
   --game.changetolayout "battle"

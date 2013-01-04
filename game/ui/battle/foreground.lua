@@ -5,7 +5,7 @@ require "battle.hexpos"
 local vec2    = vec2
 local hexpos  = battle.hexpos
 
-module "battle.component.foreground"
+module "ui.battle.foreground"
 
 function load (graphics)
   -- Nothing... for now?

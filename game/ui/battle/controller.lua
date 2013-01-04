@@ -1,14 +1,14 @@
 
-require "battle.cursor"
+require "ui.battle.cursor"
 require "battle.hexpos"
 require "vec2"
 
 local floor         = math.floor
 local vec2          = vec2
 local hexpos        = battle.hexpos
-local cursor        = battle.cursor
+local cursor        = ui.battle.cursor
 
-module "battle.controller" do
+module "ui.battle.controller" do
 
   local function screentotile (origin, mousepos)
     local relpos = mousepos-origin

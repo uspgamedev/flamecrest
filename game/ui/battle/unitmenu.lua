@@ -5,30 +5,30 @@ require "vec2"
 local listmenu    = ui.common.listmenu
 local vec2        = vec2
 
-module "battle.menu" do
+module "ui.battle" do
 
-  unitaction = listmenu:new {
+  unitmenu = listmenu:new {
     active = false,
     size = vec2:new{128, 0},
     mapscene = nil
   }
 
   local function getmapscene ()
-    return unitaction.mapscene
+    return unitmenu.mapscene
   end
 
-  unitaction:addaction "Fight" (
+  unitmenu:addaction "Fight" (
     function ()
       getmapscene().mode = "fight"
-      unitaction.active = false
+      unitmenu.active = false
     end
   )
 
-  unitaction:addaction "Wait" (
+  unitmenu:addaction "Wait" (
     function ()
       getmapscene().focus = nil
       getmapscene().mode = "select"
-      unitaction.active = false
+      unitmenu.active = false
     end
   )
 

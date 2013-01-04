@@ -1,19 +1,19 @@
 
+require "vec2"
+require "battle.hexpos"
 require "ui.layout"
 require "ui.component"
-require "battle.hexpos"
-require "battle.controller"
-require "battle.menu.unitaction"
-require "battle.component.background"
-require "battle.component.hud"
-require "battle.component.foreground"
-require "vec2"
+require "ui.battle.controller"
+require "ui.battle.unitmenu"
+require "ui.battle.background"
+require "ui.battle.hud"
+require "ui.battle.foreground"
 
 local ui      = ui
 local vec2    = vec2
 local layout  = ui.layout
 
-module "battle" do
+module "ui.battle" do
 
   mapscene = ui.component:new {
     map     = nil,
@@ -23,17 +23,17 @@ module "battle" do
   }
 
   function mapscene:load (graphics)
-    component.background.load(graphics)
-    component.hud.load(graphics)
-    component.foreground.load()
+    background.load(graphics)
+    hud.load(graphics)
+    foreground.load()
   end
 
   function mapscene:setup (map, graphics)
-    self.active               = true
+    self.active       = true
     self.size:set(graphics.getWidth(), graphics.getHeight())
-    self.map                  = map
-    menu.unitaction.mapscene  = self
-    layout.add(menu.unitaction)
+    self.map          = map
+    unitmenu.mapscene = self
+    layout.add(unitmenu)
   end
 
   function mapscene:mousehover (pos, dt)
@@ -51,16 +51,16 @@ module "battle" do
   function mapscene:update (dt)
     if self.focus then
       local pos = self.origin + self.focus:tovec2()
-      menu.unitaction.active = self:focusedunit() and self.mode == "action"
+      unitmenu.active = self:focusedunit() and self.mode == "action"
       if pos.x > 512 then
-        pos.x = pos.x - menu.unitaction.size.x
+        pos.x = pos.x - unitmenu.size.x
       end
       if pos.y > 768/2 then
-        pos.y = pos.y - menu.unitaction.size.y
+        pos.y = pos.y - unitmenu.size.y
       end
-      menu.unitaction.pos = pos
+      unitmenu.pos = pos
     else
-      menu.unitaction.active = false
+      unitmenu.active = false
     end
   end
   
@@ -74,9 +74,9 @@ module "battle" do
 
   function mapscene:draw (graphics)
     graphics.translate(self.origin:get())
-    component.background.draw(self.map, graphics)
-    component.hud.draw(self.map, self, cursor, graphics)
-    component.foreground.draw(self.map, graphics)
+    background.draw(self.map, graphics)
+    hud.draw(self.map, self, cursor, graphics)
+    foreground.draw(self.map, graphics)
   end
 
 end

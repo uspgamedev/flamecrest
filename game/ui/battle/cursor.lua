@@ -3,7 +3,7 @@ require "battle.hexpos"
 
 local hexpos = battle.hexpos
 
-module "battle.cursor" do
+module "ui.battle.cursor" do
 
   local accel       = 25
   local currentpos  = hexpos:new {1,1}

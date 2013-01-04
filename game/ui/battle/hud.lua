@@ -1,16 +1,16 @@
 
 require "vec2"
 require "battle.hexpos"
-require "battle.cursor"
-require "battle.menu.unitaction"
+require "ui.battle.cursor"
+require "ui.battle.unitmenu"
 
 local string      = string
 local vec2        = vec2
 local hexpos      = battle.hexpos
-local cursor      = battle.cursor
-local unitmenu    = battle.menu.unitaction
+local cursor      = ui,battle.cursor
+local unitmenu    = ui,battle.unitmenu
 
-module "battle.component.hud"
+module "ui.battle.hud"
 
 local spriteset = {}
 local markereffectcode = [[
