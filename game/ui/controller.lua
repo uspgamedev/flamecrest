@@ -1,3 +1,4 @@
+--- Depracated.
 
 local object = require "lux.object"
 

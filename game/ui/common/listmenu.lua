@@ -4,12 +4,13 @@ local array = require "lux.table"
 require "ui.component"
 require "vec2"
 
-local vec2    = vec2
-local ipairs  = ipairs
-local modf    = math.modf
-local mouse   = love.mouse -- TODO
+local vec2      = vec2
+local ipairs    = ipairs
+local modf      = math.modf
+local component = ui.component
+local mouse     = love.mouse -- TODO
 
-module "ui" do
+module "ui.common" do
 
   listmenu = component:new {}
 

@@ -1,8 +1,8 @@
 
-require "ui.listmenu"
+require "ui.common.listmenu"
 require "vec2"
 
-local listmenu    = ui.listmenu
+local listmenu    = ui.common.listmenu
 local vec2        = vec2
 
 module "battle.menu" do
