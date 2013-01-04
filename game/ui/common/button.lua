@@ -1,14 +1,14 @@
 
 require "ui.layout"
 require "ui.component"
-require "ui.controller"
 require "vec2"
 
-local vec2    = vec2
-local print   = print
-local module  = module
+local vec2      = vec2
+local print     = print
+local module    = module
+local component = ui.component
 
-module "ui" do
+module "ui.common" do
 
   button = component:new {
     text = "<dummy text>",
