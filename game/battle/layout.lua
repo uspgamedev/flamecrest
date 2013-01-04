@@ -32,10 +32,10 @@ module "battle" do
   end
 
   function mapscene:setup (map, graphics)
-    self.active         = true
+    self.active               = true
     self.size:set(graphics.getWidth(), graphics.getHeight())
-    self.map            = map
-    menu.unitaction.map = map
+    self.map                  = map
+    menu.unitaction.mapscene  = self
     layout.add(menu.unitaction)
   end
 
@@ -52,9 +52,9 @@ module "battle" do
   end
 
   function mapscene:update (dt)
-    if self.map.focus then
-      local pos = self.origin + self.map.focus:tovec2()
-      menu.unitaction.active = self:focusedunit() and self.map.mode == "action"
+    if self.focus then
+      local pos = self.origin + self.focus:tovec2()
+      menu.unitaction.active = self:focusedunit() and self.mode == "action"
       if pos.x > 512 then
         pos.x = pos.x - menu.unitaction.size.x
       end
@@ -68,11 +68,11 @@ module "battle" do
   end
   
   function mapscene:focusedunit ()
-    return self.map:focusedtile().unit
+    return self.map:tile(self.focus).unit
   end
 
   function mapscene:targetedunit ()
-    return self.map:tile(controller.cursor.pos).unit
+    return self.map:tile(cursor.pos()).unit
   end
 
   function mapscene:draw (graphics)

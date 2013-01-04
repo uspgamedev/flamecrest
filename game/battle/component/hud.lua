@@ -48,14 +48,14 @@ local function drawmarker (mappos, focus, unit, graphics)
   local haseffect = false
   local mvrange = unit.attributes.mv
   if dist <= mvrange then
-    graphics.setPixelEffect(hud.moveglow)
+    graphics.setPixelEffect(moveglow)
     haseffect = true
   elseif unit.weapon and dist <= mvrange + unit.weapon.maxrange then
-    graphics.setPixelEffect(hud.atkglow)
+    graphics.setPixelEffect(atkglow)
     haseffect = true
   end
   if haseffect then
-    graphics.draw(hud.spriteset.marker, pos.x, pos.y, 0, 1, 1, 64, 32)
+    graphics.draw(spriteset.marker, pos.x, pos.y, 0, 1, 1, 64, 32)
     graphics.setPixelEffect()
   end
 end
@@ -65,16 +65,16 @@ local function drawmodifier (name, pos, graphics)
   graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 35)
 end
 
-function draw (map, layout, cursor, graphics)
-  if map.mode == "move" then
+function draw (map, mapscene, cursor, graphics)
+  if mapscene.mode == "move" then
     map:pertile(
       function (i, j, tile)
-        drawmarker(hexpos:new{i,j}, map.focus, layout:focusedunit(), graphics)
+        drawmarker(hexpos:new{i,j}, mapscene.focus, mapscene:focusedunit(), graphics)
       end
     )
   end
-  if map.focus then
-    drawmodifier("focus", map.focus:tovec2(), graphics)
+  if mapscene.focus then
+    drawmodifier("focus", mapscene.focus:tovec2(), graphics)
   end
   if not unitmenu.active then
     drawmodifier("cursor", cursor.pos():tovec2(), graphics)

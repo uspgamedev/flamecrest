@@ -15,24 +15,24 @@ module "battle.menu" do
   unitaction = listmenu:new {
     active = false,
     size = vec2:new{128, 0},
-    map = nil
+    mapscene = nil
   }
 
-  local function getmap ()
-    return unitaction.map
+  local function getmapscene ()
+    return unitaction.mapscene
   end
 
   unitaction:addaction "Fight" (
     function ()
-      getmap().mode = "fight"
+      getmapscene().mode = "fight"
       unitaction.active = false
     end
   )
 
   unitaction:addaction "Wait" (
     function ()
-      getmap().focus = nil
-      getmap().mode = "select"
+      getmapscene().focus = nil
+      getmapscene().mode = "select"
       unitaction.active = false
     end
   )
