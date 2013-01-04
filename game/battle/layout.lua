@@ -19,8 +19,10 @@ local layout  = ui.layout
 module "battle" do
 
   mapscene = ui.component:new {
-    map    = nil,
-    origin = vec2:new {512,100},
+    map     = nil,
+    origin  = vec2:new {512,100},
+    focus   = nil,
+    mode    = "select"
   }
 
   function mapscene:load (graphics)
@@ -35,6 +37,18 @@ module "battle" do
     self.map            = map
     menu.unitaction.map = map
     layout.add(menu.unitaction)
+  end
+
+  function mapscene:mousehover (pos, dt)
+    controller.movecursor(self.map, self.origin, pos, dt)
+  end
+
+  function mapscene:mousereleased (pos, button)
+    if button == 'l' then
+      self.focus, self.mode = controller.confirm(self, pos)
+    elseif button == 'r' then
+      self.focus, self.mode = controller.cancel()
+    end
   end
 
   function mapscene:update (dt)

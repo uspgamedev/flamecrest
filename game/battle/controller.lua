@@ -11,16 +11,13 @@ local floor         = math.floor
 local ui            = ui
 local game          = game
 local vec2          = vec2
-local combatlayout  = combatlayout
+local hexpos        = battle.hexpos
+local cursor        = battle.cursor
 
-module "battle" do
+module "battle.controller" do
 
-  controller = ui.controller:new{
-    cursor = cursor:new{}
-  }
-
-  function controller:screentotile (pos)
-    local relpos = pos-self.layout.origin
+  local function screentotile (origin, mousepos)
+    local relpos = mousepos-origin
     local focus = hexpos:new {}
     relpos = relpos.x/192*vec2:new{1,-1} + relpos.y/64*vec2:new{1,1}
     focus.i = floor(relpos.y+0.5)
@@ -42,50 +39,45 @@ module "battle" do
     return focus
   end
 
-  function controller:mousetotile ()
-    return self:screentotile(vec2:new{mouse.getPosition()})
+  function movecursor (map, origin, pos, dt)
+    cursor.move(map, screentotile(origin, pos), dt)
   end
 
-  function controller:update (dt)
-    self.cursor:update(self:mousetotile(), dt)
-  end
-
-  function controller:mousereleased (button, pos)
-    if button == 'l' then
-      local focused = self:screentotile(pos)
-      local tile    = layout.map:tile(focused)
-      if tile then
-        if layout.map.mode == "select" then
-          layout.map.focus = tile.unit and focused or nil
-          if layout.map.focus then
-            layout.map.mode = "move"
-          end
-        elseif layout.map.mode == "move" then
-          local targetpos = layout.map:moveunit()
-          if targetpos then
-            layout.map.focus = targetpos
-            layout.map.mode = "action"
-          end
-        elseif layout.map.mode == "action" then
-          layout.map.focus = nil
-          layout.map.mode = "select"
-        elseif layout.map.mode == "fight" then
-          layout.map:startcombat()
-          layout.map.focus = nil
-          layout.map.mode = "select"
+  function confirm (mapscene, pos)
+    local focused = screentotile(mapscene.origin, pos)
+    local tile    = mapscene.map:tile(focused)
+    if tile then
+      if mapscene.mode == "select" then
+        local focus = tile.unit and focused or nil
+        if focus then
+          return focus, "move"
         end
+      elseif mapscene.mode == "move" then
+        local newpos = mapscene.map:moveunit(mapscene.focus, cursor.pos())
+        if newpos then
+          return newpos, "action"
+        end
+      elseif mapscene.mode == "action" then
+        return nil, "select"
+      elseif mapscene.mode == "fight" then
+        mapscene.map:startcombat(mapscene.focus, cursor.pos())
+        return nil, "select"
       end
-    elseif button == 'r' then
-      layout.map.focus = nil
-      layout.map.mode = "select"
     end
+    return mapscene.focus, mapscene.mode
+  end
+  
+  function cancel ()
+    return nil, "select"
   end
 
-  function controller.keyactions.released.escape ()
+  local keyactions = { released = {} }
+
+  function keyactions.released.escape ()
     event.push "quit"
   end
 
-  controller.keyactions.released["return"] = function ()
+  keyactions.released["return"] = function ()
     local attacker  = layout:focusedunit()
     local target    = layout:targetedunit()
     if not attacker or not target then return end
@@ -98,11 +90,11 @@ module "battle" do
     fight(attacker, target, distance)
   end
 
-  function controller.keyactions.released.m ()
+  function keyactions.released.m ()
     layout.map:moveunit()
   end
 
-  function controller.keyactions.released.tab ()
+  function keyactions.released.tab ()
     game.changetolayout "combat"
   end
 

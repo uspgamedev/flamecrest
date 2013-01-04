@@ -3,12 +3,14 @@ require "vec2"
 require "ui.component"
 require "battle.hexpos"
 require "battle.controller"
+require "battle.cursor"
 require "battle.menu.unitaction"
 
 local string      = string
 local vec2        = vec2
 local ui          = ui
 local hexpos      = battle.hexpos
+local cursor      = battle.cursor
 local unitmenu    = battle.menu.unitaction
 local controller  = battle.controller
 
@@ -59,7 +61,7 @@ local function drawmarker (mappos, focus, unit, graphics)
 end
 
 local function drawmodifier (name, pos, graphics)
-  local image = hud.spriteset[name]
+  local image = spriteset[name]
   graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 35)
 end
 
@@ -75,6 +77,6 @@ function draw (map, layout, cursor, graphics)
     drawmodifier("focus", map.focus:tovec2(), graphics)
   end
   if not unitmenu.active then
-    drawmodifier("cursor", cursor.pos:tovec2(), graphics)
+    drawmodifier("cursor", cursor.pos():tovec2(), graphics)
   end
 end

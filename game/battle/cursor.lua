@@ -3,26 +3,27 @@ local object = require "lux.object"
 
 require "battle.hexpos"
 
-module "battle" do
+local hexpos = battle.hexpos
 
-  cursor = object.new {
-    accel   = 25
-  }
+module "battle.cursor" do
 
-  cursor.__init = {
-    pos     = hexpos:new {1,1},
-    target  = hexpos:new {1,1},
-    step    = hexpos:new {0,0}
-  }
+  local accel       = 25
+  local currentpos  = hexpos:new {1,1}
+  local target      = hexpos:new {1,1}
+  local step        = hexpos:new {0,0}
 
-  function cursor:update (targeted, dt)
-    self.pos = self.pos + dt*self.step
-    if not layout.map:tile(targeted) then
-      targeted:set(self.target:gettruncated())
+  function pos ()
+    return currentpos:clone()
+  end
+
+  function move (map, targeted, dt)
+    currentpos = currentpos + dt*step
+    if not map:tile(targeted) then
+      targeted:set(target:gettruncated())
     end
-    self.target = targeted
-    self.accel  = 25
-    self.step   = (targeted - self.pos)*self.accel
+    target = targeted
+    accel  = 25
+    step   = (targeted - currentpos)*accel
   end
 
 end
