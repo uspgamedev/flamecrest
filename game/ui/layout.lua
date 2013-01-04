@@ -3,6 +3,7 @@ local object    = require "lux.object"
 local array     = require "lux.table"
 local graphics  = love.graphics
 local ipairs    = ipairs
+local print     = print
 
 --- Module that manages the game layout.
 module "ui.layout" do
@@ -28,6 +29,12 @@ module "ui.layout" do
     assert(component, "Cannot remove nil component.")
     components:removecomponent(reverseindex[component])
     reverseindex[component] = nil
+  end
+
+  --- Clears the layout of all components.
+  function clear ()
+    components    = array:new {}
+    reverseindex  = {}
   end
 
   --[[ Component events ]]--
@@ -65,7 +72,7 @@ module "ui.layout" do
   end
 
   function draw ()
-    self.components:foreach(drawcomponent)
+    components:foreach(drawcomponent)
   end
 
 end

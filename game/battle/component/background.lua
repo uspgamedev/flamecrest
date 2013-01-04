@@ -7,24 +7,16 @@ local vec2    = vec2
 local ui      = ui
 local hexpos  = battle.hexpos
 
-module "battle.component"
+module "battle.component.background"
 
-background = ui.component:new {
-  pos     = vec2:new{0,0},
-  tileset = {}
-}
+local tileset = {}
 
-function background:load (context, graphics)
-  self.size = vec2:new{graphics.getWidth(), graphics.getHeight()}
+function load (graphics)
   -- Load tileset images
-  self.tileset.plains = graphics.newImage "resources/images/hextile.png"
-  function self:draw (graphics)
-    self:do_draw(context, graphics)
-  end
+  tileset.plains = graphics.newImage "resources/images/hextile.png"
 end
 
-local function drawtile (mappos, image, context, graphics)
-  local pos = mappos:tovec2()
+local function drawtile (pos, image, graphics)
   graphics.draw(
     image,
     pos.x, pos.y,
@@ -34,16 +26,10 @@ local function drawtile (mappos, image, context, graphics)
   )
 end
 
-function background:do_draw (context, graphics)
-  graphics.translate(context.layout.origin:get())
-  context.map:pertile(
+function draw (map, graphics)
+  map:pertile(
     function (i, j, tile)
-      drawtile(
-        hexpos:new{i,j},
-        self.tileset[tile.type],
-        context,
-        graphics
-      )
+      drawtile(hexpos:new{i,j}:tovec2(), tileset[tile.type], graphics)
     end
   )
 end

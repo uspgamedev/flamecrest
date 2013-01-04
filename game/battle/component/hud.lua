@@ -12,13 +12,9 @@ local hexpos      = battle.hexpos
 local unitmenu    = battle.menu.unitaction
 local controller  = battle.controller
 
-module "battle.component"
+module "battle.component.hud"
 
-hud = ui.component:new {
-  pos     = vec2:new{0,0},
-  spriteset = {}
-}
-
+local spriteset = {}
 local markereffectcode = [[
   vec4 effect (vec4 color, Image texture, vec2 tex_pos, vec2 pix_pos) {
     vec4 result = Texel(texture, tex_pos)*color;
@@ -26,31 +22,27 @@ local markereffectcode = [[
     return result.a*vec4(bright*%f, bright*%f, bright*%f, 0.6);
   }
 ]]
+local moveglow, atkglow
 
 local function makemarkereffect (graphics, r, g, b)
   return graphics.newPixelEffect(string.format(markereffectcode, r, g, b))
 end
 
-function hud:load (context, graphics)
-  self.size = vec2:new{graphics.getWidth(), graphics.getHeight()}
+function load (graphics)
   -- Load spriteset images
-  self.spriteset.marker = graphics.newImage "resources/images/hextile-empty.png"
-  self.spriteset.focus  = graphics.newImage "resources/images/focus.png"
-  self.spriteset.focus:setFilter("linear","linear")
-  self.spriteset.cursor = graphics.newImage "resources/images/cursor.png"
-  self.spriteset.cursor:setFilter("linear","linear")
-  function self:draw (graphics)
-    self:do_draw(context, graphics)
-  end
-  self.moveglow = makemarkereffect(graphics, 0, 0, 1)
-  self.atkglow = makemarkereffect(graphics, 1, 0.5, 0)
+  spriteset.marker = graphics.newImage "resources/images/hextile-empty.png"
+  spriteset.focus  = graphics.newImage "resources/images/focus.png"
+  spriteset.focus:setFilter("linear","linear")
+  spriteset.cursor = graphics.newImage "resources/images/cursor.png"
+  spriteset.cursor:setFilter("linear","linear")
+  moveglow         = makemarkereffect(graphics, 0, 0, 1)
+  atkglow          = makemarkereffect(graphics, 1, 0.5, 0)
 end
 
-local function drawmarker (mappos, context, graphics)
+local function drawmarker (mappos, focus, unit, graphics)
   local pos = mappos:tovec2()
   -- TODO really reachable tiles
-  local unit = context.layout:focusedunit()
-  local dist = (context.map.focus - mappos):size()
+  local dist = (focus - mappos):size()
   local haseffect = false
   local mvrange = unit.attributes.mv
   if dist <= mvrange then
@@ -71,23 +63,18 @@ local function drawmodifier (name, pos, graphics)
   graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 35)
 end
 
-function hud:do_draw (context, graphics)
-  graphics.translate(context.layout.origin:get())
-  if context.map.mode == "move" then
-    context.map:pertile(
+function draw (map, layout, cursor, graphics)
+  if map.mode == "move" then
+    map:pertile(
       function (i, j, tile)
-        drawmarker(
-          hexpos:new{i,j},
-          context,
-          graphics
-        )
+        drawmarker(hexpos:new{i,j}, map.focus, layout:focusedunit(), graphics)
       end
     )
   end
-  if context.map.focus then
-    drawmodifier("focus", context.map.focus:tovec2(), graphics)
+  if map.focus then
+    drawmodifier("focus", map.focus:tovec2(), graphics)
   end
   if not unitmenu.active then
-    drawmodifier("cursor", controller.cursor.pos:tovec2(), graphics)
+    drawmodifier("cursor", cursor.pos:tovec2(), graphics)
   end
 end

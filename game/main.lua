@@ -5,8 +5,9 @@ require "vec2"
 require "battle.layout"
 require "battle.map"
 require "battle.hexpos"
+require "ui.layout"
 
-math.randomseed( os.time() )
+math.randomseed(os.time())
 
 --local function loadcombatlayout ()
 --  combat.layout:load(game)
@@ -26,19 +27,21 @@ local function loadbattlemaplayout ()
       map.tiles[j][i] = nil
     end
   end
-  battle.layout:load(map, love.graphics)
+  battle.mapscene:load(love.graphics)
+  battle.mapscene:setup(map, love.graphics)
 end
 
 function love.load ()
   love.graphics.setFont(love.graphics.newFont("fonts/Verdana.ttf", 14))
   love.graphics.setDefaultImageFilter("nearest", "nearest")
   --loadcombatlayout()
+  ui.layout.add(battle.mapscene)
   loadbattlemaplayout()
-  battle.layout.map.tiles[5][1].unit = game.unit1
-  battle.layout.map.tiles[5][9].unit = game.unit2
-  game.layouts.battle = battle.layout
+  battle.mapscene.map.tiles[5][1].unit = game.unit1
+  battle.mapscene.map.tiles[5][9].unit = game.unit2
+  --game.layouts.battle = battle.layout
   --game.layouts.combat = combat.layout
-  game.changetolayout "battle"
+  --game.changetolayout "battle"
 end
 
 love.update         = game.update
@@ -47,7 +50,7 @@ love.keyreleased    = game.keyreleased
 love.mousepressed   = game.mousepressed
 love.mousereleased  = game.mousereleased
 
-function love.draw()
-  game.state.layout:draw(love.graphics)
+function love.draw ()
+  ui.layout.draw(love.graphics)
 end
 

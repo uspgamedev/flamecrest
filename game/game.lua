@@ -19,28 +19,28 @@ module "game" do
   -- LÖVE callbacks --
 
   function update (dt)
-    ui.layout:mouseevent("mousehover", vec2:new{mouse,getPosition()}, dt)
-    ui.layout:updateevent(dt)
+    ui.layout.mouseevent("mousehover", vec2:new{mouse.getPosition()}, dt)
+    ui.layout.updateevent(dt)
   end
 
   function draw (graphics)
-    ui.layout:draw()
+    ui.layout.draw()
   end
   
   function mousereleased (x, y, button)
-    ui.layout:mouseevent("mousereleased", vec2:new{x,y}, button)
+    ui.layout.mouseevent("mousereleased", vec2:new{x,y}, button)
   end
   
   function mousepressed (x, y, button)
-    ui.layout:mouseevent("mousepressed", vec2:new{x,y}, button)
+    ui.layout.mouseevent("mousepressed", vec2:new{x,y}, button)
   end
 
   function keypressed (key)
-    state.layout.controller:presskey(key)
+    --state.layout.controller:presskey(key)
   end
   
   function keyreleased (key)
-    state.layout.controller:releasekey(key)
+    --state.layout.controller:releasekey(key)
   end
 
   -- STUFF --

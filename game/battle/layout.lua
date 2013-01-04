@@ -1,5 +1,6 @@
 
 require "ui.layout"
+require "ui.component"
 require "battle.hexpos"
 require "battle.controller"
 require "battle.menu.unitaction"
@@ -13,29 +14,30 @@ local ui      = ui
 local vec2    = vec2
 local print   = print
 local unpack  = unpack
+local layout  = ui.layout
 
 module "battle" do
 
-  layout = ui.layout:new {
-    map           = nil,
-    origin        = vec2:new {512,100},
+  mapscene = ui.component:new {
+    map    = nil,
+    origin = vec2:new {512,100},
   }
 
-  layout:addcomponent(component.background)
-  layout:addcomponent(component.hud)
-  layout:addcomponent(component.foreground)
-
-  function layout:load (map, graphics)
-    self:setcontroller(controller)
-    self.map = map
-    menu.unitaction.map = map
-    component.background:load({map=map,layout=self}, graphics)
-    component.hud:load({map=map,layout=self}, graphics)
-    component.foreground:load({map=map,layout=self}, graphics)
-    self:addcomponent(menu.unitaction)
+  function mapscene:load (graphics)
+    component.background.load(graphics)
+    component.hud.load(graphics)
+    component.foreground.load()
   end
 
-  function layout:update (dt)
+  function mapscene:setup (map, graphics)
+    self.active         = true
+    self.size:set(graphics.getWidth(), graphics.getHeight())
+    self.map            = map
+    menu.unitaction.map = map
+    layout.add(menu.unitaction)
+  end
+
+  function mapscene:update (dt)
     if self.map.focus then
       local pos = self.origin + self.map.focus:tovec2()
       menu.unitaction.active = self:focusedunit() and self.map.mode == "action"
@@ -51,12 +53,19 @@ module "battle" do
     end
   end
   
-  function layout:focusedunit ()
+  function mapscene:focusedunit ()
     return self.map:focusedtile().unit
   end
 
-  function layout:targetedunit ()
+  function mapscene:targetedunit ()
     return self.map:tile(controller.cursor.pos).unit
+  end
+
+  function mapscene:draw (graphics)
+    graphics.translate(self.origin:get())
+    component.background.draw(self.map, graphics)
+    component.hud.draw(self.map, self, cursor, graphics)
+    component.foreground.draw(self.map, graphics)
   end
 
 end

@@ -7,17 +7,10 @@ local vec2    = vec2
 local ui      = ui
 local hexpos  = battle.hexpos
 
-module "battle.component"
+module "battle.component.foreground"
 
-foreground = ui.component:new {
-  pos = vec2:new{0,0}
-}
-
-function foreground:load (context, graphics)
-  self.size = vec2:new{graphics.getWidth(), graphics.getHeight()}
-  function self:draw (graphics)
-    self:do_draw(context, graphics)
-  end
+function load (graphics)
+  -- Nothing... for now?
 end
 
 local function drawunit (pos, tile, graphics)
@@ -26,9 +19,8 @@ local function drawunit (pos, tile, graphics)
   end
 end
 
-function foreground:do_draw (context, graphics)
-  graphics.translate(context.layout.origin:get())
-  context.map:pertile(
+function draw (map, graphics)
+  map:pertile(
     function (i, j, tile)
       drawunit(hexpos:new{i,j}:tovec2(), tile, graphics)
     end
