@@ -11,7 +11,7 @@ weapon = lux.object.new {
   weapontype = "sword",
   atkattribute = "str",
   defattribute = "def",
-  bonusagainst = nil,
+  bonusagainst = {},
   useexp = nil, --for staves
   minrange = 1,
   maxrange = 1,
@@ -54,6 +54,16 @@ function weapon:weardown ()
     self.durability = self.durability - 1
   end
   print("Current weapon durability = "..self.durability)
+end
+
+function weapon:mtagainst (defender)
+  local mt = self.mt
+  for _,v in pairs(self.bonusagainst) do 
+    if defender:hastrait(v) then
+      mt = 2 * self.mt
+    end
+  end
+  return mt
 end
 
 function weapon:setweapontype (weapontype)
