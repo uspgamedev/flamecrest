@@ -5,7 +5,7 @@ require "attributes"
 class = lux.object.new{
    name = "Soldier",
    weapons = {"lance"},
-   traits = nil,
+   traits = {},
    caps = nil,
    defaultgrowths = nil,
    defaultattributes = nil,
