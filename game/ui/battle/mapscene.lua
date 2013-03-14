@@ -1,19 +1,19 @@
 
-require "vec2"
-require "battle.hexpos"
-require "ui.layout"
-require "ui.component"
-require "ui.battle.controller"
-require "ui.battle.unitmenu"
-require "ui.battle.background"
-require "ui.battle.hud"
-require "ui.battle.foreground"
+module ("ui.battle", package.seeall) do
 
-local ui      = ui
-local vec2    = vec2
-local layout  = ui.layout
+  require "vec2"
+  require "battle.hexpos"
+  require "ui.layout"
+  require "ui.component"
+  require "ui.battle.controller"
+  require "ui.battle.unitmenu"
+  require "ui.battle.background"
+  require "ui.battle.hud"
+  require "ui.battle.foreground"
 
-module "ui.battle" do
+  local ui      = ui
+  local vec2    = vec2
+  local layout  = ui.layout
 
   mapscene = ui.component:new {
     map     = nil,
