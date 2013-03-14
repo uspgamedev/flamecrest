@@ -75,4 +75,5 @@ function draw (map, mapscene, cursor, graphics)
   if not unitmenu.active then
     drawmodifier("cursor", cursor.pos():tovec2(), graphics)
   end
+  graphics.print(mapscene.mode, 0, 0)
 end
