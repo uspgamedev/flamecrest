@@ -29,7 +29,7 @@ module "combat" do
     local evade = defender:evade()
     local hitchance = hit - evade
     print("hit "..hitchance)
-    local mt = attacker:mt()
+    local mt = attacker:mtagainst(defender)
     local damage = mt - defender.attributes[attacker:defattr()]
     print("damage "..damage)
     damage, hitchance = weaponmechanics.trianglebonus(damage, hitchance,

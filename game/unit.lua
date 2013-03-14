@@ -141,6 +141,15 @@ function unit:isdead ()
   return self.hp <= 0
 end
 
+function unit:hastrait(trait)
+  for _,v in pairs(self.class.traits) do
+    if v == trait then
+      return true
+    end
+  end
+  return false
+end
+
 function unit:canattackatrange (range)
   if range >= self.weapon.minrange and range <= self.weapon.maxrange then
     return true
@@ -159,6 +168,11 @@ end
 function unit:mt ()
   return self.weapon.mt + self.attributes[self.weapon.atkattribute]
 end
+
+function unit:mtagainst (other)
+  return self.weapon:mtagainst(other) + self.attributes[self.weapon.atkattribute]
+end
+
 
 function unit:hit ()
   local hit = 2 * self:getskl() + self.attributes.lck + self.weapon.hit 

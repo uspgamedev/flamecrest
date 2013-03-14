@@ -67,6 +67,9 @@ module "game" do
       useexp = 11,
       minrange = 1,
       maxrange = 2
+    },
+    class = class:new{
+      traits = {"flying"}
     }
   }
 
@@ -79,6 +82,7 @@ module "game" do
     },
     weapon = weapon:new {
       hit = 40,
+      bonusagainst = {"flying"},
       useexp = 100,
       minrange = 2,
       maxrange = 2
