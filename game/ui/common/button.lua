@@ -1,12 +1,14 @@
 
+require "ui.layout"
 require "ui.component"
-require "ui.controller"
 require "vec2"
 
-local vec2  = vec2
-local print = print
+local vec2      = vec2
+local print     = print
+local module    = module
+local component = ui.component
 
-module "ui" do
+module "ui.common" do
 
   button = component:new {
     text = "<dummy text>",
@@ -17,12 +19,9 @@ module "ui" do
     self:newcontroller()
     self.controller.action = self.action
     self.action = nil
-    function self.controller:mousereleased ()
-      self.action()
-    end
   end
-  
-  function button:released (b, pos)
+
+  function button:mousereleased (pos, button)
     self.action()
   end
   
@@ -36,6 +35,15 @@ module "ui" do
                           graphics.getFont():getHeight()
     graphics.setColor { 255, 255, 255, 255 }
     graphics.print(self.text, (self.size.x-width)/2, (self.size.y-height)/2)
+  end
+
+end
+
+-- Utility function
+module "ui.layout" do
+
+  function addbutton (buttoninfo)
+    addcomponent(button:new(buttoninfo))
   end
 
 end

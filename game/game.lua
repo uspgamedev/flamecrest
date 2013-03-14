@@ -4,51 +4,43 @@ require "unit"
 require "class"
 require "weapon"
 require "effects"
+require "ui.layout"
 
+local mouse         = love.mouse
 local vec2          = vec2
 local unit          = unit
 local attributes    = attributes
 local weapon        = weapon
 local class         = class
+local ui            = ui
 
 module "game" do
-
-  -- TODO: Give game state as argument to domain-specific functions
-  state = {
-    layout = nil
-  }
-
-  layouts = {}
-
-  function changetolayout (name)
-    state.layout = layouts[name]
-  end
 
   -- LÖVE callbacks --
 
   function update (dt)
-    state.layout.controller:update(dt)
-    state.layout:update(dt)
+    ui.layout.mouseevent("mousehover", vec2:new{mouse.getPosition()}, dt)
+    ui.layout.updateevent(dt)
   end
 
   function draw (graphics)
-    state.layout:draw(graphics)
+    ui.layout.draw()
   end
   
   function mousereleased (x, y, button)
-    state.layout.controller:releasemouse(button, vec2:new{x,y})
+    ui.layout.mouseevent("mousereleased", vec2:new{x,y}, button)
   end
   
   function mousepressed (x, y, button)
-    state.layout.controller:pressmouse(button, vec2:new{x,y})
+    ui.layout.mouseevent("mousepressed", vec2:new{x,y}, button)
   end
 
   function keypressed (key)
-    state.layout.controller:presskey(key)
+    --state.layout.controller:presskey(key)
   end
   
   function keyreleased (key)
-    state.layout.controller:releasekey(key)
+    --state.layout.controller:releasekey(key)
   end
 
   -- STUFF --

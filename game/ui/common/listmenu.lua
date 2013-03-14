@@ -2,26 +2,23 @@
 local array = require "lux.table"
 
 require "ui.component"
-require "ui.controller"
 require "vec2"
 
-local vec2    = vec2
-local print   = print
-local ipairs  = ipairs
-local modf    = math.modf
-local mouse   = love.mouse
+local vec2      = vec2
+local ipairs    = ipairs
+local modf      = math.modf
+local component = ui.component
+local mouse     = love.mouse -- TODO
 
-module "ui" do
+module "ui.common" do
 
   listmenu = component:new {}
 
-  local listmenucontroller = controller:new {}
-
-  listmenucontroller.__init = {
+  listmenu.__init = {
     actions = array:new{}
   }
 
-  function listmenucontroller:addaction (name, action)
+  function listmenu:addaction (name, action)
     if not action then
       return function (action)
         self:addaction(name, action)
@@ -31,25 +28,17 @@ module "ui" do
       name = name,
       action = action
     }
-    self.layout.size:add(vec2:new{0,32})
+    self.size:add(vec2:new{0,32})
   end
 
-  function listmenucontroller:getaction (y)
+  function listmenu:getaction (y)
     return modf(y/32)+1
   end
 
-  function listmenucontroller:mousereleased (button, pos)
+  function listmenu:mousereleased (pos, button)
     if button == "l" then
       self.actions[self:getaction(pos.y)].action()
     end
-  end
-
-  function listmenu:__init ()
-    self:setcontroller(listmenucontroller:new{})
-  end
-
-  function listmenu:addaction (name, action)
-    return self.controller:addaction(name,action)
   end
   
   function listmenu:draw (graphics)
@@ -61,10 +50,10 @@ module "ui" do
     local focused = 0
     mousepos = mousepos - self.pos
     if mousepos.x >= 0 and mousepos.x <= self.size.x then
-      focused = self.controller:getaction(mousepos.y)
+      focused = self:getaction(mousepos.y)
     end
   
-    for i,action in ipairs(self.controller.actions) do
+    for i,action in ipairs(self.actions) do
       -- draw brighter if it is the focused action
       if focused == i then
         graphics.setColor(50, 50, 100, 255)

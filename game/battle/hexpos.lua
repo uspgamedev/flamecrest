@@ -89,7 +89,7 @@ module "battle" do
   end
 
   function hexpos:tovec2 ()
-    return vec2:new{96*self.j-96*self.i, 32*self.j+32*self.i}
+    return vec2:new{97*self.j-97*self.i, 32*self.j+32*self.i}
   end
  
   function hexpos:set (i, j)

@@ -1,7 +1,5 @@
 
 require "lux.object"
-require "lux.table"
-
 require "vec2"
 
 local vec2    = vec2
@@ -10,25 +8,13 @@ local object  = lux.object
 module "ui" do
   
   component = object.new {
-    active      = true,
-    controller  = nil
+    active = true
   }
   
   component.__init = {
     pos = vec2:new { 0, 0 },
     size = vec2:new { 32, 32 }
   }
-
-  function component:setcontroller (controller)
-    self.controller = controller
-    controller.layout = self
-  end
-
-  function component:newcontroller ()
-    self.controller = controller:new {
-      layout = self
-    }
-  end
   
   function component:left ()
     return self.pos.x
@@ -55,9 +41,25 @@ module "ui" do
     end
     return true
   end
+
+  function component:update (dt)
+    -- Unimplemented component event.
+  end
+
+  function component:mousepressed (pos, button)
+    -- Unimplemented component event.
+  end
+
+  function component:mousereleased (pos, button)
+    -- Unimplemented component event.
+  end
+
+  function component:mousehover (pos, dt)
+    -- Unimplemented component event.
+  end
   
   function component:draw (graphics)
-    -- Unimplemented component event.
+    -- Unimplemented component renderization.
   end
   
 end

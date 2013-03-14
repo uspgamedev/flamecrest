@@ -3,11 +3,9 @@ local object = require "lux.object"
 
 require "battle.tile" 
 require "battle.hexpos"
-require "battle.controller"
 require "combat.fight"
 
 local assert  = assert
-local print   = print
 local fight   = combat.fight
 
 module "battle" do
@@ -15,9 +13,7 @@ module "battle" do
   map = object.new {
     width   = 5,
     height  = 5,
-    tiles   = nil,
-    focus   = nil,
-    mode    = "select"
+    tiles   = nil
   }
 
   function map:__init ()
@@ -37,10 +33,6 @@ module "battle" do
   function map:tile (pos)
     pos = pos:truncated()
     return self:inside(pos) and self.tiles[pos.i][pos.j]
-  end
-
-  function map:focusedtile ()
-    return self:tile(self.focus)
   end
 
   function map:pertile (action)
@@ -65,9 +57,7 @@ module "battle" do
     end
   end
 
-  function map:moveunit ()
-    local originpos   = self.focus
-    local targetpos   = controller.cursor.pos
+  function map:moveunit (originpos, targetpos)
     local unit        = self:tile(originpos).unit
     local targettile  = self:tile(targetpos)
     assert(unit)
@@ -79,14 +69,12 @@ module "battle" do
     return targetpos:truncated()
   end
 
-  function map:startcombat ()
-    local originpos = self:focusedtile()
-    local targetpos = controller.cursor.pos
-    local attacker  = originpos.unit
+  function map:startcombat (originpos, targetpos)
+    local attacker  = self:tile(originpos).unit
     local target    = self:tile(targetpos).unit
     if not attacker or not target then return end
     if attacker:isdead() or target:isdead() then return end
-    local distance  = self:selectiondistance()
+    local distance  = (targetpos:truncated() - originpos:truncated()):size()
     if distance < attacker.weapon.minrange
       or distance > attacker.weapon.maxrange then
       return
