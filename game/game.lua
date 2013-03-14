@@ -1,20 +1,20 @@
 
-require "vec2"
-require "unit"
-require "class"
-require "weapon"
-require "effects"
-require "ui.layout"
+module ("game", package.seeall) do
 
-local mouse         = love.mouse
-local vec2          = vec2
-local unit          = unit
-local attributes    = attributes
-local weapon        = weapon
-local class         = class
-local ui            = ui
+  require "vec2"
+  require "unit"
+  require "class"
+  require "weapon"
+  require "effects"
+  require "ui.layout"
 
-module "game" do
+  local mouse         = love.mouse
+  local vec2          = vec2
+  local unit          = unit
+  local attributes    = attributes
+  local weapon        = weapon
+  local class         = class
+  local ui            = ui
 
   -- LÖVE callbacks --
 
