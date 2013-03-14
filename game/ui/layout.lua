@@ -62,7 +62,7 @@ module "ui.layout" do
       local currentcolor = { graphics.getColor() }
       graphics.push()
       -- move to component's position and draw it
-      graphics.translate(component.pos.x, component.pos.y)
+      graphics.translate(component.pos:get())
       component:draw(graphics)
       -- restore previous graphics state
       graphics.pop()
