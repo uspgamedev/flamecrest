@@ -1,19 +1,20 @@
 
-local object = require "lux.object"
-require "vec2"
+module ("battle", package.seeall) do
 
-local type          = type
-local getmetatable  = getmetatable
-local rawget        = rawget
-local rawset        = rawset
-local unpack        = unpack
-local max           = math.max
-local abs           = math.abs
-local floor         = math.floor
-local vec2          = vec2
+  require "vec2"
 
-module "battle" do
+  local object        = require "lux.object"
+  local type          = type
+  local getmetatable  = getmetatable
+  local rawget        = rawget
+  local rawset        = rawset
+  local unpack        = unpack
+  local max           = math.max
+  local abs           = math.abs
+  local floor         = math.floor
+  local vec2          = vec2
 
+  --- Hexagonal position class.
   hexpos = object.new {}
 
   -- Vector coordinates.
