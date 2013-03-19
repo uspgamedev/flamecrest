@@ -9,6 +9,12 @@ module "battle" do
       avoid = 0,
       def = 0,
       mdef = 0
+    },
+    forest = object.new {
+      type = "forest",
+      avoid = 10,
+      def = 1,
+      mdef = 0
     }
   }
 
