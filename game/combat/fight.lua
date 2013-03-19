@@ -26,11 +26,11 @@ module "combat" do
     local hit = attacker[1]:hit()
     local attackerweapon = attacker[1].weapon
     local defenderweapon = defender[1].weapon
-    local evade = defender[1]:evade()
+    local evade = defender[1]:evade() + defender[2].avoid --TODO: Ver se unidade avua
     local hitchance = hit - evade
     print("hit "..hitchance)
     local mt = attacker[1]:mtagainst(defender[1])
-    local damage = mt - defender[1].attributes[attacker[1]:defattr()]
+    local damage = mt - defender[1].attributes[attacker[1]:defattr()] - defender[2].def --TODO: Diferenciar dano fisico e magico, e ver se unidade avua
     print("damage "..damage)
     damage, hitchance = weaponmechanics.trianglebonus(damage, hitchance,
                                                       attackerweapon,
