@@ -12,6 +12,7 @@ local tileset = {}
 function load (graphics)
   -- Load tileset images
   tileset.plains = graphics.newImage "resources/images/hextile.png"
+  tileset.forest = graphics.newImage "resources/images/hextile2.png"
 end
 
 local function drawtile (pos, image, graphics)

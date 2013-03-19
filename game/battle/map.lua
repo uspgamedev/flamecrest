@@ -21,7 +21,11 @@ module "battle" do
     for i = 1,self.height do
       self.tiles[i] = {}
       for j = 1,self.width do
-        self.tiles[i][j] = tile:new{}
+        if i == 3 and j == 3 then
+          self.tiles[i][j] = foresttile:new{}
+        else
+          self.tiles[i][j] = plainstile:new{}
+        end
       end
     end
   end
