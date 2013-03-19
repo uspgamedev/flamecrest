@@ -20,34 +20,39 @@ module "combat" do
     return false, false
   end
 
+  local function calculatestuff(attacker, defender)
+    local trianglemtbonus, trianglehitbonus = weaponmechanics.trianglebonus(attacker[1].weapon,
+                                                                            defender[1].weapon)
+    local mt = attacker[1]:mtagainst(defender[1]) + trianglemtbonus
+    local hit = attacker[1]:hit() + trianglehitbonus
+    --TODO: Diferenciar dano fisico e magico, e ver se unidade avua
+    local defense = defender[1].attributes[attacker[1]:defattr()] + defender[2].def
+    local evade = defender[1]:evade() + defender[2].avoid --TODO: Ver se unidade avua
+    local crit = attacker[1]:crit()
+    local dodge = defender[1]:dodge()
+
+    -- Damage stuff
+    local damage = mt - defense
+    local hitchance = hit - evade
+    local critchance = crit - dodge
+    return damage, hitchance, critchance
+  end
+  
   local function strike (attacker, defender)
     if not attacker[1].weapon or not attacker[1].weapon:hasdurability() then return end
     local dealtdamage = false
-    local hit = attacker[1]:hit()
-    local attackerweapon = attacker[1].weapon
-    local defenderweapon = defender[1].weapon
-    local evade = defender[1]:evade() + defender[2].avoid --TODO: Ver se unidade avua
-    local hitchance = hit - evade
-    local mt = attacker[1]:mtagainst(defender[1])
-    --TODO: Diferenciar dano fisico e magico, e ver se unidade avua
-    local damage = mt - defender[1].attributes[attacker[1]:defattr()] - defender[2].def 
-    local trianglemtbonus, trianglehitbonus = weaponmechanics.trianglebonus(attackerweapon,
-                                                                            defenderweapon)
-    mt, hit = mt + trianglemtbonus, hit + trianglehitbonus
+
+    local damage, hitchance, critchance = calculatestuff(attacker, defender)
+
     local rand1 = random(100)
     local rand2 = random(100)
     if ((rand1 + rand2) / 2 <= hitchance) then --Double RNG as seen in the games!
-      local crit = attacker[1]:crit()
-      local dodge = defender[1]:dodge()
-      local critchance = crit - dodge
       rand1 = random(100)
       if (rand1 <= critchance) then
         damage = damage * 3
       end
-      if damage > 0 then
-        dealtdamage = true
-        defender[1]:takedamage(damage)
-      end
+      dealtdamage = damage > 0
+      defender[1]:takedamage(damage)
       attacker[1].weapon:weardown()
     end
     return dealtdamage
