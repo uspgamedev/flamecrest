@@ -32,6 +32,7 @@ function unit:__init ()
 end
 
 function unit:takedamage (dmg)
+  if dmg < 0 then return end
   self.hp = self.hp - dmg
   if self.hp < 0 then
     self.hp = 0
@@ -39,6 +40,7 @@ function unit:takedamage (dmg)
 end
 
 function unit:heal (healamount)
+  if healamount < 0 then return end
   self.hp = self.hp + healamount
   if self.hp > self.attributes.maxhp then
     self.hp = self.attributes.maxhp
