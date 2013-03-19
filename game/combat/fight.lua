@@ -28,26 +28,20 @@ module "combat" do
     local defenderweapon = defender[1].weapon
     local evade = defender[1]:evade() + defender[2].avoid --TODO: Ver se unidade avua
     local hitchance = hit - evade
-    print("hit "..hitchance)
     local mt = attacker[1]:mtagainst(defender[1])
-    local damage = mt - defender[1].attributes[attacker[1]:defattr()] - defender[2].def --TODO: Diferenciar dano fisico e magico, e ver se unidade avua
-    print("damage "..damage)
-    damage, hitchance = weaponmechanics.trianglebonus(damage, hitchance,
-                                                      attackerweapon,
-                                                      defenderweapon)
-    print("newhit "..hitchance)
-    print("newdamage "..damage)
+    --TODO: Diferenciar dano fisico e magico, e ver se unidade avua
+    local damage = mt - defender[1].attributes[attacker[1]:defattr()] - defender[2].def 
+    local trianglemtbonus, trianglehitbonus = weaponmechanics.trianglebonus(attackerweapon,
+                                                                            defenderweapon)
+    mt, hit = mt + trianglemtbonus, hit + trianglehitbonus
     local rand1 = random(100)
     local rand2 = random(100)
-    print("rand1 "..rand1.." rand 2 "..rand2.." avg "..((rand1+rand2)/2))
     if ((rand1 + rand2) / 2 <= hitchance) then --Double RNG as seen in the games!
       local crit = attacker[1]:crit()
       local dodge = defender[1]:dodge()
       local critchance = crit - dodge
-      print("crit "..critchance)
       rand1 = random(100)
       if (rand1 <= critchance) then
-        print("crits")
         damage = damage * 3
       end
       if damage > 0 then
@@ -56,7 +50,6 @@ module "combat" do
       end
       attacker[1].weapon:weardown()
     end
-    print("")
     return dealtdamage
   end
 

@@ -43,18 +43,18 @@ local weapontriangle = {
    }
 }
 
-local tbonus = {
+local basebonus = {
   dmg = 1,
   hit = 15
 }
 
-function trianglebonus(dmg, hit, attwpn, defwpn)
+function trianglebonus(attwpn, defwpn)
   if not weapontriangle[attwpn.weapontype] or not weapontriangle[attwpn.weapontype][defwpn.weapontype] then
-    return dmg, hit
+    return 0, 0
   end
   local bonus = weapontriangle[attwpn.weapontype][defwpn.weapontype]
-  dmg = dmg + tbonus.dmg * bonus
-  hit = hit + tbonus.hit * bonus
+  local dmg = basebonus.dmg * bonus
+  local hit = basebonus.hit * bonus
   return dmg, hit
 end
 
