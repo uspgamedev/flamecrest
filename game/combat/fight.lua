@@ -77,41 +77,24 @@ module "combat" do
     if attacker[1]:canattackatrange(range) then
       info[attacker].dealtdmg = strike(attacker, defender)
     end
-    if (defender[1]:isdead()) then
-      -- print (defender[1].name.." is dead!")
-      exp = killexp(attacker[1], defender[1])
-      attacker[1]:gainexp(exp)
-      return
-    end
-    if defender[1]:canattackatrange(range) then
+    if not defender[1]:isdead() and defender[1]:canattackatrange(range) then
       info[defender].dealtdmg = strike(defender, attacker)
     end
-    if (attacker[1]:isdead()) then
-      --print (attacker.name.." is dead!")
-      exp = killexp(attacker[1], defender[1])
-      defender[1]:gainexp(exp)
-      return
-    end
-    local faster, slower = muchfaster(attacker, defender)
-    if (faster and faster[1]:canattackatrange(range)) then
-      --print("moreattack")
-      local fastdealt = strike(info[faster].unit, info[slower].unit)
-      info[faster].dealtdmg = info[faster].dealtdmg or fastdealt
-      --print(info[faster].unit.name.." hit again! hurrah!")
-      if info[slower].unit[1]:isdead() then
-        --print (info[slower].unit.name.." is dead!")
-        exp = killexp(info[faster].unit[1], info[slower].unit[1])
-        info[faster].unit[1]:gainexp(exp)
-        return
+    if not attacker[1]:isdead() and not defender[1]:isdead() then
+      local faster, slower = muchfaster(attacker, defender)
+      if (faster and faster[1]:canattackatrange(range)) then
+        local fastdealt = strike(info[faster].unit, info[slower].unit)
+        info[faster].dealtdmg = info[faster].dealtdmg or fastdealt
       end
-      --print(info[faster].unit.name.." is successful")
     end
     for _,v in pairs(info) do
       if v.dealtdmg then
-      --  print (v.unit.name.." dealt damage!")
-        exp = combatexp(v.unit[1], v.enemy[1])
+        if v.enemy[1]:isdead() then
+          exp = killexp(v.unit[1], v.enemy[1])
+        else
+          exp = combatexp(v.unit[1], v.enemy[1])
+        end
       else
-       -- print (v.unit.name.." failed miserably!")
         exp = 1
       end
       v.unit[1]:gainexp(exp)
