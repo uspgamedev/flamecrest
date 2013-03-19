@@ -74,16 +74,20 @@ module "battle" do
   end
 
   function map:startcombat (originpos, targetpos)
-    local attacker  = self:tile(originpos).unit
-    local target    = self:tile(targetpos).unit
+    local attackertile = self:tile(originpos)
+    local targettile = self:tile(targetpos) 
+    local attacker  = attackertile.unit
+    local target    = targettile.unit
+    local attackerbonus = attackertile.type.bonus
+    local targetbonus = targettile.type.bonus
     if not attacker or not target then return end
     if attacker:isdead() or target:isdead() then return end
     local distance  = (targetpos:truncated() - originpos:truncated()):size()
     if distance < attacker.weapon.minrange
       or distance > attacker.weapon.maxrange then
       return
-    end
-    fight(attacker, target, distance)
+   end
+   fight({attacker, attackerbonus}, {target, targetbonus}, distance)
   end
 
 end

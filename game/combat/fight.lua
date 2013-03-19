@@ -11,26 +11,26 @@ local pairs           = pairs
 module "combat" do
 
   local function muchfaster (attacker, defender)
-    if (attacker:combatspeed() -4 >= defender:combatspeed()) then
+    if (attacker[1]:combatspeed() -4 >= defender[1]:combatspeed()) then
       return attacker, defender
     end
-    if (defender:combatspeed() -4 >= attacker:combatspeed())  then
+    if (defender[1]:combatspeed() -4 >= attacker[1]:combatspeed())  then
       return defender, attacker
     end
     return false, false
   end
 
   local function strike (attacker, defender)
-    if not attacker.weapon or not attacker.weapon:hasdurability() then return end
+    if not attacker[1].weapon or not attacker[1].weapon:hasdurability() then return end
     local dealtdamage = false
-    local hit = attacker:hit()
-    local attackerweapon = attacker.weapon
-    local defenderweapon = defender.weapon
-    local evade = defender:evade()
+    local hit = attacker[1]:hit()
+    local attackerweapon = attacker[1].weapon
+    local defenderweapon = defender[1].weapon
+    local evade = defender[1]:evade()
     local hitchance = hit - evade
     print("hit "..hitchance)
-    local mt = attacker:mtagainst(defender)
-    local damage = mt - defender.attributes[attacker:defattr()]
+    local mt = attacker[1]:mtagainst(defender[1])
+    local damage = mt - defender[1].attributes[attacker[1]:defattr()]
     print("damage "..damage)
     damage, hitchance = weaponmechanics.trianglebonus(damage, hitchance,
                                                       attackerweapon,
@@ -41,8 +41,8 @@ module "combat" do
     local rand2 = random(100)
     print("rand1 "..rand1.." rand 2 "..rand2.." avg "..((rand1+rand2)/2))
     if ((rand1 + rand2) / 2 <= hitchance) then --Double RNG as seen in the games!
-      local crit = attacker:crit()
-      local dodge = defender:dodge()
+      local crit = attacker[1]:crit()
+      local dodge = defender[1]:dodge()
       local critchance = crit - dodge
       print("crit "..critchance)
       rand1 = random(100)
@@ -52,9 +52,9 @@ module "combat" do
       end
       if damage > 0 then
         dealtdamage = true
-        defender:takedamage(damage)
+        defender[1]:takedamage(damage)
       end
-      attacker.weapon:weardown()
+      attacker[1].weapon:weardown()
     end
     print("")
     return dealtdamage
@@ -74,47 +74,47 @@ module "combat" do
         enemy = attacker
       }
     }
-    if attacker:canattackatrange(range) then
+    if attacker[1]:canattackatrange(range) then
       info[attacker].dealtdmg = strike(attacker, defender)
     end
-    if (defender:isdead()) then
-      print (defender.name.." is dead!")
-      exp = killexp(attacker, defender)
-      attacker:gainexp(exp)
+    if (defender[1]:isdead()) then
+      -- print (defender[1].name.." is dead!")
+      exp = killexp(attacker[1], defender[1])
+      attacker[1]:gainexp(exp)
       return
     end
-    if defender:canattackatrange(range) then
+    if defender[1]:canattackatrange(range) then
       info[defender].dealtdmg = strike(defender, attacker)
     end
-    if (attacker:isdead()) then
-      print (attacker.name.." is dead!")
-      exp = killexp(attacker, defender)
-      defender:gainexp(exp)
+    if (attacker[1]:isdead()) then
+      --print (attacker.name.." is dead!")
+      exp = killexp(attacker[1], defender[1])
+      defender[1]:gainexp(exp)
       return
     end
     local faster, slower = muchfaster(attacker, defender)
-    if (faster and faster:canattackatrange(range)) then
-      print("moreattack")
+    if (faster and faster[1]:canattackatrange(range)) then
+      --print("moreattack")
       local fastdealt = strike(info[faster].unit, info[slower].unit)
       info[faster].dealtdmg = info[faster].dealtdmg or fastdealt
-      print(info[faster].unit.name.." hit again! hurrah!")
-      if info[slower].unit:isdead() then
-        print (info[slower].unit.name.." is dead!")
-        exp = killexp(info[faster].unit, info[slower].unit)
-        info[faster].unit:gainexp(exp)
+      --print(info[faster].unit.name.." hit again! hurrah!")
+      if info[slower].unit[1]:isdead() then
+        --print (info[slower].unit.name.." is dead!")
+        exp = killexp(info[faster].unit[1], info[slower].unit[1])
+        info[faster].unit[1]:gainexp(exp)
         return
       end
-      print(info[faster].unit.name.." is successful")
+      --print(info[faster].unit.name.." is successful")
     end
     for _,v in pairs(info) do
       if v.dealtdmg then
-        print (v.unit.name.." dealt damage!")
-        exp = combatexp(v.unit, v.enemy)
+      --  print (v.unit.name.." dealt damage!")
+        exp = combatexp(v.unit[1], v.enemy[1])
       else
-        print (v.unit.name.." failed miserably!")
+       -- print (v.unit.name.." failed miserably!")
         exp = 1
       end
-      v.unit:gainexp(exp)
+      v.unit[1]:gainexp(exp)
     end
   end
 
