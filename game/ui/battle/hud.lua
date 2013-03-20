@@ -34,7 +34,7 @@ module ("ui.battle.hud", package.seeall) do
     spriteset.cursor = graphics.newImage "resources/images/cursor.png"
     spriteset.cursor:setFilter("linear","linear")
     moveglow         = makemarkereffect(graphics, 0, 0, 1)
-    atkglow          = makemarkereffect(graphics, 1, 0.5, 0)
+    atkglow          = makemarkereffect(graphics, 0.8, 0.1, 0)
   end
 
   local function drawmarker (mappos, focus, unit, graphics)
@@ -56,6 +56,28 @@ module ("ui.battle.hud", package.seeall) do
     end
   end
 
+
+local function drawmarker2 (mappos, focus, unit, graphics)
+  local pos = mappos:tovec2()
+  -- TODO really reachable tiles
+  local dist = (focus - mappos):size()
+  local haseffect = false
+  --local mvrange = unit.attributes.mv
+  --if dist <= mvrange then
+  --  graphics.setPixelEffect(moveglow)
+  --  haseffect = true
+  if unit.weapon and dist >= unit.weapon.minrange and dist <= unit.weapon.maxrange then
+    graphics.setPixelEffect(atkglow)
+    haseffect = true
+  end
+  if haseffect then
+    graphics.draw(spriteset.marker, pos.x, pos.y, 0, 1, 1, 64, 32)
+    graphics.setPixelEffect()
+  end
+end
+
+
+
   local function drawmodifier (name, pos, graphics)
     local image = spriteset[name]
     graphics.draw(image, pos.x, pos.y, 0, 1, 1, 64, 35)
@@ -70,6 +92,13 @@ module ("ui.battle.hud", package.seeall) do
       )
     end
     if mapscene.focus then
+    if mapscene.mode == "fight" then
+      map:pertile(
+        function (i, j, tile)
+          drawmarker2(hexpos:new{i,j}, mapscene.focus, mapscene:focusedunit(), graphics)
+        end
+      )
+    end
       drawmodifier("focus", mapscene.focus:tovec2(), graphics)
     end
     if not unitmenu.active then
