@@ -1,12 +1,12 @@
 
-require "lux.object"
-require "vec2"
-
-local vec2    = vec2
-local object  = lux.object
-
-module "ui" do
+module ("ui", package.seeall) do
   
+  require "lux.object"
+  require "vec2"
+
+  local vec2    = vec2
+  local object  = lux.object
+
   component = object.new {
     active = true
   }
