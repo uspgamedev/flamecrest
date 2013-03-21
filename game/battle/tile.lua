@@ -1,9 +1,9 @@
 
-local object = require "lux.object"
+module ("battle", package.seeall) do
 
-require "battle.tilelist"
-
-module "battle" do
+  require "battle.tilelist"
+  
+  local object = require "lux.object"
 
   plainstile = object.new {
     type  = tiletypes["plains"],
