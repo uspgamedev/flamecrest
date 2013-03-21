@@ -1,14 +1,14 @@
 
-local object = require "lux.object"
+module ("battle", package.seeall) do
 
-require "battle.tile" 
-require "battle.hexpos"
-require "combat.fight"
+  local object = require "lux.object"
 
-local assert  = assert
-local fight   = combat.fight
+  require "battle.tile" 
+  require "battle.hexpos"
+  require "combat.fight"
 
-module "battle" do
+  local assert  = assert
+  local fight   = combat.fight
 
   map = object.new {
     width   = 5,
