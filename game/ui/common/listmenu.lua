@@ -1,16 +1,16 @@
 
-local array = require "lux.table"
+module ("ui.common", package.seeall) do
 
-require "ui.component"
-require "vec2"
+  local array = require "lux.table"
 
-local vec2      = vec2
-local ipairs    = ipairs
-local modf      = math.modf
-local component = ui.component
-local mouse     = love.mouse -- TODO
+  require "ui.component"
+  require "vec2"
 
-module "ui.common" do
+  local vec2      = vec2
+  local ipairs    = ipairs
+  local modf      = math.modf
+  local component = ui.component
+  local mouse     = love.mouse -- TODO
 
   listmenu = component:new {}
 

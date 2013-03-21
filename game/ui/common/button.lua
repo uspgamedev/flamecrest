@@ -1,5 +1,5 @@
 
-module "ui.common" do
+module ("ui.common", package.seeall) do
 
   require "ui.layout"
   require "ui.component"
