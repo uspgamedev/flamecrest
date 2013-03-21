@@ -28,18 +28,9 @@ module ("ui.battle.background", package.seeall) do
   function draw (map, graphics)
     map:pertile(
       function (i, j, tile)
-        drawtile(hexpos:new{i,j}:tovec2(), tileset[tile.type], graphics)
+        drawtile(hexpos:new{i,j}:tovec2(), tileset[tile.type.type], graphics) --TODO: Arrumar tie para nao precisar desse tile.type.type
       end
     )
   end
-
-<<<<<<< HEAD
-function draw (map, graphics)
-  map:pertile(
-    function (i, j, tile)
-      drawtile(hexpos:new{i,j}:tovec2(), tileset[tile.type.type], graphics) --TODO: Arrumar tie para nao precisar desse tile.type.type
-    end
-  )
-=======
->>>>>>> Cleaned ui.battle.* up.
+  
 end
