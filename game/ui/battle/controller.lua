@@ -1,14 +1,14 @@
 
-require "ui.battle.cursor"
-require "battle.hexpos"
-require "vec2"
+module ("ui.battle.controller", package.seeall) do
 
-local floor         = math.floor
-local vec2          = vec2
-local hexpos        = battle.hexpos
-local cursor        = ui.battle.cursor
+  require "ui.battle.cursor"
+  require "battle.hexpos"
+  require "vec2"
 
-module "ui.battle.controller" do
+  local floor         = math.floor
+  local vec2          = vec2
+  local hexpos        = battle.hexpos
+  local cursor        = ui.battle.cursor
 
   local function screentotile (origin, mousepos)
     local relpos = mousepos-origin

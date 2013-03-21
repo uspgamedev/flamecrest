@@ -1,9 +1,9 @@
 
-require "battle.hexpos"
+module ("ui.battle.cursor", package.seeall) do
 
-local hexpos = battle.hexpos
+  require "battle.hexpos"
 
-module "ui.battle.cursor" do
+  local hexpos = battle.hexpos
 
   local accel       = 25
   local currentpos  = hexpos:new {1,1}

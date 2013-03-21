@@ -1,26 +1,28 @@
 
-require "vec2"
-require "battle.hexpos"
+module ("ui.battle.foreground", package.seeall) do
 
-local vec2    = vec2
-local hexpos  = battle.hexpos
+  require "vec2"
+  require "battle.hexpos"
 
-module "ui.battle.foreground"
+  local vec2    = vec2
+  local hexpos  = battle.hexpos
 
-function load (graphics)
-  -- Nothing... for now?
-end
-
-local function drawunit (pos, tile, graphics)
-  if tile.unit and not tile.unit:isdead() then
-    graphics.draw(tile.unit.sprite, pos.x, pos.y, 0, 1, 1, 32, 85)
+  function load (graphics)
+    -- Nothing... for now?
   end
-end
 
-function draw (map, graphics)
-  map:pertile(
-    function (i, j, tile)
-      drawunit(hexpos:new{i,j}:tovec2(), tile, graphics)
+  local function drawunit (pos, tile, graphics)
+    if tile.unit and not tile.unit:isdead() then
+      graphics.draw(tile.unit.sprite, pos.x, pos.y, 0, 1, 1, 32, 85)
     end
-  )
+  end
+
+  function draw (map, graphics)
+    map:pertile(
+      function (i, j, tile)
+        drawunit(hexpos:new{i,j}:tovec2(), tile, graphics)
+      end
+    )
+  end
+
 end

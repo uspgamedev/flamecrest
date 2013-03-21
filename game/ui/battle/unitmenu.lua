@@ -1,11 +1,11 @@
 
-require "ui.common.listmenu"
-require "vec2"
+module ("ui.battle", package.seeall) do
 
-local listmenu    = ui.common.listmenu
-local vec2        = vec2
+  require "ui.common.listmenu"
+  require "vec2"
 
-module "ui.battle" do
+  local listmenu    = ui.common.listmenu
+  local vec2        = vec2
 
   unitmenu = listmenu:new {
     active = false,
