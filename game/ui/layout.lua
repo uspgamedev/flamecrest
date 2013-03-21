@@ -1,11 +1,11 @@
 
-local object    = require "lux.object"
-local array     = require "lux.table"
-local graphics  = love.graphics
-local ipairs    = ipairs
-
 --- Module that manages the game layout.
-module "ui.layout" do
+module ("ui.layout", package.seeall) do
+
+  local object    = require "lux.object"
+  local array     = require "lux.table"
+  local graphics  = love.graphics
+  local ipairs    = ipairs
 
   --[[ Component management ]]--
 
