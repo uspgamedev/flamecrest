@@ -12,6 +12,7 @@ local tileset = {}
 function load (graphics)
   -- Load tileset images
   tileset.plains = graphics.newImage "resources/images/hextile.png"
+  tileset.forest = graphics.newImage "resources/images/hextile2.png"
 end
 
 local function drawtile (pos, image, graphics)
@@ -27,7 +28,7 @@ end
 function draw (map, graphics)
   map:pertile(
     function (i, j, tile)
-      drawtile(hexpos:new{i,j}:tovec2(), tileset[tile.type], graphics)
+      drawtile(hexpos:new{i,j}:tovec2(), tileset[tile.type.type], graphics) --TODO: Arrumar tie para nao precisar desse tile.type.type
     end
   )
 end
