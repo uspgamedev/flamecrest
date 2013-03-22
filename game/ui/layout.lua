@@ -5,7 +5,7 @@
 -- <code>ui.layout.remove(component)</code>. Component must inherit from
 -- <code>ui.component</code>. You may also clean the layout of components using
 -- <code>ui.component</code>.
-module ("ui.layout1", package.seeall)
+module ("ui.layout", package.seeall)
 
 local array     = require "lux.table"
 local graphics  = love.graphics
