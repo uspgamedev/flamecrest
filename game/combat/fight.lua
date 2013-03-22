@@ -19,30 +19,44 @@ module "combat" do
     end
     return false, false
   end
-
-  local function calculatestuff(attacker, defender)
-    local trianglemtbonus, trianglehitbonus = weaponmechanics.trianglebonus(attacker[1].weapon,
-                                                                            defender[1].weapon)
-    local mt = attacker[1]:mtagainst(defender[1]) + trianglemtbonus
+  
+  local function calculatehit(attacker, defender)
+    local trianglehitbonus = weaponmechanics.trianglehitbonus(attacker[1].weapon,
+								defender[1].weapon)
     local hit = attacker[1]:hit() + trianglehitbonus
+    local evade = defender[1]:evade() + defender[2].avoid --TODO: Ver se unidade avua
+    
+    local hitchance = hit - evade
+    return hitchance
+  end
+
+  local function calculatedmg(attacker, defender)
+    local trianglemtbonus = weaponmechanics.triangledmgbonus(attacker[1].weapon,
+							     defender[1].weapon)
+    local mt = attacker[1]:mtagainst(defender[1]) + trianglemtbonus
     --TODO: Diferenciar dano fisico e magico, e ver se unidade avua
     local defense = defender[1].attributes[attacker[1]:defattr()] + defender[2].def
-    local evade = defender[1]:evade() + defender[2].avoid --TODO: Ver se unidade avua
+    
+    local damage = mt - defense
+    return damage
+  end
+
+  local function calculatecrit(attacker, defender)
     local crit = attacker[1]:crit()
     local dodge = defender[1]:dodge()
 
     -- Damage stuff
-    local damage = mt - defense
-    local hitchance = hit - evade
     local critchance = crit - dodge
-    return damage, hitchance, critchance
+    return critchance
   end
   
   local function strike (attacker, defender)
     if not attacker[1].weapon or not attacker[1].weapon:hasdurability() then return end
     local dealtdamage = false
 
-    local damage, hitchance, critchance = calculatestuff(attacker, defender)
+    local damage = calculatedmg(attacker, defender)
+    local hitchance = calculatehit(attacker, defender)
+    local critchance = calculatecrit(attacker, defender)
 
     local rand1 = random(100)
     local rand2 = random(100)
@@ -103,8 +117,6 @@ module "combat" do
   function combatexp (unit1, unit2)
     local exp = ( 31 + unit2:expbase() - unit1:expbase() )/unit1:exppower()
     exp = floor(exp)
-    print("combat exp "..exp)
-    print("")
     return exp
   end
 
@@ -113,8 +125,6 @@ module "combat" do
                  (unit1.lv * unit1:exppower() + unit1:expbonus()) 
     local exp = combatexp(unit1, unit2) + base + 20 + unit2:bossbonus()
     exp = max(floor(exp), 1)
-    print("kill exp "..exp)
-    print("")
     return exp
   end
 
