@@ -1,6 +1,7 @@
 
 require "lux.object"
 require "attributes"
+require "terraincosts"
 
 class = lux.object.new{
    name = "Soldier",
@@ -12,7 +13,8 @@ class = lux.object.new{
    promotionbonus = nil,
    exptierbonus = 0,
    expclasspower = 3,
-   expclassbonus = 0
+   expclassbonus = 0,
+   movecosts = movecosts.infantry
 }
 
 class.__init = {
