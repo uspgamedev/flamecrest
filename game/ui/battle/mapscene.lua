@@ -19,7 +19,8 @@ module ("ui.battle", package.seeall) do
     map     = nil,
     origin  = vec2:new {512,100},
     focus   = nil,
-    mode    = "select"
+    mode    = "select",
+    scale   = 0.5
   }
 
   function mapscene:load (graphics)
@@ -37,12 +38,12 @@ module ("ui.battle", package.seeall) do
   end
 
   function mapscene:mousehover (pos, dt)
-    controller.movecursor(self.map, self.origin, pos, dt)
+    controller.movecursor(self.map, self.origin, pos / self.scale, dt)
   end
 
   function mapscene:mousereleased (pos, button)
     if button == 'l' then
-      self.focus, self.mode = controller.confirm(self, pos)
+      self.focus, self.mode = controller.confirm(self, pos / self.scale)
     elseif button == 'r' then
       self.focus, self.mode = controller.cancel()
     end
@@ -58,7 +59,7 @@ module ("ui.battle", package.seeall) do
       if pos.y > 768/2 then
         pos.y = pos.y - unitmenu.size.y
       end
-      unitmenu.pos = pos
+      unitmenu.pos = pos * self.scale
     else
       unitmenu.active = false
     end
@@ -73,6 +74,7 @@ module ("ui.battle", package.seeall) do
   end
 
   function mapscene:draw (graphics)
+    graphics.scale(self.scale, self.scale)
     graphics.translate(self.origin:get())
     background.draw(self.map, graphics)
     hud.draw(self.map, self, cursor, graphics)

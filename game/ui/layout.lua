@@ -44,7 +44,7 @@ end
 
 function updateevent (dt)
   for _,component in ipairs(components) do
-      if component.active then component:update(dt) end
+    if component.active then component:update(dt) end
   end
 end
 

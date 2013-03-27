@@ -42,6 +42,11 @@ vec2 = lux.object.new {}
       return lhs.x*rhs.x + lhs.y*rhs.y
     end
   end
+
+  function vec2.__div (lhs, rhs)
+    assert(type(rhs) == 'number', "vec2 -- Invalid division operand.")
+    return vec2:new{ lhs.x/rhs, lhs.y/rhs }
+  end
  
   function vec2:get ()
     return unpack(self)
@@ -62,4 +67,14 @@ vec2 = lux.object.new {}
     self[2] = self[2] - v[2]
   end
   
+  function vec2:length()
+    return math.sqrt(self[1]^2 + self[2]^2)
+  end
 
+  function vec2:norm1 ()
+    return math.abs(self[1]) + math.abs(self[2])
+  end
+
+  function vec2:normalized ()
+    return self/self:length()
+  end
