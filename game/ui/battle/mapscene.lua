@@ -20,7 +20,7 @@ module ("ui.battle", package.seeall) do
     origin  = vec2:new {512,100},
     focus   = nil,
     mode    = "select",
-    scale   = 0.5
+    scale   = 0.75
   }
 
   function mapscene:load (graphics)
