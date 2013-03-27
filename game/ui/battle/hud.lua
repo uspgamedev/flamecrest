@@ -34,23 +34,16 @@ module ("ui.battle.hud", package.seeall) do
     spriteset.cursor = graphics.newImage "resources/images/cursor.png"
     spriteset.cursor:setFilter("linear","linear")
     moveglow         = makemarkereffect(graphics, 0, 0, 1)
-    atkglow          = makemarkereffect(graphics, 1, 0.5, 0)
+    atkglow          = makemarkereffect(graphics, 0.8, 0.1, 0)
   end
 
-  local function drawmarker (mappos, focus, unit, graphics)
+  local function drawmarker (mappos, focus, graphics, condition)
     local pos = mappos:tovec2()
     -- TODO really reachable tiles
     local dist = (focus - mappos):size()
-    local haseffect = false
-    local mvrange = unit.attributes.mv
-    if dist <= mvrange then
-      graphics.setPixelEffect(moveglow)
-      haseffect = true
-    elseif unit.weapon and dist <= mvrange + unit.weapon.maxrange then
-      graphics.setPixelEffect(atkglow)
-      haseffect = true
-    end
-    if haseffect then
+    local effect = condition(dist)
+    if effect then
+      graphics.setPixelEffect(effect)
       graphics.draw(spriteset.marker, pos.x, pos.y, 0, 1, 1, 64, 32)
       graphics.setPixelEffect()
     end
@@ -63,13 +56,35 @@ module ("ui.battle.hud", package.seeall) do
 
   function draw (map, mapscene, cursor, graphics)
     if mapscene.mode == "move" then
-      map:pertile(
-        function (i, j, tile)
-          drawmarker(hexpos:new{i,j}, mapscene.focus, mapscene:focusedunit(), graphics)
-        end
-      )
+      map:pertile(function (i, j, tile)
+        drawmarker(hexpos:new{i,j}, mapscene.focus, graphics,
+                   function (dist)
+                      local unit = mapscene:focusedunit()
+                      local mvrange = unit.attributes.mv
+                      if dist <= mvrange then
+                         return moveglow
+                      elseif unit.weapon and dist <= mvrange + unit.weapon.maxrange then
+                         return atkglow
+                      end
+                      return nil
+                   end
+        )
+      end)
     end
     if mapscene.focus then
+      if mapscene.mode == "fight" then
+        map:pertile(function (i, j, tile)
+          drawmarker(hexpos:new{i,j}, mapscene.focus, graphics,
+                   function (dist)
+                      local unit = mapscene:focusedunit()
+                      if unit.weapon and dist <= unit.weapon.maxrange then
+                         return atkglow
+                      end
+                      return nil
+                   end
+          )
+        end)
+      end
       drawmodifier("focus", mapscene.focus:tovec2(), graphics)
     end
     if not unitmenu.active then

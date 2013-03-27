@@ -18,7 +18,8 @@
     [
         {
             "name": "FlameCrest",
-            "cmd": ["love", "$project_path/game"]
+            "working_dir": "${project_path}",
+            "cmd": ["love", "game"]
         }
     ]
 }
