@@ -9,6 +9,7 @@ module ("ui.battle.controller", package.seeall) do
   local vec2          = vec2
   local hexpos        = battle.hexpos
   local cursor        = ui.battle.cursor
+  local confirm_event = {}
 
   local function screentotile (origin, mousepos)
     local relpos = mousepos-origin
@@ -37,26 +38,38 @@ module ("ui.battle.controller", package.seeall) do
     cursor.move(map, screentotile(origin, pos), dt)
   end
 
+  function confirm_event.select (mapscene, focused, tile)
+    local focus = tile.unit and focused or nil
+    if focus then
+      return focus, "move"
+    else
+      return mapscene.focus, mapscene.mode
+    end
+  end
+
+  function confirm_event.move (mapscene)
+    local newpos = mapscene.map:moveunit(mapscene.focus, cursor.pos())
+    if newpos then
+      return newpos, "action"
+    else
+      return mapscene.focus, mapscene.mode
+    end
+  end
+
+  function confirm_event.action ()
+    return nil, "select"
+  end
+
+  function confirm_event.fight (mapscene)
+    mapscene.map:startcombat(mapscene.focus, cursor.pos())
+    return nil, "select"
+  end
+
   function confirm (mapscene, pos)
     local focused = screentotile(mapscene.origin, pos)
     local tile    = mapscene.map:tile(focused)
     if tile then
-      if mapscene.mode == "select" then
-        local focus = tile.unit and focused or nil
-        if focus then
-          return focus, "move"
-        end
-      elseif mapscene.mode == "move" then
-        local newpos = mapscene.map:moveunit(mapscene.focus, cursor.pos())
-        if newpos then
-          return newpos, "action"
-        end
-      elseif mapscene.mode == "action" then
-        return nil, "select"
-      elseif mapscene.mode == "fight" then
-        mapscene.map:startcombat(mapscene.focus, cursor.pos())
-        return nil, "select"
-      end
+      return confirm_event[mapscene.mode](mapscene, focused, tile)
     end
     return mapscene.focus, mapscene.mode
   end
