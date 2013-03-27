@@ -11,7 +11,7 @@ module ("ui.battle.background", package.seeall) do
 
   function load (graphics)
     -- Load tileset images
-    tileset.plains = graphics.newImage "resources/images/hextile.png"
+    tileset.plains = graphics.newImage "resources/images/hextile-grass.png"
     tileset.forest = graphics.newImage "resources/images/hextile2.png"
   end
 
