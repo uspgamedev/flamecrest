@@ -21,13 +21,12 @@ module ("battle", package.seeall) do
     for i = 1,self.height do
       self.tiles[i] = {}
       for j = 1,self.width do
-        if i == 3 and j == 3 then
-          self.tiles[i][j] = foresttile:new{}
-        else
-          self.tiles[i][j] = plainstile:new{}
-        end
+        self.tiles[i][j] = plainstile:new{}
       end
     end
+    self.tiles[2][3] = foresttile:new{}
+    self.tiles[3][4] = foresttile:new{}
+    self.tiles[3][3] = foresttile:new{}
   end
 
   function map:inside (pos)

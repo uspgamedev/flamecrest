@@ -19,7 +19,7 @@ module ("ui.battle.foreground", package.seeall) do
         pos.x, pos.y,
         0,
         64/sprite:getWidth(), 96/sprite:getHeight(),
-        sprite:getWidth()/2, sprite:getHeight() - 11)
+        sprite:getWidth()/2, sprite:getHeight() - 40)
     end
   end
 
