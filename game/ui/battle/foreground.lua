@@ -13,7 +13,13 @@ module ("ui.battle.foreground", package.seeall) do
 
   local function drawunit (pos, tile, graphics)
     if tile.unit and not tile.unit:isdead() then
-      graphics.draw(tile.unit.sprite, pos.x, pos.y, 0, 1, 1, 32, 85)
+      local sprite = tile.unit.sprite
+      graphics.draw(
+        sprite,
+        pos.x, pos.y,
+        0,
+        64/sprite:getWidth(), 96/sprite:getHeight(),
+        sprite:getWidth()/2, sprite:getHeight() - 11)
     end
   end
 
