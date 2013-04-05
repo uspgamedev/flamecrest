@@ -92,7 +92,18 @@ module ("battle", package.seeall) do
   function hexpos:tovec2 ()
     return vec2:new{97*self.j-97*self.i, 32*self.j+32*self.i}
   end
- 
+
+  function hexpos:adjacent_positions ()
+     return {
+        self + hexpos:new{ 0, 1},
+        self + hexpos:new{ 1, 1},
+        self + hexpos:new{ 1, 0},
+        self + hexpos:new{ 0,-1},
+        self + hexpos:new{-1,-1},
+        self + hexpos:new{-1, 0},
+     }
+  end
+
   function hexpos:set (i, j)
     self[1] = i
     self[2] = j

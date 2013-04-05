@@ -4,6 +4,7 @@ module ("ui.battle.controller", package.seeall) do
   require "ui.battle.cursor"
   require "battle.hexpos"
   require "vec2"
+  require "battle.pathfinding"
 
   local floor         = math.floor
   local vec2          = vec2
@@ -11,7 +12,7 @@ module ("ui.battle.controller", package.seeall) do
   local cursor        = ui.battle.cursor
   local confirm_event = {}
 
-  local function screentotile (origin, mousepos)
+  local function screentohexpos (origin, mousepos)
     local relpos = mousepos-origin
     local focus = hexpos:new {}
     relpos = relpos.x/192*vec2:new{1,-1} + relpos.y/64*vec2:new{1,1}
@@ -35,12 +36,15 @@ module ("ui.battle.controller", package.seeall) do
   end
 
   function movecursor (map, origin, pos, dt)
-    cursor.move(map, screentotile(origin, pos), dt)
+    cursor.move(map, screentohexpos(origin, pos), dt)
   end
-
-  function confirm_event.select (mapscene, focused, tile)
-    local focus = tile.unit and focused or nil
+  
+  function confirm_event.select (mapscene, tile_hexpos, tile)
+    local focus = tile.unit and tile_hexpos or nil
     if focus then
+      -- FAZER UMA BUSCA EM LARGURA AQUI
+      -- NA VERDADE NAO AQUI, MAS SABE COMO E'
+      focus.paths = battle.breadthfirstsearch(mapscene.map, tile.unit, tile_hexpos)
       return focus, "move"
     else
       return mapscene.focus, mapscene.mode
@@ -66,11 +70,12 @@ module ("ui.battle.controller", package.seeall) do
   end
 
   function confirm (mapscene, pos)
-    local focused = screentotile(mapscene.origin, pos)
-    local tile    = mapscene.map:tile(focused)
+    local tile_hexpos   = screentohexpos(mapscene.origin, pos)
+    local tile          = mapscene.map:tile(tile_hexpos)
+    print("confirm: " .. mapscene.mode)
     if tile then
-      return confirm_event[mapscene.mode](mapscene, focused, tile)
-    end
+      return confirm_event[mapscene.mode](mapscene, tile_hexpos, tile)
+   end
     return mapscene.focus, mapscene.mode
   end
   
