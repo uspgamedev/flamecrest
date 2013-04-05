@@ -77,7 +77,7 @@ module ("ui.battle.hud", package.seeall) do
           drawmarker(hexpos:new{i,j}, mapscene.focus, graphics,
                    function (dist)
                       local unit = mapscene:focusedunit()
-                      if unit.weapon and dist <= unit.weapon.maxrange then
+                      if unit.weapon and dist <= unit.weapon.maxrange and dist >= unit.weapon.minrange then
                          return atkglow
                       end
                       return nil
