@@ -41,7 +41,7 @@ module ("ui.battle.hud", package.seeall) do
     local pos = mappos:tovec2()
     -- TODO really reachable tiles
     local dist = (focus - mappos):size()
-    local effect = condition(dist)
+    local effect = condition(dist, mappos)
     if effect then
       graphics.setPixelEffect(effect)
       graphics.draw(spriteset.marker, pos.x, pos.y, 0, 1, 1, 64, 32)
@@ -58,10 +58,11 @@ module ("ui.battle.hud", package.seeall) do
     if mapscene.mode == "move" then
       map:pertile(function (i, j, tile)
         drawmarker(hexpos:new{i,j}, mapscene.focus, graphics,
-                   function (dist)
+                   function (dist, mappos)
                       local unit = mapscene:focusedunit()
                       local mvrange = unit.attributes.mv
-                      if dist <= mvrange then
+                      local pathdist = mapscene.focus.paths[mappos.i][mappos.j]
+                      if pathdist and pathdist <= mvrange then
                          return moveglow
                       elseif unit.weapon and dist <= mvrange + unit.weapon.maxrange then
                          return atkglow
