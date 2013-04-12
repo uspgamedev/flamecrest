@@ -153,6 +153,10 @@ function unit:hastrait(trait)
   return false
 end
 
+function unit:terraincost(terrainname)
+  return self.class.movecosts[terrainname]
+end
+
 function unit:canattackatrange (range)
   if range >= self.weapon.minrange and range <= self.weapon.maxrange then
     return true

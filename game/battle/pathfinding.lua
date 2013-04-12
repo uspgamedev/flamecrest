@@ -7,7 +7,7 @@ module ("battle", package.seeall) do
         resp[i] = {}
      end
      local queue = { { startpos, 0 } }
-     local maxdist = unit.attributes.mv - 1
+     local maxdist = unit.attributes.mv
      while #queue > 0 do
         local pos, d = unpack(table.remove(queue, 1))
         if d <= maxdist then
@@ -17,7 +17,11 @@ module ("battle", package.seeall) do
               for _,neighbor in ipairs(neighbors) do
                  if neighbor.i >= 1 and neighbor.i <= map.height and
                     neighbor.j >= 1 and neighbor.j <= map.width then
-                    table.insert(queue, {neighbor, d+1})
+                    local curtile = map:tile(neighbor)
+                    if curtile then
+                       local curdist = unit:terraincost(curtile.type.type)
+                       table.insert(queue, {neighbor, d+curdist})
+                    end
                  end
               end
            end
