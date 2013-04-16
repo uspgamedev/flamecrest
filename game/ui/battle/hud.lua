@@ -63,9 +63,24 @@ module ("ui.battle.hud", package.seeall) do
                       local mvrange = unit.attributes.mv
                       local pathdist = mapscene.focus.paths[mappos.i][mappos.j]
                       if pathdist and pathdist <= mvrange then
-                         return moveglow
-                      elseif unit.weapon and dist <= mvrange + unit.weapon.maxrange then
-                         return atkglow
+                        return moveglow
+                      elseif unit.weapon and (pathdist == nil or pathdist > mvrange) then
+                        local maxrange = unit.weapon.maxrange
+                        local minrange = unit.weapon.minrange
+                        for i = mappos.i - maxrange, mappos.i + maxrange do
+                          for j = mappos.j - maxrange, mappos.j + maxrange do
+                            local atkdist
+                            if mapscene.focus.paths[i] and mapscene.focus.paths[i][j] then
+                              atkdist = mapscene.focus.paths[i][j]
+                            end
+                            local pos = hexpos:new{i, j}
+                            rngdist = (pos - mappos):size()
+                            if atkdist and atkdist <= mvrange and rngdist <= maxrange and
+                               rngdist >= minrange then
+                              return atkglow
+                            end
+                          end
+                        end
                       end
                       return nil
                    end
