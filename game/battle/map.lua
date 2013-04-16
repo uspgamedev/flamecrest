@@ -21,12 +21,12 @@ module ("battle", package.seeall) do
     for i = 1,self.height do
       self.tiles[i] = {}
       for j = 1,self.width do
-        self.tiles[i][j] = plainstile:new{}
+        self.tiles[i][j] = tile:new{}
       end
     end
-    self.tiles[2][3] = foresttile:new{}
-    self.tiles[3][4] = foresttile:new{}
-    self.tiles[3][3] = foresttile:new{}
+    self.tiles[2][3] = tile:new{type = "forest"}
+    self.tiles[3][4] = tile:new{type = "forest"}
+    self.tiles[3][3] = tile:new{type = "forest"}
   end
 
   function map:inside (pos)
