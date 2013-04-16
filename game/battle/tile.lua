@@ -4,15 +4,14 @@ module ("battle", package.seeall) do
   require "battle.tilelist"
   
   local object = require "lux.object"
-
-  plainstile = object.new {
-    type  = tiletypes["plains"],
-    unit  = nil
+  
+  tile = object.new{
+    type = "plains",
+    unit = nil,
+    attributes = nil
   }
-
-  foresttile = object.new {
-    type = tiletypes["forest"],
-    unit = nil
-  }
-
+  
+  function tile:__init()
+    self.attributes = tiletypes[type]
+  end
 end
