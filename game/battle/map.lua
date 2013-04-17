@@ -77,8 +77,8 @@ module ("battle", package.seeall) do
     local targettile = self:tile(targetpos) 
     local attacker  = attackertile.unit
     local target    = targettile.unit
-    local attackerbonus = attackertile.type.bonus
-    local targetbonus = targettile.type.bonus
+    local attackerbonus = attackertile.attributes
+    local targetbonus = targettile.attributes
     if not attacker or not target then return end
     if attacker:isdead() or target:isdead() then return end
     local distance  = (targetpos:truncated() - originpos:truncated()):size()
@@ -86,7 +86,16 @@ module ("battle", package.seeall) do
       or distance > attacker.weapon.maxrange then
       return
    end
-   fight({attacker, attackerbonus}, {target, targetbonus}, distance)
+   local attackerinfo = {
+      unit = attacker,
+      terraininfo = attackerbonus
+   }
+   local defenderinfo = {
+      unit = target,
+      terraininfo = targetbonus
+   }   
+   print(targetbonus, attackerbonus)
+   fight(attackerinfo, defenderinfo, distance)
   end
 
 end

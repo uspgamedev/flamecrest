@@ -11,39 +11,39 @@ local pairs           = pairs
 module "combat" do
 
   local function muchfaster (attacker, defender)
-    if (attacker[1]:combatspeed() -4 >= defender[1]:combatspeed()) then
+    if (attacker.unit:combatspeed() -4 >= defender.unit:combatspeed()) then
       return attacker, defender
     end
-    if (defender[1]:combatspeed() -4 >= attacker[1]:combatspeed())  then
+    if (defender.unit:combatspeed() -4 >= attacker.unit:combatspeed())  then
       return defender, attacker
     end
     return false, false
   end
   
   local function calculatehit(attacker, defender)
-    local trianglehitbonus = weaponmechanics.trianglehitbonus(attacker[1].weapon,
-								defender[1].weapon)
-    local hit = attacker[1]:hit() + trianglehitbonus
-    local evade = defender[1]:evade() + defender[2].avoid --TODO: Ver se unidade avua
+    local trianglehitbonus = weaponmechanics.trianglehitbonus(attacker.unit.weapon,
+								defender.unit.weapon)
+    local hit = attacker.unit:hit() + trianglehitbonus
+    local evade = defender.unit:evade() + defender.terraininfo.avoid --TODO: Ver se unidade avua
     
     local hitchance = hit - evade
     return hitchance
   end
 
   local function calculatedmg(attacker, defender)
-    local trianglemtbonus = weaponmechanics.triangledmgbonus(attacker[1].weapon,
-							     defender[1].weapon)
-    local mt = attacker[1]:mtagainst(defender[1]) + trianglemtbonus
+    local trianglemtbonus = weaponmechanics.triangledmgbonus(attacker.unit.weapon,
+							     defender.unit.weapon)
+    local mt = attacker.unit:mtagainst(defender.unit) + trianglemtbonus
     --TODO: Diferenciar dano fisico e magico, e ver se unidade avua
-    local defense = defender[1].attributes[attacker[1]:defattr()] + defender[2].def
+    local defense = defender.unit.attributes[attacker.unit:defattr()] + defender.terraininfo.def
     
     local damage = mt - defense
     return damage
   end
 
   local function calculatecrit(attacker, defender)
-    local crit = attacker[1]:crit()
-    local dodge = defender[1]:dodge()
+    local crit = attacker.unit:crit()
+    local dodge = defender.unit:dodge()
 
     -- Damage stuff
     local critchance = crit - dodge
@@ -51,7 +51,7 @@ module "combat" do
   end
   
   local function strike (attacker, defender)
-    if not attacker[1].weapon or not attacker[1].weapon:hasdurability() then return end
+    if not attacker.unit.weapon or not attacker.unit.weapon:hasdurability() then return end
     local dealtdamage = false
 
     local damage = calculatedmg(attacker, defender)
@@ -66,8 +66,8 @@ module "combat" do
         damage = damage * 3
       end
       dealtdamage = damage > 0
-      defender[1]:takedamage(damage)
-      attacker[1].weapon:weardown()
+      defender.unit:takedamage(damage)
+      attacker.unit.weapon:weardown()
     end
     return dealtdamage
   end
@@ -86,30 +86,30 @@ module "combat" do
         enemy = attacker
       }
     }
-    if attacker[1]:canattackatrange(range) then
+    if attacker.unit:canattackatrange(range) then
       info[attacker].dealtdmg = strike(attacker, defender)
     end
-    if not defender[1]:isdead() and defender[1]:canattackatrange(range) then
+    if not defender.unit:isdead() and defender.unit:canattackatrange(range) then
       info[defender].dealtdmg = strike(defender, attacker)
     end
-    if not attacker[1]:isdead() and not defender[1]:isdead() then
+    if not attacker.unit:isdead() and not defender.unit:isdead() then
       local faster, slower = muchfaster(attacker, defender)
-      if (faster and faster[1]:canattackatrange(range)) then
+      if (faster and faster.unit:canattackatrange(range)) then
         local fastdealt = strike(info[faster].unit, info[slower].unit)
         info[faster].dealtdmg = info[faster].dealtdmg or fastdealt
       end
     end
     for _,v in pairs(info) do
       if v.dealtdmg then
-        if v.enemy[1]:isdead() then
-          exp = killexp(v.unit[1], v.enemy[1])
+        if v.enemy.unit:isdead() then
+          exp = killexp(v.unit.unit, v.enemy.unit)
         else
-          exp = combatexp(v.unit[1], v.enemy[1])
+          exp = combatexp(v.unit.unit, v.enemy.unit)
         end
       else
         exp = 1
       end
-      v.unit[1]:gainexp(exp)
+      v.unit.unit:gainexp(exp)
     end
   end
 
