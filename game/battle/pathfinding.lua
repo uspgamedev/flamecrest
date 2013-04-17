@@ -19,7 +19,7 @@ module ("battle", package.seeall) do
                     neighbor.j >= 1 and neighbor.j <= map.width then
                     local curtile = map:tile(neighbor)
                     if curtile then
-                       local curdist = unit:terraincost(curtile.type.type)
+                       local curdist = unit:terraincost(curtile.type)
                        table.insert(queue, {neighbor, d+curdist})
                     end
                  end
