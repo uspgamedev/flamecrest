@@ -12,6 +12,6 @@ module ("battle", package.seeall) do
   }
   
   function tile:__init()
-    self.attributes = tiletypes[type]
+    self.attributes = tiletypes[self.type]
   end
 end
