@@ -5,6 +5,7 @@ module ("battle", package.seeall) do
 
   require "battle.tile" 
   require "battle.hexpos"
+  require "battle.pathfinding"
   require "combat.fight"
 
   local assert  = assert
@@ -63,12 +64,16 @@ module ("battle", package.seeall) do
   function map:moveunit (originpos, targetpos)
     local unit        = self:tile(originpos).unit
     local targettile  = self:tile(targetpos)
+    local ttargetpos = targetpos:truncated()
     assert(unit)
     if targettile.unit then
       return targettile.unit == unit and originpos:truncated() or nil
     end
-    self:putunit(targetpos, unit)
-    self:putunit(originpos, nil)
+    local paths = breadthfirstsearch(self, unit, originpos)
+    if paths[ttargetpos.i] and paths[ttargetpos.i][ttargetpos.j] and paths[ttargetpos.i][ttargetpos.j] <= unit.attributes.mv then
+      self:putunit(targetpos, unit)
+      self:putunit(originpos, nil)
+    end
     return targetpos:truncated()
   end
 
