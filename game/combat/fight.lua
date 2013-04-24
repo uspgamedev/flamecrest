@@ -111,6 +111,7 @@ module "combat" do
       end
       v.unit.unit:gainexp(exp)
     end
+    return info
   end
 
 
