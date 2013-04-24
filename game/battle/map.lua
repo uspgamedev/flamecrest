@@ -28,6 +28,12 @@ module ("battle", package.seeall) do
     self.tiles[2][3] = tile:new{type = "forest"}
     self.tiles[3][4] = tile:new{type = "forest"}
     self.tiles[3][3] = tile:new{type = "forest"}
+    self.tiles[3][5] = tile:new{type = "forest"}
+    self.tiles[5][4] = tile:new{type = "forest"}
+    self.tiles[4][3] = tile:new{type = "forest"}
+    self.tiles[5][5] = nil
+    self.tiles[6][5] = nil
+    self.tiles[7][5] = nil
   end
 
   function map:inside (pos)

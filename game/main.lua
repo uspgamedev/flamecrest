@@ -9,9 +9,9 @@ require "ui.layout"
 math.randomseed(os.time())
 
 local function loadbattlemaplayout ()
-  local map = battle.map:new { width = 9, height = 9 }
-  for i=6,9 do
-    for j=1,i-5 do
+  local map = battle.map:new { width = 12, height = 12 }
+  for i=9,12 do
+    for j=1,i-7 do
       map.tiles[i][j] = nil
       map.tiles[j][i] = nil
     end

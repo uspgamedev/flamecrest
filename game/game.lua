@@ -52,7 +52,8 @@ module ("game", package.seeall) do
       str = 12,
       spd = 14,
       def = 6,
-      lck = 0
+      lck = 0,
+      mv = 3
     },
     weapon = weapon:new{
       weapontype = "lance",
@@ -70,7 +71,8 @@ module ("game", package.seeall) do
     attributes = attributes:new{
       maxhp = 20,
       skl = 20,
-      lck = 20
+      lck = 20,
+      mv = 3
     },
     weapon = weapon:new {
       hit = 40,
