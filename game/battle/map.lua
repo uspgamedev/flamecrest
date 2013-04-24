@@ -73,8 +73,9 @@ module ("battle", package.seeall) do
     if paths[ttargetpos.i] and paths[ttargetpos.i][ttargetpos.j] and paths[ttargetpos.i][ttargetpos.j] <= unit.attributes.mv then
       self:putunit(targetpos, unit)
       self:putunit(originpos, nil)
+      return ttargetpos
     end
-    return targetpos:truncated()
+    return nil
   end
 
   function map:startcombat (originpos, targetpos)
