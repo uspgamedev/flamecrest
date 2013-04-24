@@ -30,7 +30,10 @@ end
 -- @param component The removed component. Cannot be <code>nil</code>
 function remove (component)
   assert(component, "Cannot remove nil component.")
-  components:removecomponent(reverseindex[component])
+  components:remove(reverseindex[component])
+  for i=reverseindex[component],#components do
+    reverseindex[components[i]] = i
+  end
   reverseindex[component] = nil
 end
 
