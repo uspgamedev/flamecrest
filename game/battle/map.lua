@@ -107,7 +107,7 @@ module ("battle", package.seeall) do
       terraininfo = targetbonus
    }   
    print(targetbonus, attackerbonus)
-   fight(attackerinfo, defenderinfo, distance)
+   return fight(attackerinfo, defenderinfo, distance)
   end
 
 end

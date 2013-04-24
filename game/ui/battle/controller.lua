@@ -1,6 +1,8 @@
 
 module ("ui.battle.controller", package.seeall) do
 
+  require 'ui.layout'
+  require 'ui.common.dialog'
   require "ui.battle.cursor"
   require "battle.hexpos"
   require "vec2"
@@ -64,8 +66,44 @@ module ("ui.battle.controller", package.seeall) do
     return nil, "select"
   end
 
+  local function generate_log (battlelog)
+    local output = ""
+    for _,result in ipairs(battlelog) do
+      output = output..result.attacker.name.." attacks "..result.defender.name..":\n"
+      if result.hit then
+        if result.critical then
+          output = output.."It is a critical hit! "
+        end
+        output = output..result.damage.." damage is dealt.\n"
+      else
+        output = output.."He misses\n"
+      end
+      output = output.."\n"
+    end
+    for _,dead in ipairs(battlelog.deaths) do
+      output = output..dead.name.." dies.\n"
+    end
+    for unit,exp in pairs(battlelog.exp) do
+      output = output..unit.name.." earns "..exp.." experience points.\n"
+    end
+    return output
+  end
+
   function confirm_event.fight (mapscene)
-    mapscene.map:startcombat(mapscene.focus, cursor.pos())
+    local battlelog = mapscene.map:startcombat(mapscene.focus, cursor.pos())
+    local output = generate_log(battlelog)
+    -- TODO MAGIC NUMBERS!
+    ui.layout.add(
+      ui.common.dialog:new {
+        text = output,
+        pos  = vec2:new {
+          love.graphics.getWidth()/2 - 128,
+          love.graphics.getHeight()/2 - 128
+        },
+        size = vec2:new{256, 256},
+        format = 'left'
+      }
+    )
     return nil, "select"
   end
 

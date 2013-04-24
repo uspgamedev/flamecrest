@@ -7,6 +7,7 @@ local random          = math.random
 local floor           = math.floor
 local max             = math.max
 local pairs           = pairs
+local table           = table
 
 module "combat" do
 
@@ -24,18 +25,25 @@ module "combat" do
     local trianglehitbonus = weaponmechanics.trianglehitbonus(attacker.unit.weapon,
 								defender.unit.weapon)
     local hit = attacker.unit:hit() + trianglehitbonus
-    local evade = defender.unit:evade() + defender.terraininfo.avoid --TODO: Ver se unidade avua
+    --TODO: Ver se unidade avua
+    local evade = defender.unit:evade() + defender.terraininfo.avoid
     
     local hitchance = hit - evade
     return hitchance
   end
 
   local function calculatedmg(attacker, defender)
-    local trianglemtbonus = weaponmechanics.triangledmgbonus(attacker.unit.weapon,
-							     defender.unit.weapon)
+    local trianglemtbonus =
+      weaponmechanics.triangledmgbonus(
+        attacker.unit.weapon,
+        defender.unit.weapon
+      )
     local mt = attacker.unit:mtagainst(defender.unit) + trianglemtbonus
     --TODO: Diferenciar dano fisico e magico, e ver se unidade avua
-    local defense = defender.unit.attributes[attacker.unit:defattr()] + defender.terraininfo.def
+    local defense =
+      defender.unit.attributes[attacker.unit:defattr()]
+      +
+      defender.terraininfo.def
     
     local damage = mt - defense
     return damage
@@ -51,29 +59,39 @@ module "combat" do
   end
   
   local function strike (attacker, defender)
-    if not attacker.unit.weapon or not attacker.unit.weapon:hasdurability() then return end
+    if not attacker.unit.weapon or not attacker.unit.weapon:hasdurability() then
+      return error "Cannot attack without weapon."
+    end
+    local result = {
+      attacker = attacker.unit,
+      defender = defender.unit
+    }
     local dealtdamage = false
 
-    local damage = calculatedmg(attacker, defender)
-    local hitchance = calculatehit(attacker, defender)
-    local critchance = calculatecrit(attacker, defender)
+    local hitchance   = calculatehit(attacker, defender)
+    local damage      = calculatedmg(attacker, defender)
+    local critchance  = calculatecrit(attacker, defender)
 
     local rand1 = random(100)
     local rand2 = random(100)
-    if ((rand1 + rand2) / 2 <= hitchance) then --Double RNG as seen in the games!
+    if ((rand1 + rand2) / 2 <= hitchance) then --Double RNG as seen in the games
+      result.hit = true
       rand1 = random(100)
       if (rand1 <= critchance) then
         damage = damage * 3
+        result.critical = true
       end
       dealtdamage = damage > 0
       defender.unit:takedamage(damage)
+      result.damage = damage
       attacker.unit.weapon:weardown()
     end
-    return dealtdamage
+    return dealtdamage, result
   end
 
   function fight (attacker, defender, range)
     local exp = 1
+    local log = {}
     local info = {
       [attacker] = {
         unit = attacker,
@@ -86,23 +104,32 @@ module "combat" do
         enemy = attacker
       }
     }
+    local strike_result
     if attacker.unit:canattackatrange(range) then
-      info[attacker].dealtdmg = strike(attacker, defender)
+      info[attacker].dealtdmg, strike_result = strike(attacker, defender)
+      table.insert(log, strike_result)
     end
     if not defender.unit:isdead() and defender.unit:canattackatrange(range) then
-      info[defender].dealtdmg = strike(defender, attacker)
+      info[defender].dealtdmg, strike_result = strike(defender, attacker)
+      table.insert(log, strike_result)
     end
     if not attacker.unit:isdead() and not defender.unit:isdead() then
       local faster, slower = muchfaster(attacker, defender)
       if (faster and faster.unit:canattackatrange(range)) then
-        local fastdealt = strike(info[faster].unit, info[slower].unit)
+        local fastdealt
+        fastdealt, strike_result = strike(info[faster].unit, info[slower].unit)
+        table.insert(log, strike_result)
         info[faster].dealtdmg = info[faster].dealtdmg or fastdealt
       end
     end
+    -- One could generate the infotable from the log. That one is not me.
+    log.deaths = {}
+    log.exp    = {}
     for _,v in pairs(info) do
       if v.dealtdmg then
         if v.enemy.unit:isdead() then
           exp = killexp(v.unit.unit, v.enemy.unit)
+          table.insert(log.deaths, v.enemy.unit)
         else
           exp = combatexp(v.unit.unit, v.enemy.unit)
         end
@@ -110,7 +137,11 @@ module "combat" do
         exp = 1
       end
       v.unit.unit:gainexp(exp)
+      if not v.unit.unit:isdead() then
+        log.exp[v.unit.unit] = exp
+      end
     end
+    return log
   end
 
 
