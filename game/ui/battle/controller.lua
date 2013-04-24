@@ -65,7 +65,12 @@ module ("ui.battle.controller", package.seeall) do
   end
 
   function confirm_event.fight (mapscene)
-    mapscene.map:startcombat(mapscene.focus, cursor.pos())
+    local battlelog = mapscene.map:startcombat(mapscene.focus, cursor.pos())
+    local output = ""
+    for _,result in ipairs(battlelog) do
+      output = output..result.attacker.name.." attacks "..result.defender.name.."\n"
+    end
+    print(output)
     return nil, "select"
   end
 
