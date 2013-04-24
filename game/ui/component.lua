@@ -46,14 +46,17 @@ module ("ui", package.seeall) do
     -- Unimplemented component event.
   end
 
+  -- Positions are relative to the component
   function component:mousepressed (pos, button)
     -- Unimplemented component event.
   end
 
+  -- Positions are relative to the component
   function component:mousereleased (pos, button)
     -- Unimplemented component event.
   end
 
+  -- Positions are relative to the component
   function component:mousehover (pos, dt)
     -- Unimplemented component event.
   end
