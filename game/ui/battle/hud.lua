@@ -57,33 +57,36 @@ module ("ui.battle.hud", package.seeall) do
   function draw (map, mapscene, cursor, graphics)
     if mapscene.mode == "move" then
       map:pertile(function (i, j, tile)
-        drawmarker(hexpos:new{i,j}, mapscene.focus, graphics,
-                   function (dist, mappos)
-                      local unit = mapscene:focusedunit()
-                      local mvrange = unit.attributes.mv
-                      local pathdist = mapscene.focus.paths[mappos.i][mappos.j]
-                      if pathdist and pathdist <= mvrange then
-                        return moveglow
-                      elseif unit.weapon and (pathdist == nil or pathdist > mvrange) then
-                        local maxrange = unit.weapon.maxrange
-                        local minrange = unit.weapon.minrange
-                        for i = mappos.i - maxrange, mappos.i + maxrange do
-                          for j = mappos.j - maxrange, mappos.j + maxrange do
-                            local atkdist
-                            if mapscene.focus.paths[i] and mapscene.focus.paths[i][j] then
-                              atkdist = mapscene.focus.paths[i][j]
-                            end
-                            local pos = hexpos:new{i, j}
-                            rngdist = (pos - mappos):size()
-                            if atkdist and atkdist <= mvrange and rngdist <= maxrange and
-                               rngdist >= minrange then
-                              return atkglow
-                            end
-                          end
-                        end
-                      end
-                      return nil
-                   end
+        drawmarker(
+          hexpos:new{i,j},
+          mapscene.focus,
+          graphics,
+          function (dist, mappos)
+            local unit = mapscene:focusedunit()
+            local mvrange = unit.attributes.mv
+            local pathdist = mapscene.focus.paths[mappos.i][mappos.j]
+            if pathdist and pathdist <= mvrange then
+              return moveglow
+            elseif unit.weapon and (pathdist == nil or pathdist > mvrange) then
+              local maxrange = unit.weapon.maxrange
+              local minrange = unit.weapon.minrange
+              for i = mappos.i - maxrange, mappos.i + maxrange do
+                for j = mappos.j - maxrange, mappos.j + maxrange do
+                  local atkdist
+                  if mapscene.focus.paths[i] and mapscene.focus.paths[i][j] then
+                    atkdist = mapscene.focus.paths[i][j]
+                  end
+                  local pos = hexpos:new{i, j}
+                  rngdist = (pos - mappos):size()
+                  if atkdist and atkdist <= mvrange and rngdist <= maxrange and
+                     rngdist >= minrange then
+                    return atkglow
+                  end
+                end
+              end
+            end
+            return nil
+          end
         )
       end)
     end
@@ -91,13 +94,15 @@ module ("ui.battle.hud", package.seeall) do
       if mapscene.mode == "fight" then
         map:pertile(function (i, j, tile)
           drawmarker(hexpos:new{i,j}, mapscene.focus, graphics,
-                   function (dist)
-                      local unit = mapscene:focusedunit()
-                      if unit.weapon and dist <= unit.weapon.maxrange and dist >= unit.weapon.minrange then
-                         return atkglow
-                      end
-                      return nil
-                   end
+            function (dist)
+              local unit = mapscene:focusedunit()
+              -- TODO there is a function that does this already?
+              if unit.weapon and dist <= unit.weapon.maxrange
+                             and dist >= unit.weapon.minrange then
+                return atkglow
+              end
+              return nil
+            end
           )
         end)
       end

@@ -49,6 +49,7 @@ module ("ui.battle", package.seeall) do
     end
   end
 
+  -- TODO: Remove this update
   function mapscene:update (dt)
     if self.focus then
       local pos = self.origin + self.focus:tovec2()

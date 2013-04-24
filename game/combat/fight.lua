@@ -25,18 +25,25 @@ module "combat" do
     local trianglehitbonus = weaponmechanics.trianglehitbonus(attacker.unit.weapon,
 								defender.unit.weapon)
     local hit = attacker.unit:hit() + trianglehitbonus
-    local evade = defender.unit:evade() + defender.terraininfo.avoid --TODO: Ver se unidade avua
+    --TODO: Ver se unidade avua
+    local evade = defender.unit:evade() + defender.terraininfo.avoid
     
     local hitchance = hit - evade
     return hitchance
   end
 
   local function calculatedmg(attacker, defender)
-    local trianglemtbonus = weaponmechanics.triangledmgbonus(attacker.unit.weapon,
-							     defender.unit.weapon)
+    local trianglemtbonus =
+      weaponmechanics.triangledmgbonus(
+        attacker.unit.weapon,
+        defender.unit.weapon
+      )
     local mt = attacker.unit:mtagainst(defender.unit) + trianglemtbonus
     --TODO: Diferenciar dano fisico e magico, e ver se unidade avua
-    local defense = defender.unit.attributes[attacker.unit:defattr()] + defender.terraininfo.def
+    local defense =
+      defender.unit.attributes[attacker.unit:defattr()]
+      +
+      defender.terraininfo.def
     
     local damage = mt - defense
     return damage
@@ -67,7 +74,7 @@ module "combat" do
 
     local rand1 = random(100)
     local rand2 = random(100)
-    if ((rand1 + rand2) / 2 <= hitchance) then --Double RNG as seen in the games!
+    if ((rand1 + rand2) / 2 <= hitchance) then --Double RNG as seen in the games
       result.hit = true
       rand1 = random(100)
       if (rand1 <= critchance) then

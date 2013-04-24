@@ -1,6 +1,8 @@
 
 module ("ui.battle.controller", package.seeall) do
 
+  require 'ui.layout'
+  require 'ui.common.dialog'
   require "ui.battle.cursor"
   require "battle.hexpos"
   require "vec2"
@@ -70,7 +72,18 @@ module ("ui.battle.controller", package.seeall) do
     for _,result in ipairs(battlelog) do
       output = output..result.attacker.name.." attacks "..result.defender.name.."\n"
     end
-    print(output)
+    -- TODO MAGIC NUMBERS!
+    ui.layout.add(
+      ui.common.dialog:new {
+        text = output,
+        pos  = vec2:new {
+          love.graphics.getWidth()/2 - 128,
+          love.graphics.getHeight()/2 - 128
+        },
+        size = vec2:new{256, 256}
+      }
+    )
+
     return nil, "select"
   end
 
