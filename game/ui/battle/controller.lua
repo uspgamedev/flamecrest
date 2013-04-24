@@ -70,7 +70,22 @@ module ("ui.battle.controller", package.seeall) do
     local battlelog = mapscene.map:startcombat(mapscene.focus, cursor.pos())
     local output = ""
     for _,result in ipairs(battlelog) do
-      output = output..result.attacker.name.." attacks "..result.defender.name.."\n"
+      output = output..result.attacker.name.." attacks "..result.defender.name..":\n"
+      if result.hit then
+        if result.critical then
+          output = output.."It is a critical hit! "
+        end
+        output = output..result.damage.." damage is dealt.\n"
+      else
+        output = output.."He misses\n"
+      end
+      output = output.."\n"
+    end
+    for _,dead in ipairs(battlelog.deaths) do
+      output = output..dead.name.." dies.\n"
+    end
+    for unit,exp in pairs(battlelog.exp) do
+      output = output..unit.name.." earns "..exp.." experience points.\n"
     end
     -- TODO MAGIC NUMBERS!
     ui.layout.add(
@@ -80,7 +95,8 @@ module ("ui.battle.controller", package.seeall) do
           love.graphics.getWidth()/2 - 128,
           love.graphics.getHeight()/2 - 128
         },
-        size = vec2:new{256, 256}
+        size = vec2:new{256, 256},
+        format = 'left'
       }
     )
 

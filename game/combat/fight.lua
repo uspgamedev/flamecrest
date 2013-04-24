@@ -123,10 +123,13 @@ module "combat" do
       end
     end
     -- One could generate the infotable from the log. That one is not me.
+    log.deaths = {}
+    log.exp    = {}
     for _,v in pairs(info) do
       if v.dealtdmg then
         if v.enemy.unit:isdead() then
           exp = killexp(v.unit.unit, v.enemy.unit)
+          table.insert(log.deaths, v.enemy.unit)
         else
           exp = combatexp(v.unit.unit, v.enemy.unit)
         end
@@ -134,6 +137,9 @@ module "combat" do
         exp = 1
       end
       v.unit.unit:gainexp(exp)
+      if not v.unit.unit:isdead() then
+        log.exp[v.unit.unit] = exp
+      end
     end
     return log
   end
