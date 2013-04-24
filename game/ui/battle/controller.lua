@@ -66,8 +66,7 @@ module ("ui.battle.controller", package.seeall) do
     return nil, "select"
   end
 
-  function confirm_event.fight (mapscene)
-    local battlelog = mapscene.map:startcombat(mapscene.focus, cursor.pos())
+  local function generate_log (battlelog)
     local output = ""
     for _,result in ipairs(battlelog) do
       output = output..result.attacker.name.." attacks "..result.defender.name..":\n"
@@ -87,6 +86,12 @@ module ("ui.battle.controller", package.seeall) do
     for unit,exp in pairs(battlelog.exp) do
       output = output..unit.name.." earns "..exp.." experience points.\n"
     end
+    return output
+  end
+
+  function confirm_event.fight (mapscene)
+    local battlelog = mapscene.map:startcombat(mapscene.focus, cursor.pos())
+    local output = generate_log(battlelog)
     -- TODO MAGIC NUMBERS!
     ui.layout.add(
       ui.common.dialog:new {
@@ -99,7 +104,6 @@ module ("ui.battle.controller", package.seeall) do
         format = 'left'
       }
     )
-
     return nil, "select"
   end
 
