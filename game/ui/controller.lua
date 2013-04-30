@@ -2,7 +2,7 @@
 
 local object = require "lux.object"
 
-require "vec2"
+require "common.vec2"
 
 local vec2  = vec2
 local mouse = love.mouse

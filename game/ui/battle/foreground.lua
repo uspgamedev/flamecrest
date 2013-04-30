@@ -1,7 +1,7 @@
 
 module ("ui.battle.foreground", package.seeall) do
 
-  require "vec2"
+  require "common.vec2"
   require "battle.hexpos"
 
   local vec2    = vec2

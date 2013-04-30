@@ -1,6 +1,6 @@
 
 require "game"
-require "vec2"
+require "common.vec2"
 require "ui.battle.mapscene"
 require "battle.map"
 require "battle.hexpos"

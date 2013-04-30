@@ -3,7 +3,7 @@ module ("ui.common", package.seeall) do
 
   require "ui.layout"
   require "ui.component"
-  require "vec2"
+  require "common.vec2"
 
   local vec2      = vec2
   local print     = print

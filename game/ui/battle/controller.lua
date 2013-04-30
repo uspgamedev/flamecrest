@@ -5,7 +5,7 @@ module ("ui.battle.controller", package.seeall) do
   require 'ui.common.dialog'
   require "ui.battle.cursor"
   require "battle.hexpos"
-  require "vec2"
+  require "common.vec2"
   require "battle.pathfinding"
 
   local floor         = math.floor

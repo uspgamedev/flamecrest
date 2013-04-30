@@ -1,7 +1,7 @@
 
 module ("ui.battle", package.seeall) do
 
-  require "vec2"
+  require "common.vec2"
   require "battle.hexpos"
   require "ui.layout"
   require "ui.component"

@@ -1,7 +1,7 @@
 
 module ("ui.battle.hud", package.seeall) do
 
-  require "vec2"
+  require "common.vec2"
   require "battle.hexpos"
   require "ui.battle.cursor"
   require "ui.battle.unitmenu"

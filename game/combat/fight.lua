@@ -1,8 +1,8 @@
 
-require "weaponmechanics"
+require "common.weaponmechanics"
 
 local print           = print
-local weaponmechanics = weaponmechanics
+local weaponmechanics = common.weaponmechanics
 local random          = math.random
 local floor           = math.floor
 local max             = math.max

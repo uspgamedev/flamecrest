@@ -1,7 +1,7 @@
 
 module ("battle", package.seeall) do
 
-  require "vec2"
+  require "common.vec2"
 
   local object        = require "lux.object"
   local type          = type

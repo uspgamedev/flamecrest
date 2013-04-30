@@ -1,5 +1,5 @@
 
-module ("weaponmechanics", package.seeall)
+module ("common.weaponmechanics", package.seeall)
 
 local weapontriangle = {
    sword = {

@@ -2,7 +2,7 @@
 module ("ui", package.seeall) do
   
   require "lux.object"
-  require "vec2"
+  require "common.vec2"
 
   local vec2    = vec2
   local object  = lux.object

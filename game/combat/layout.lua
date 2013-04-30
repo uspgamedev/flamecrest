@@ -1,9 +1,9 @@
 
 require "lux.table"
-require "vec2"
+require "common.vec2"
 require "ui.layout"
 require "ui.component"
-require "attributes"
+require "common.attributes"
 require "combat.controller"
 
 local ui          = ui
