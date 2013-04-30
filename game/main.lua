@@ -1,15 +1,15 @@
 
 require "game"
 require "common.vec2"
-require "ui.battle.mapscene"
-require "battle.map"
-require "battle.hexpos"
 require "ui.layout"
+require "ui.battle.mapscene"
+require "model.battle.map"
+require "model.battle.hexpos"
 
 math.randomseed(os.time())
 
 local function loadbattlemaplayout ()
-  local map = battle.map:new { width = 12, height = 12 }
+  local map = model.battle.map:new { width = 12, height = 12 }
   for i=9,12 do
     for j=1,i-7 do
       map.tiles[i][j] = nil

@@ -1,15 +1,15 @@
 
-module ("battle", package.seeall) do
+module ("model.battle", package.seeall) do
 
   local object = require "lux.object"
 
-  require "battle.tile" 
-  require "battle.hexpos"
-  require "battle.pathfinding"
-  require "combat.fight"
+  require "model.battle.tile" 
+  require "model.battle.hexpos"
+  require "model.battle.pathfinding"
+  require "model.combat.fight"
 
   local assert  = assert
-  local fight   = combat.fight
+  local fight   = model.combat.fight
 
   map = object.new {
     width   = 5,
@@ -84,7 +84,7 @@ module ("battle", package.seeall) do
     return nil
   end
 
-  function map:startcombat (originpos, targetpos)
+  function map:startcombat(originpos, targetpos)
     local attackertile = self:tile(originpos)
     local targettile = self:tile(targetpos) 
     local attacker  = attackertile.unit

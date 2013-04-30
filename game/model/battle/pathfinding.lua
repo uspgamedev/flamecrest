@@ -1,5 +1,5 @@
 
-module ("battle", package.seeall) do
+module ("model.battle", package.seeall) do
   
   function breadthfirstsearch(map, unit, startpos)
      local resp = {}

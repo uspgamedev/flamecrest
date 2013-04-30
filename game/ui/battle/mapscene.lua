@@ -2,7 +2,7 @@
 module ("ui.battle", package.seeall) do
 
   require "common.vec2"
-  require "battle.hexpos"
+  require "model.battle.hexpos"
   require "ui.layout"
   require "ui.component"
   require "ui.battle.controller"

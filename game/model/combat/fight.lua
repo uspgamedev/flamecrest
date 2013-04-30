@@ -9,7 +9,7 @@ local max             = math.max
 local pairs           = pairs
 local table           = table
 
-module "combat" do
+module "model.combat" do
 
   local function muchfaster (attacker, defender)
     if (attacker.unit:combatspeed() -4 >= defender.unit:combatspeed()) then

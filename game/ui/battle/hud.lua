@@ -2,15 +2,15 @@
 module ("ui.battle.hud", package.seeall) do
 
   require "common.vec2"
-  require "battle.hexpos"
+  require "model.battle.hexpos"
   require "ui.battle.cursor"
   require "ui.battle.unitmenu"
 
   local string      = string
   local vec2        = vec2
-  local hexpos      = battle.hexpos
-  local cursor      = ui,battle.cursor
-  local unitmenu    = ui,battle.unitmenu
+  local hexpos      = model.battle.hexpos
+  local cursor      = ui,model.battle.cursor
+  local unitmenu    = ui,model.battle.unitmenu
 
   local spriteset = {}
   local markereffectcode = [[

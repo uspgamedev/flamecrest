@@ -4,14 +4,14 @@ require "common.vec2"
 require "ui.layout"
 require "ui.component"
 require "common.attributes"
-require "combat.controller"
+require "model.combat.controller"
 
 local ui          = ui
 local vec2        = vec2
 local attributes  = attributes
 local math        = math
 
-module "combat" do
+module "model.combat. do
 
   layout = ui.layout:new {
     margin = { left = 32, top = 96 },

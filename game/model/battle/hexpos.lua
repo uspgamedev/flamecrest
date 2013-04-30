@@ -1,5 +1,5 @@
 
-module ("battle", package.seeall) do
+module ("model.battle", package.seeall) do
 
   require "common.vec2"
 
