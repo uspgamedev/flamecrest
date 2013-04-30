@@ -21,7 +21,7 @@ local function loadbattlemaplayout ()
 end
 
 function love.load ()
-  love.graphics.setFont(love.graphics.newFont("fonts/Verdana.ttf", 14))
+  love.graphics.setFont(love.graphics.newFont("resources/fonts/Verdana.ttf", 14))
   love.graphics.setDefaultImageFilter("nearest", "nearest")
   ui.layout.add(ui.battle.mapscene)
   loadbattlemaplayout()
