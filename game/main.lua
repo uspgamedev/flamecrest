@@ -15,7 +15,10 @@ function love.load ()
   love.graphics.setFont(love.graphics.newFont("resources/fonts/Verdana.ttf", 14))
   love.graphics.setDefaultImageFilter("nearest", "nearest")
   
-  game.controller = controller.battle:new{ width = 12, height = 12 }
+  game.controller = controller.battle:new{ 
+    width = 12, height = 12, 
+    interface = ui.battle.mapscene
+  }
 
   ui.layout.add(ui.battle.mapscene)
   ui.battle.mapscene:load(love.graphics)

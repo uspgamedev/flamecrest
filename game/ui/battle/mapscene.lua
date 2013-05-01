@@ -16,11 +16,11 @@ module ("ui.battle", package.seeall) do
   local layout  = ui.layout
 
   mapscene = ui.component:new {
-    map     = nil,
-    origin  = vec2:new {512,100},
-    focus   = nil,
-    mode    = "select",
-    scale   = 0.75
+    controller = nil,
+    origin     = vec2:new {512,100},
+    focus      = nil,
+    mode       = "select",
+    scale      = 0.75
   }
 
   function mapscene:load (graphics)
@@ -32,13 +32,13 @@ module ("ui.battle", package.seeall) do
   function mapscene:setup (controller, graphics)
     self.active       = true
     self.size:set(graphics.getWidth(), graphics.getHeight())
-    self.map          = controller.map
+    self.controller   = controller
     unitmenu.mapscene = self
     layout.add(unitmenu)
   end
 
   function mapscene:mousehover (pos, dt)
-    controller.movecursor(self.map, self.origin, pos / self.scale, dt)
+    controller.movecursor(self.controller.map, self.origin, pos / self.scale, dt)
   end
 
   function mapscene:mousereleased (pos, button)
@@ -67,19 +67,19 @@ module ("ui.battle", package.seeall) do
   end
   
   function mapscene:focusedunit ()
-    return self.map:tile(self.focus).unit
+    return self.controller.map:tile(self.focus).unit
   end
 
   function mapscene:targetedunit ()
-    return self.map:tile(cursor.pos()).unit
+    return self.controller.map:tile(cursor.pos()).unit
   end
 
   function mapscene:draw (graphics)
     graphics.scale(self.scale, self.scale)
     graphics.translate(self.origin:get())
-    background.draw(self.map, graphics)
-    hud.draw(self.map, self, cursor, graphics)
-    foreground.draw(self.map, graphics)
+    background.draw(self.controller.map, graphics)
+    hud.draw(self.controller.map, self, cursor, graphics)
+    foreground.draw(self.controller.map, graphics)
   end
 
 end

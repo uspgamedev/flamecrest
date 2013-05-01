@@ -46,7 +46,7 @@ module ("ui.battle.controller", package.seeall) do
     if focus then
       -- FAZER UMA BUSCA EM LARGURA AQUI
       -- NA VERDADE NAO AQUI, MAS SABE COMO E'
-      focus.paths = model.battle.breadthfirstsearch(mapscene.map, tile.unit, tile_hexpos)
+      focus.paths = model.battle.breadthfirstsearch(mapscene.controller.map, tile.unit, tile_hexpos)
       return focus, "move"
     else
       return mapscene.focus, mapscene.mode
@@ -54,62 +54,22 @@ module ("ui.battle.controller", package.seeall) do
   end
 
   function confirm_event.move (mapscene)
-    local newpos = mapscene.map:moveunit(mapscene.focus, cursor.pos())
-    if newpos then
-      return newpos, "action"
-    else
-      return mapscene.focus, mapscene.mode
-    end
+    mapscene.controller:moveunit(mapscene.focus, cursor.pos())
+    return nil, "select"
   end
 
   function confirm_event.action ()
     return nil, "select"
   end
 
-  local function generate_log (battlelog)
-    local output = ""
-    for _,result in ipairs(battlelog) do
-      output = output..result.attacker.name.." attacks "..result.defender.name..":\n"
-      if result.hit then
-        if result.critical then
-          output = output.."It is a critical hit! "
-        end
-        output = output..result.damage.." damage is dealt.\n"
-      else
-        output = output.."He misses\n"
-      end
-      output = output.."\n"
-    end
-    for _,dead in ipairs(battlelog.deaths) do
-      output = output..dead.name.." dies.\n"
-    end
-    for unit,exp in pairs(battlelog.exp) do
-      output = output..unit.name.." earns "..exp.." experience points.\n"
-    end
-    return output
-  end
-
   function confirm_event.fight (mapscene)
-    local battlelog = mapscene.map:startcombat(mapscene.focus, cursor.pos())
-    local output = generate_log(battlelog)
-    -- TODO MAGIC NUMBERS!
-    ui.layout.add(
-      ui.common.dialog:new {
-        text = output,
-        pos  = vec2:new {
-          love.graphics.getWidth()/2 - 128,
-          love.graphics.getHeight()/2 - 128
-        },
-        size = vec2:new{256, 256},
-        format = 'left'
-      }
-    )
+    mapscene.controller:startcombat(mapscene.focus, cursor.pos())
     return nil, "select"
   end
 
   function confirm (mapscene, pos)
     local tile_hexpos   = screentohexpos(mapscene.origin, pos)
-    local tile          = mapscene.map:tile(tile_hexpos)
+    local tile          = mapscene.controller.map:tile(tile_hexpos)
     print("confirm: " .. mapscene.mode)
     if tile then
       return confirm_event[mapscene.mode](mapscene, tile_hexpos, tile)
