@@ -1,7 +1,7 @@
 
 require "lux.object"
-require "class"
-require "attributes"
+require "common.class"
+require "common.attributes"
 require "ui.component"
 
 unit = lux.object.new {

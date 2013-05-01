@@ -1,11 +1,11 @@
 
 module ("ui.battle.background", package.seeall) do
 
-  require "vec2"
-  require "battle.hexpos"
+  require "common.vec2"
+  require "model.battle.hexpos"
 
   local vec2    = vec2
-  local hexpos  = battle.hexpos
+  local hexpos  = model.battle.hexpos
 
   local tileset = {}
 

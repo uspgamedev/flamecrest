@@ -4,13 +4,13 @@ module ("ui.battle.controller", package.seeall) do
   require 'ui.layout'
   require 'ui.common.dialog'
   require "ui.battle.cursor"
-  require "battle.hexpos"
-  require "vec2"
-  require "battle.pathfinding"
+  require "common.vec2"
+  require "model.battle.hexpos"
+  require "model.battle.pathfinding"
 
   local floor         = math.floor
   local vec2          = vec2
-  local hexpos        = battle.hexpos
+  local hexpos        = model.battle.hexpos
   local cursor        = ui.battle.cursor
   local confirm_event = {}
 
@@ -46,7 +46,7 @@ module ("ui.battle.controller", package.seeall) do
     if focus then
       -- FAZER UMA BUSCA EM LARGURA AQUI
       -- NA VERDADE NAO AQUI, MAS SABE COMO E'
-      focus.paths = battle.breadthfirstsearch(mapscene.map, tile.unit, tile_hexpos)
+      focus.paths = model.battle.breadthfirstsearch(mapscene.map, tile.unit, tile_hexpos)
       return focus, "move"
     else
       return mapscene.focus, mapscene.mode

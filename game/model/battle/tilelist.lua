@@ -1,7 +1,7 @@
 
 local object = require "lux.object"
 
-module "battle" do
+module "model.battle" do
   
   tiletypes = {
     plains = object.new {

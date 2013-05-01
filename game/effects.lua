@@ -1,5 +1,5 @@
 
-require "unit"
+require "common.unit"
 
 function heal (healer, healee)
   if not healer.weapon or not healer.weapon:hasdurability() then return end

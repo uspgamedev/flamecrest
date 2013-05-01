@@ -2,7 +2,7 @@
 module ("ui.battle", package.seeall) do
 
   require "ui.common.listmenu"
-  require "vec2"
+  require "common.vec2"
 
   local listmenu    = ui.common.listmenu
   local vec2        = vec2

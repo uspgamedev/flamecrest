@@ -1,10 +1,10 @@
 
 module ("game", package.seeall) do
 
-  require "vec2"
-  require "unit"
-  require "class"
-  require "weapon"
+  require "common.vec2"
+  require "common.unit"
+  require "common.class"
+  require "common.weapon"
   require "effects"
   require "ui.layout"
 

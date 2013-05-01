@@ -1,7 +1,7 @@
 
-module ("battle", package.seeall) do
+module ("model.battle", package.seeall) do
 
-  require "battle.tilelist"
+  require "model.battle.tilelist"
   
   local object = require "lux.object"
   

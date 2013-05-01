@@ -1,7 +1,7 @@
 
 require "lux.object"
-require "attributes"
-require "terraincosts"
+require "common.attributes"
+require "common.terraincosts"
 
 class = lux.object.new{
    name = "Soldier",

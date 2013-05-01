@@ -1,17 +1,17 @@
 
 require "ui.controller"
-require "combat.fight"
-require "combat.actions"
+require "model.combat.fight"
+require "model.combat.actions"
 require "effects"
 require "game"
 
 local ui      = ui
 local game    = game
 local heal    = heal
-local fight   = combat.fight
+local fight   = model.combat.fight
 local event   = love.event
 
-module "combat" do
+module "model.combat. do
 
   controller = ui.controller:new{}
 
@@ -78,7 +78,7 @@ module "combat" do
   end
 
   function controller.keyactions.released.tab ()
-    game.changetolayout "battle"
+    game.changetolayout "model.battle.
   end
 
 end

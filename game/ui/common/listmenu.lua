@@ -4,7 +4,7 @@ module ("ui.common", package.seeall) do
   local array = require "lux.table"
 
   require "ui.component"
-  require "vec2"
+  require "common.vec2"
 
   local vec2      = vec2
   local ipairs    = ipairs
