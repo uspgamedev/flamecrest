@@ -5,19 +5,14 @@ require "ui.layout"
 require "ui.battle.mapscene"
 require "model.battle.map"
 require "model.battle.hexpos"
+require "controller.battle"
 
 math.randomseed(os.time())
 
 local function loadbattlemaplayout ()
-  local map = model.battle.map:new { width = 12, height = 12 }
-  for i=9,12 do
-    for j=1,i-7 do
-      map.tiles[i][j] = nil
-      map.tiles[j][i] = nil
-    end
-  end
+  local battlecontroller = controller.battle:new{ width = 12, height = 12 }
   ui.battle.mapscene:load(love.graphics)
-  ui.battle.mapscene:setup(map, love.graphics)
+  ui.battle.mapscene:setup(battlecontroller.map, love.graphics)
 end
 
 function love.load ()
@@ -25,8 +20,6 @@ function love.load ()
   love.graphics.setDefaultImageFilter("nearest", "nearest")
   ui.layout.add(ui.battle.mapscene)
   loadbattlemaplayout()
-  ui.battle.mapscene.map.tiles[5][1].unit = game.unit1
-  ui.battle.mapscene.map.tiles[5][9].unit = game.unit2
 end
 
 love.update         = game.update
