@@ -29,10 +29,10 @@ module ("ui.battle", package.seeall) do
     foreground.load()
   end
 
-  function mapscene:setup (map, graphics)
+  function mapscene:setup (controller, graphics)
     self.active       = true
     self.size:set(graphics.getWidth(), graphics.getHeight())
-    self.map          = map
+    self.map          = controller.map
     unitmenu.mapscene = self
     layout.add(unitmenu)
   end

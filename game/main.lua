@@ -9,17 +9,17 @@ require "controller.battle"
 
 math.randomseed(os.time())
 
-local function loadbattlemaplayout ()
-  local battlecontroller = controller.battle:new{ width = 12, height = 12 }
-  ui.battle.mapscene:load(love.graphics)
-  ui.battle.mapscene:setup(battlecontroller.map, love.graphics)
-end
+local battlecontroller
 
 function love.load ()
   love.graphics.setFont(love.graphics.newFont("resources/fonts/Verdana.ttf", 14))
   love.graphics.setDefaultImageFilter("nearest", "nearest")
+  
+  game.controller = controller.battle:new{ width = 12, height = 12 }
+
   ui.layout.add(ui.battle.mapscene)
-  loadbattlemaplayout()
+  ui.battle.mapscene:load(love.graphics)
+  ui.battle.mapscene:setup(game.controller, love.graphics)
 end
 
 love.update         = game.update

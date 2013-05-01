@@ -7,10 +7,12 @@ module ("game", package.seeall) do
   local mouse         = love.mouse
   local vec2          = vec2
   local ui            = ui
+  controller = nil
 
   -- LÖVE callbacks --
 
   function update (dt)
+    controller:update(dt)
     ui.layout.mouseevent("mousehover", vec2:new{mouse.getPosition()}, dt)
     ui.layout.updateevent(dt)
   end
