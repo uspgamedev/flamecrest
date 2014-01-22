@@ -22,7 +22,7 @@ end
 
 function love.load ()
   love.graphics.setFont(love.graphics.newFont("resources/fonts/Verdana.ttf", 14))
-  love.graphics.setDefaultImageFilter("nearest", "nearest")
+  love.graphics.setDefaultFilter("nearest", "nearest")
   ui.layout.add(ui.battle.mapscene)
   loadbattlemaplayout()
   ui.battle.mapscene.map.tiles[5][1].unit = game.unit1

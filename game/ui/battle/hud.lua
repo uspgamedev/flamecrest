@@ -23,7 +23,7 @@ module ("ui.battle.hud", package.seeall) do
   local moveglow, atkglow
 
   local function makemarkereffect (graphics, r, g, b)
-    return graphics.newPixelEffect(string.format(markereffectcode, r, g, b))
+    return graphics.newShader(string.format(markereffectcode, r, g, b))
   end
 
   function load (graphics)
@@ -43,9 +43,9 @@ module ("ui.battle.hud", package.seeall) do
     local dist = (focus - mappos):size()
     local effect = condition(dist, mappos)
     if effect then
-      graphics.setPixelEffect(effect)
+      graphics.setShader(effect)
       graphics.draw(spriteset.marker, pos.x, pos.y, 0, 1, 1, 64, 32)
-      graphics.setPixelEffect()
+      graphics.setShader()
     end
   end
 
