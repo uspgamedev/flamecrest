@@ -65,7 +65,7 @@ module ("ui.battle", package.seeall) do
       unitmenu.active = false
     end
   end
-  
+
   function mapscene:focusedunit ()
     return self.map:tile(self.focus).unit
   end

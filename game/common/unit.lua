@@ -83,12 +83,12 @@ end
 function unit:promote(class)
   print("WILL PROMOTE!!!!")
   if not class then return end
-  print("PROMOTING") 
+  print("PROMOTING")
   self.class = class
   attributes.foreachattr(
     function (_,attr)
       if self.attributes[attr] < self.class.caps[attr] then
-         self.attributes[attr] = self.attributes[attr] + self.class.promotionbonus[attr] --GRAA LINHA HORRIVEL 
+         self.attributes[attr] = self.attributes[attr] + self.class.promotionbonus[attr] --GRAA LINHA HORRIVEL
       end
     end
   )
@@ -119,7 +119,7 @@ function unit:getskl()
   if self.rescuedunit then
      skill = math.ceil(skill/2)
      print("rescuedskill "..skill)
-  end 
+  end
   print("")
   return skill
 end
@@ -165,7 +165,7 @@ function unit:canattackatrange (range)
 end
 
 function unit:combatspeed ()
-  local wgtmod = math.floor(math.max(0, (self.weapon.wgt - self.attributes.str + self.attributes.con)/2))
+  local wgtmod = math.floor(math.max(0, self.weapon.wgt - (self.attributes.str + self.attributes.con)/2))
   local cspeed = self:getspd() - wgtmod
   print ("combastspeed "..cspeed)
   print ("")
@@ -182,7 +182,7 @@ end
 
 
 function unit:hit ()
-  local hit = 2 * self:getskl() + self.attributes.lck + self.weapon.hit 
+  local hit = 2 * self:getskl() + self.attributes.lck + self.weapon.hit
   return hit
 end
 
@@ -203,7 +203,7 @@ function unit:dodge ()
 end
 
 function unit:expbase ()
-  return self.lv + self.class.exptierbonus 
+  return self.lv + self.class.exptierbonus
 end
 
 function unit:exppower ()
