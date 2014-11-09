@@ -20,7 +20,7 @@ function love.conf(t)
   t.window.fullscreentype = 'normal'
   t.window.vsync = true       -- Enable vertical sync (boolean)
   t.window.fsaa = 0           -- The number of FSAA-buffers (number)
-  t.window.display = 1
+  t.window.display = 2
 
   t.modules.audio = true      -- Enable the audio module (boolean)
   t.modules.event = true      -- Enable the event module (boolean)
