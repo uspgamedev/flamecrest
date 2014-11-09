@@ -1,9 +1,9 @@
 
 package.path = package.path..";./lib/?.lua"
 
-require "game"
-local vec2 = require "lux.geom.Vector"
-local layout = require "ui.layout"
+local game    = require "game"
+local vec2    = require "lux.geom.Vector"
+local layout  = require "ui.layout"
 require "ui.battle.mapscene"
 require "model.battle.map"
 require "model.battle.hexpos"
