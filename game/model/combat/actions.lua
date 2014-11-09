@@ -1,7 +1,7 @@
 
 local print = print
 
-module "model.combat. do
+module "model.combat" do
 
   function rescue(rescuer, rescuee)
     if rescuer:canrescue(rescuee) then
