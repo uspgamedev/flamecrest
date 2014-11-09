@@ -1,6 +1,6 @@
 --[[
 --
--- Copyright (c) 2013 Wilson Kazuo Mizutani
+-- Copyright (c) 2013-2014 Wilson Kazuo Mizutani
 --
 -- This software is provided 'as-is', without any express or implied
 -- warranty. In no event will the authors be held liable for any damages
@@ -23,10 +23,24 @@
 --
 --]]
 
-module "lux.info" do
 
-  --- LUX's version.
-  version = "0.3.0"
+--- This class represents a macro configuration.
+-- @classmod macro.Specification
+local Specification = require 'lux.oo.prototype' :new {}
 
+local functional = require 'lux.functional'
+
+local function directiveIterator (str)
+  local yield = coroutine.yield
+  for input, mod, directive, tail in str:gmatch "(.-)%$(%p)(.-)(%p?[%$\n])" do
+    assert(tail == "\n" or tail == mod.."$")
+    yield(input, mod, directive, #input + 1 + #mod + #directive + #tail)
+  end
 end
+
+function Specification:iterateDirectives (str)
+  return coroutine.wrap(functional.bindLeft(directiveIterator, str))
+end
+
+return Specification
 

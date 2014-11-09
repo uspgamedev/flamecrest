@@ -1,10 +1,9 @@
 
 module ("ui.battle.background", package.seeall) do
 
-  require "common.vec2"
-  require "model.battle.hexpos"
+  require 'model.battle.hexpos'
 
-  local vec2    = vec2
+  local vec2    = require 'lux.geom.Vector'
   local hexpos  = model.battle.hexpos
 
   local tileset = {}
@@ -28,9 +27,9 @@ module ("ui.battle.background", package.seeall) do
   function draw (map, graphics)
     map:pertile(
       function (i, j, tile)
-        drawtile(hexpos:new{i,j}:tovec2(), tileset[tile.type], graphics) 
+        drawtile(hexpos:new{i,j}:tovec2(), tileset[tile.type], graphics)
       end
     )
   end
-  
+
 end

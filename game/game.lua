@@ -1,15 +1,14 @@
 
 module ("game", package.seeall) do
 
-  require "common.vec2"
+  local vec2 = require "lux.geom.Vector"
   require "common.unit"
   require "common.class"
   require "common.weapon"
   require "effects"
-  require "ui.layout"
 
+  local layout        = require "ui.layout"
   local mouse         = love.mouse
-  local vec2          = vec2
   local unit          = unit
   local attributes    = attributes
   local weapon        = weapon
@@ -19,20 +18,20 @@ module ("game", package.seeall) do
   -- LÖVE callbacks --
 
   function update (dt)
-    ui.layout.mouseevent("mousehover", vec2:new{mouse.getPosition()}, dt)
-    ui.layout.updateevent(dt)
+    layout.mouseevent("mousehover", vec2:new{mouse.getPosition()}, dt)
+    layout.updateevent(dt)
   end
 
   function draw (graphics)
-    ui.layout.draw()
+    layout.draw()
   end
 
   function mousereleased (x, y, button)
-    ui.layout.mouseevent("mousereleased", vec2:new{x,y}, button)
+    layout.mouseevent("mousereleased", vec2:new{x,y}, button)
   end
 
   function mousepressed (x, y, button)
-    ui.layout.mouseevent("mousepressed", vec2:new{x,y}, button)
+    layout.mouseevent("mousepressed", vec2:new{x,y}, button)
   end
 
   function keypressed (key)

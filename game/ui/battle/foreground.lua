@@ -1,10 +1,9 @@
 
 module ("ui.battle.foreground", package.seeall) do
 
-  require "common.vec2"
-  require "model.battle.hexpos"
+  require 'model.battle.hexpos'
 
-  local vec2    = vec2
+  local vec2    = require 'lux.geom.Vector'
   local hexpos  = model.battle.hexpos
 
   function load (graphics)

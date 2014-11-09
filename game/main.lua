@@ -1,7 +1,9 @@
 
+package.path = package.path..";./lib/?.lua"
+
 require "game"
-require "common.vec2"
-require "ui.layout"
+local vec2 = require "lux.geom.Vector"
+local layout = require "ui.layout"
 require "ui.battle.mapscene"
 require "model.battle.map"
 require "model.battle.hexpos"
@@ -23,7 +25,7 @@ end
 function love.load ()
   love.graphics.setFont(love.graphics.newFont("resources/fonts/Verdana.ttf", 14))
   love.graphics.setDefaultFilter("nearest", "nearest")
-  ui.layout.add(ui.battle.mapscene)
+  layout.add(ui.battle.mapscene)
   loadbattlemaplayout()
   ui.battle.mapscene.map.tiles[5][1].unit = game.unit1
   ui.battle.mapscene.map.tiles[5][9].unit = game.unit2
@@ -36,6 +38,6 @@ love.mousepressed   = game.mousepressed
 love.mousereleased  = game.mousereleased
 
 function love.draw ()
-  ui.layout.draw(love.graphics)
+  layout.draw(love.graphics)
 end
 

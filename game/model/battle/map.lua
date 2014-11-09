@@ -1,23 +1,21 @@
 
 module ("model.battle", package.seeall) do
 
-  local object = require "lux.object"
-
-  require "model.battle.tile" 
-  require "model.battle.hexpos"
-  require "model.battle.pathfinding"
-  require "model.combat.fight"
+  require 'model.battle.tile'
+  require 'model.battle.hexpos'
+  require 'model.battle.pathfinding'
+  require 'model.combat.fight'
 
   local assert  = assert
   local fight   = model.combat.fight
 
-  map = object.new {
+  map = require 'lux.oo.prototype' :new {
     width   = 5,
     height  = 5,
     tiles   = nil
   }
 
-  function map:__init ()
+  function map:__construct ()
     self.tiles = {}
     for i = 1,self.height do
       self.tiles[i] = {}
@@ -86,7 +84,7 @@ module ("model.battle", package.seeall) do
 
   function map:startcombat(originpos, targetpos)
     local attackertile = self:tile(originpos)
-    local targettile = self:tile(targetpos) 
+    local targettile = self:tile(targetpos)
     local attacker  = attackertile.unit
     local target    = targettile.unit
     local attackerbonus = attackertile.attributes
@@ -105,7 +103,7 @@ module ("model.battle", package.seeall) do
    local defenderinfo = {
       unit = target,
       terraininfo = targetbonus
-   }   
+   }
    print(targetbonus, attackerbonus)
    return fight(attackerinfo, defenderinfo, distance)
   end

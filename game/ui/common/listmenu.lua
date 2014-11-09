@@ -1,21 +1,16 @@
 
 module ("ui.common", package.seeall) do
 
-  local array = require "lux.table"
-
-  require "ui.component"
-  require "common.vec2"
-
-  local vec2      = vec2
+  local component = require 'ui.component'
+  local vec2      = require 'lux.geom.Vector'
   local ipairs    = ipairs
   local modf      = math.modf
-  local component = ui.component
   local mouse     = love.mouse -- TODO
 
   listmenu = component:new {}
 
   listmenu.__init = {
-    actions = array:new{}
+    actions = {}
   }
 
   function listmenu:addaction (name, action)
@@ -24,10 +19,10 @@ module ("ui.common", package.seeall) do
         self:addaction(name, action)
       end
     end
-    self.actions:insert {
+    table.insert(self.actions, {
       name = name,
       action = action
-    }
+    })
     self.size:add(vec2:new{0,32})
   end
 
@@ -40,7 +35,7 @@ module ("ui.common", package.seeall) do
       self.actions[self:getaction(pos.y)].action()
     end
   end
-  
+
   function listmenu:draw (graphics)
     -- draw menu bounds
     graphics.setColor { 25, 25, 50, 255 }
@@ -52,7 +47,7 @@ module ("ui.common", package.seeall) do
     if mousepos.x >= 0 and mousepos.x <= self.size.x then
       focused = self:getaction(mousepos.y)
     end
-  
+
     for i,action in ipairs(self.actions) do
       -- draw brighter if it is the focused action
       if focused == i then
@@ -64,7 +59,7 @@ module ("ui.common", package.seeall) do
                             graphics.getFont():getHeight()
       local textpos = vec2:new{(self.size.x-width)/2, (i-1)*32+(32-height)/2}
       graphics.setColor { 255, 255, 255, 255 }
-      graphics.print(action.name, textpos:get())
+      graphics.print(action.name, textpos.x, textpos.y)
     end
   end
 
