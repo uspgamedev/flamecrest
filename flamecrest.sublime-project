@@ -3,6 +3,9 @@
     [
         {
             "path": "game"
+        },
+        {
+            "path": "old"
         }
     ],
     "settings":
