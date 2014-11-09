@@ -1,15 +1,15 @@
 
-local object = require "lux.object"
+local prototype = require 'lux.oo.prototype'
 
 module "model.battle" do
-  
+
   tiletypes = {
-    plains = object.new {
+    plains = prototype:new {
       avoid = 0,
       def = 0,
       mdef = 0
     },
-    forest = object.new {
+    forest = prototype:new {
       avoid = 10,
       def = 1,
       mdef = 0

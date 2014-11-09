@@ -1,6 +1,6 @@
 --[[
 --
--- Copyright (c) 2013 Wilson Kazuo Mizutani
+-- Copyright (c) 2013-2014 Wilson Kazuo Mizutani
 --
 -- This software is provided 'as-is', without any express or implied
 -- warranty. In no event will the authors be held liable for any damages
@@ -23,15 +23,18 @@
 --
 --]]
 
---- LUX's common module.
--- Here a collection of general-purpose functions are available.
-module ("lux.common", package.seeall) do
+--- Module containing information regarding this LUX Project distribution.
+local info = {}
 
-  --- Prints all key-value pairs of the given table to the standard output.
-  -- @param t The table whose field are to be listed.
-  function ls (t)
-    table.foreach(t, print)
-  end
-  
+local major = 0
+local minor = 5
+local patch = 0
+
+--- LUX's version.
+-- @return A string with the current LUX version.
+function info.version ()
+  return major..'.'..minor..'.'..patch
 end
+
+return info
 

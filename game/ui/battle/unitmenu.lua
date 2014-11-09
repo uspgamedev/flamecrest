@@ -2,10 +2,9 @@
 module ("ui.battle", package.seeall) do
 
   require "ui.common.listmenu"
-  require "common.vec2"
 
+  local vec2        = require "lux.geom.Vector"
   local listmenu    = ui.common.listmenu
-  local vec2        = vec2
 
   unitmenu = listmenu:new {
     active = false,

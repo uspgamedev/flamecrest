@@ -1,10 +1,10 @@
 
-require "lux.object"
-require "common.class"
-require "common.attributes"
-require "ui.component"
 
-unit = lux.object.new {
+require 'common.class'
+require 'common.attributes'
+local component = require 'ui.component'
+
+unit = require 'lux.oo.prototype' :new {
   name = "Unit",
   lv = 1,
   exp = 0,
@@ -17,7 +17,7 @@ unit = lux.object.new {
   rescuedunit = nil
 }
 
-function unit:__init ()
+function unit:__construct ()
   if not self.class then
     self.class = class:new{}
   end
@@ -233,7 +233,7 @@ function unit:bossbonus ()
   return self.bossexpbonus
 end
 
-unit.display = ui.component:new {}
+unit.display = component:new {}
 
 function unit.display:draw (graphics)
   if self.unit.hp <= 0 then

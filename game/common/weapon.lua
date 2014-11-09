@@ -1,7 +1,5 @@
 
-require "lux.object"
-
-weapon = lux.object.new {
+weapon = require 'lux.oo.prototype' :new {
   mt = 5,
   hit = 60,
   wgt = 3,
@@ -39,7 +37,7 @@ local magicaltypes = {
   wind = "sword"
 }
 
-function weapon:__init ()
+function weapon:__construct ()
   self.durability = self.maxdurability
 end
 
@@ -58,7 +56,7 @@ end
 
 function weapon:mtagainst (defender)
   local mt = self.mt
-  for _,v in pairs(self.bonusagainst) do 
+  for _,v in pairs(self.bonusagainst) do
     if defender:hastrait(v) then
       mt = 2 * self.mt
     end

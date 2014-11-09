@@ -1,9 +1,8 @@
 
-require "lux.object"
-require "common.attributes"
-require "common.terraincosts"
+require 'common.attributes'
+require 'common.terraincosts'
 
-class = lux.object.new{
+class = require 'lux.oo.prototype' :new {
    name = "Soldier",
    weapons = {"lance"},
    traits = {},

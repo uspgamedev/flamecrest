@@ -1,13 +1,5 @@
 
-require "lux.object"
-
-local basicattributelist = { "maxhp", "str", "mag", "def", "res", "spd", "skl", "lck" }
-local extendedattributelist = { "mv", "con" }
-local allattributes = { basicattributelist, extendedattributelist }
-
---TODO: Link list of attributes to attributes present?
-
-attributes = lux.object.new {
+attributes = require "lux.oo.prototype" :new {
   maxhp = 20,
   str = 10,
   mag = 10,
@@ -19,6 +11,15 @@ attributes = lux.object.new {
   mv = 5,
   con = 7
 }
+
+local basicattributelist = {
+  "maxhp", "str", "mag", "def", "res", "spd", "skl", "lck"
+}
+
+local extendedattributelist = { "mv", "con" }
+local allattributes = { basicattributelist, extendedattributelist }
+
+--TODO: Link list of attributes to attributes present?
 
 function attributes.foreachbasattr (f)
   table.foreach(basicattributelist, f)

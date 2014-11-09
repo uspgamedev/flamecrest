@@ -1,15 +1,14 @@
 
 module ("ui.battle.controller", package.seeall) do
 
-  require 'ui.layout'
+  local layout = require 'ui.layout'
   require 'ui.common.dialog'
-  require "ui.battle.cursor"
-  require "common.vec2"
-  require "model.battle.hexpos"
-  require "model.battle.pathfinding"
+  require 'ui.battle.cursor'
+  local vec2 = require 'lux.geom.Vector'
+  require 'model.battle.hexpos'
+  require 'model.battle.pathfinding'
 
   local floor         = math.floor
-  local vec2          = vec2
   local hexpos        = model.battle.hexpos
   local cursor        = ui.battle.cursor
   local confirm_event = {}
@@ -40,7 +39,7 @@ module ("ui.battle.controller", package.seeall) do
   function movecursor (map, origin, pos, dt)
     cursor.move(map, screentohexpos(origin, pos), dt)
   end
-  
+
   function confirm_event.select (mapscene, tile_hexpos, tile)
     local focus = tile.unit and tile_hexpos or nil
     if focus then
@@ -93,7 +92,7 @@ module ("ui.battle.controller", package.seeall) do
     local battlelog = mapscene.map:startcombat(mapscene.focus, cursor.pos())
     local output = generate_log(battlelog)
     -- TODO MAGIC NUMBERS!
-    ui.layout.add(
+    layout.add(
       ui.common.dialog:new {
         text = output,
         pos  = vec2:new {
@@ -116,7 +115,7 @@ module ("ui.battle.controller", package.seeall) do
    end
     return mapscene.focus, mapscene.mode
   end
-  
+
   function cancel ()
     return nil, "select"
   end

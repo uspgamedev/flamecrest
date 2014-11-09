@@ -1,21 +1,19 @@
 
 module ("ui.battle", package.seeall) do
 
-  require "common.vec2"
-  require "model.battle.hexpos"
-  require "ui.layout"
-  require "ui.component"
-  require "ui.battle.controller"
-  require "ui.battle.unitmenu"
-  require "ui.battle.background"
-  require "ui.battle.hud"
-  require "ui.battle.foreground"
+  local vec2 = require 'lux.geom.Vector'
+  require 'model.battle.hexpos'
+  local layout = require 'ui.layout'
+  local component = require 'ui.component'
+  require 'ui.battle.controller'
+  require 'ui.battle.unitmenu'
+  require 'ui.battle.background'
+  require 'ui.battle.hud'
+  require 'ui.battle.foreground'
 
   local ui      = ui
-  local vec2    = vec2
-  local layout  = ui.layout
 
-  mapscene = ui.component:new {
+  mapscene = component:new {
     map     = nil,
     origin  = vec2:new {512,100},
     focus   = nil,
@@ -76,7 +74,7 @@ module ("ui.battle", package.seeall) do
 
   function mapscene:draw (graphics)
     graphics.scale(self.scale, self.scale)
-    graphics.translate(self.origin:get())
+    graphics.translate(self.origin:unpack())
     background.draw(self.map, graphics)
     hud.draw(self.map, self, cursor, graphics)
     foreground.draw(self.map, graphics)

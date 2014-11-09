@@ -1,9 +1,7 @@
 
 module ("model.battle", package.seeall) do
 
-  require "common.vec2"
-
-  local object        = require "lux.object"
+  local vec2          = require 'lux.geom.Vector'
   local type          = type
   local getmetatable  = getmetatable
   local rawget        = rawget
@@ -15,38 +13,38 @@ module ("model.battle", package.seeall) do
   local vec2          = vec2
 
   --- Hexagonal position class.
-  hexpos = object.new {}
+  hexpos = require 'lux.oo.prototype' :new {}
 
   -- Vector coordinates.
   hexpos[1] = 0
   hexpos[2] = 0
-  
+
   function hexpos:__index (k)
     if k == "i" then return self[1] end
     if k == "j" then return self[2] end
     return getmetatable(self)[k]
   end
-  
+
   function hexpos:__newindex (k, v)
     if k == "i" then rawset(self, 1, v)
     elseif k == "j" then rawset(self, 2, v)
     else rawset(self, k, v) end
   end
-  
+
   function hexpos.__add (lhs, rhs)
     return hexpos:new {
       lhs[1] + rhs[1],
       lhs[2] + rhs[2]
     }
   end
-  
+
   function hexpos.__sub (lhs, rhs)
     return hexpos:new {
       lhs[1] - rhs[1],
       lhs[2] - rhs[2]
     }
   end
- 
+
   function hexpos.__mul (lhs, rhs)
     if type(lhs) == "number" then
       return hexpos:new { lhs*rhs.j, lhs*rhs.i }
@@ -108,7 +106,7 @@ module ("model.battle", package.seeall) do
     self[1] = i
     self[2] = j
   end
- 
+
   function hexpos:add (p)
     self[1] = self[1] + p[1]
     self[2] = self[2] + p[2]
