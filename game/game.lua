@@ -26,19 +26,22 @@ module ("game", package.seeall) do
   function draw (graphics)
     ui.layout.draw()
   end
-  
+
   function mousereleased (x, y, button)
     ui.layout.mouseevent("mousereleased", vec2:new{x,y}, button)
   end
-  
+
   function mousepressed (x, y, button)
     ui.layout.mouseevent("mousepressed", vec2:new{x,y}, button)
   end
 
   function keypressed (key)
+    if key == 'escape' then
+      love.event.push 'quit'
+    end
     --state.layout.controller:presskey(key)
   end
-  
+
   function keyreleased (key)
     --state.layout.controller:releasekey(key)
   end
@@ -88,7 +91,7 @@ module ("game", package.seeall) do
       con = 30
     }
   }
-  
+
   unit4 = unit:new {
     attributes = attributes:new{
       con = 1
@@ -101,6 +104,6 @@ module ("game", package.seeall) do
       str = 30
     }
   }
-  
+
 end
 

@@ -14,12 +14,17 @@ module ("ui.battle.foreground", package.seeall) do
   local function drawunit (pos, tile, graphics)
     if tile.unit and not tile.unit:isdead() then
       local sprite = tile.unit.sprite
+      local quadindex = tile.unit.currentquad
+      local quad = tile.unit.quads[quadindex[1]][quadindex[2]]
+      local width, height = tile.unit.quadwidth, tile.unit.quadheight
       graphics.draw(
         sprite,
+        quad,
         pos.x, pos.y,
         0,
-        64/sprite:getWidth(), 96/sprite:getHeight(),
-        sprite:getWidth()/2, sprite:getHeight() - 40)
+        1, 1,
+        --64/sprite:getWidth(), 96/sprite:getHeight(),
+        2*width/3, height-8)
     end
   end
 

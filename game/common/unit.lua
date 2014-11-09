@@ -28,8 +28,23 @@ function unit:__init ()
     self.growths = self.class.defaultgrowths:clone()
   end
   self.hp = self.attributes.maxhp
-  self.sprite = love.graphics.newImage "resources/images/soldier.png"
-  self.sprite:setFilter("linear", "linear")
+  self.sprite = love.graphics.newImage "resources/images/soldiaaa_spritesheet_v1.png"
+  self.sprite:setFilter("nearest", "nearest")
+  self.quadwidth = 224
+  self.quadheight = 128
+  self.quads = {}
+  for i=1,4 do
+    self.quads[i] = {}
+    for j=1,3 do
+      self.quads[i][j] = love.graphics.newQuad(
+        self.quadwidth*(j-1),
+        self.quadheight*(i-1),
+        self.quadwidth, self.quadheight,
+        3*self.quadwidth, 4*self.quadheight
+      )
+    end
+  end
+  self.currentquad = {1,1}
 end
 
 function unit:takedamage (dmg)
