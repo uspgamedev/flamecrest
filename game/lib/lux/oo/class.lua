@@ -56,6 +56,9 @@
 --  the <code>local</code> keyword or explicitly referring to <code>self</code>
 --  within the class definition.
 --
+--  Inheritance is possible through a special field in the classes, 'inheritAs'.
+--  You use it the same way you the declare classes with @{class}.
+--
 --  @feature class
 --  @usage
 --  local class = require 'lux.oo.class'
@@ -65,44 +68,79 @@
 --      print(a_number)
 --    end
 --  end
+--  function class.MyClass.inheritAs:MyChildClass()
+--    local a_string = "foo"
+--    function show_twice ()
+--      show()
+--      show()
+--    end
+--  end
+--
 local class = {}
 
-local scope_meta = {}
-local no_op = function () end
+local port              = require 'lux.portable'
+local classes           = {}
+local definition_scope  = {}
+local no_op             = function () end
 
-local function makeConstructor (definition)
-  return function (the_class, ...)
-    local self = setmetatable({ __class = the_class, __meta = {} }, scope_meta)
-    assert(require 'lux.portable' .loadWithEnv(definition, self)) (self)
-    setmetatable(self, nil)
-    self.__meta.__index = self.__meta.__index or _G
-    -- Call constructor if available
-    setmetatable(self, self.__meta);
-    (the_class.constructor or no_op) (self, ...)
-    return self
+local function applyDefinition (the_class, obj)
+  if not the_class then
+    return
+  else
+    applyDefinition(the_class.parent, obj)
+    assert(port.loadWithEnv(the_class.definition, obj)) (obj)
   end
 end
 
-local function onDefinition (classes, name, definition)
-  assert(not classes[name], "Redefinition of class '"..name.."'")
-  local new_class = {
-    name = name
-  }
-  setmetatable(new_class, { __call = makeConstructor(definition) })
-  rawset(classes, name, new_class)
+local function construct (the_class, ...)
+  local obj = setmetatable({ __class = the_class, __meta = {} }, definition_scope)
+  applyDefinition(the_class, obj)
+  setmetatable(obj, nil)
+  obj.__meta.__index = obj.__meta.__index or _G
+  if the_class.parent then
+    obj.super = the_class.parent.constructor
+  end
+  -- Call constructor if available
+  setmetatable(obj, obj.__meta);
+  (the_class.constructor or no_op) (...)
+  return obj
 end
 
-function scope_meta:__newindex (key, value)
+definition_scope.__index = _G
+
+function definition_scope.__newindex (obj, key, value)
   if type(value) == 'function' then
-    if key == self.__class.name then
-      self.__class.constructor = function(_, ...) return value(...) end
-      local construct = getmetatable(self.__class).__call
-      rawset(self, key, function(...) return construct(self.__class, ...) end)
+    if key == obj.__class.name then
+      obj.__class.constructor = value
+      rawset(obj, key, function(...) return construct(obj.__class, ...) end)
     else
-      rawset(self, key, function(_, ...) return value(...) end)
+      rawset(obj, key, function(_, ...) return value(...) end)
     end
   end
 end
 
-return setmetatable(class, { __newindex = onDefinition })
+function class:define (name, definition)
+  assert(not classes[name], "Redefinition of class '"..name.."'")
+  local new_class = {
+    name = name,
+    definition = definition
+  }
+  new_class.inheritAs = setmetatable({ owner = new_class }, { __newindex = class.define })
+  if self ~= class then
+    new_class.parent = self.owner
+  end
+  setmetatable(new_class, { __call = construct })
+  classes[name] = new_class
+end
+
+function class:forName (name)
+  return classes[name]
+end
+
+setmetatable(class, {
+  __index     = class.forName,
+  __newindex  = class.define
+})
+
+return class
 

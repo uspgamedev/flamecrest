@@ -1,5 +1,5 @@
 
-package.path = package.path..";./lib/?.lua"
+package.path = package.path..";../game/lib/?.lua"
 
 local game    = require "game"
 local vec2    = require "lux.geom.Vector"

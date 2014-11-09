@@ -57,15 +57,14 @@ function class:UI ()
 
   --[[ element drawing ]]--
 
-  function draw ()
-    local graphics = love.graphics
+  function draw (graphics)
     for _,element in ipairs(elements) do
       if element:isVisible() then
         -- store current graphics state
         local currentcolor = { graphics.getColor() }
         graphics.push()
         -- move to element's position and draw it
-        graphics.translate(element.pos:unpack())
+        graphics.translate(element:getPos():unpack())
         element:draw(graphics)
         -- restore previous graphics state
         graphics.pop()
