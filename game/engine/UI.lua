@@ -3,12 +3,8 @@ local class = require 'lux.oo.class'
 
 function class:UI ()
 
-  local elements, reverse_index
-
-  function UI()
-    elements = setmetatable({}, { __index = table })
-    reverse_index = {}
-  end
+  local elements      = setmetatable({}, { __index = table })
+  local reverse_index = {}
 
   --- Adds a element to the UI.
   -- Nothing happens if the element is currently in the UI.

@@ -56,8 +56,8 @@
 --  the <code>local</code> keyword or explicitly referring to <code>self</code>
 --  within the class definition.
 --
---  Inheritance is possible through a special field in the classes, 'inheritAs'.
---  You use it the same way you the declare classes with @{class}.
+--  Inheritance is possible through a special field in the classes, '__inherit'.
+--  You use it inside the class definition passing self as the first parameter.
 --
 --  @feature class
 --  @usage
@@ -68,7 +68,8 @@
 --      print(a_number)
 --    end
 --  end
---  function class.MyClass.inheritAs:MyChildClass()
+--  function class:MyChildClass()
+--    __inherit.MyClass(self)
 --    local a_string = "foo"
 --    function show_twice ()
 --      show()
@@ -79,43 +80,47 @@
 local class = {}
 
 local port              = require 'lux.portable'
+local lambda            = require 'lux.functional'
 local classes           = {}
 local definition_scope  = {}
+local obj_metatable     = {}
 local no_op             = function () end
 
-local function applyDefinition (the_class, obj)
-  if not the_class then
-    return
-  else
-    applyDefinition(the_class.parent, obj)
-    assert(port.loadWithEnv(the_class.definition, obj)) (obj)
-  end
+local function makeEmptyObject (the_class)
+  return {
+    __inherit = class,
+    __class = the_class,
+    __meta = obj_metatable,
+    __members = {}
+  }
 end
 
-local function construct (the_class, ...)
-  local obj = setmetatable({ __class = the_class, __meta = {} }, definition_scope)
-  applyDefinition(the_class, obj)
-  setmetatable(obj, nil)
-  obj.__meta.__index = obj.__meta.__index or _G
-  if the_class.parent then
-    obj.super = the_class.parent.constructor
+function obj_metatable:__index (key)
+  return self.__members[key] or _G[key]
+end
+
+local function construct (the_class, obj, ...)
+  local owns
+  if not obj or obj == class then
+    obj = makeEmptyObject(the_class)
+    owns = true
   end
-  -- Call constructor if available
-  setmetatable(obj, obj.__meta);
-  (the_class.constructor or no_op) (...)
+  setmetatable(obj, definition_scope)
+  assert(port.loadWithEnv(the_class.definition, obj)) (obj, ...)
+  rawset(obj, the_class.name, lambda.bindLeft(construct, the_class, nil))
+  if owns then
+    setmetatable(obj, obj.__meta);
+  end
   return obj
 end
 
-definition_scope.__index = _G
+definition_scope.__index = obj_metatable.__index
 
 function definition_scope.__newindex (obj, key, value)
   if type(value) == 'function' then
-    if key == obj.__class.name then
-      obj.__class.constructor = value
-      rawset(obj, key, function(...) return construct(obj.__class, ...) end)
-    else
-      rawset(obj, key, function(_, ...) return value(...) end)
-    end
+    rawset(obj.__members, key, function(_, ...) return value(...) end)
+  else
+    rawset(obj.__members, key, value)
   end
 end
 
@@ -123,12 +128,9 @@ function class:define (name, definition)
   assert(not classes[name], "Redefinition of class '"..name.."'")
   local new_class = {
     name = name,
-    definition = definition
+    definition = definition,
+    __isclass = true
   }
-  new_class.inheritAs = setmetatable({ owner = new_class }, { __newindex = class.define })
-  if self ~= class then
-    new_class.parent = self.owner
-  end
   setmetatable(new_class, { __call = construct })
   classes[name] = new_class
 end

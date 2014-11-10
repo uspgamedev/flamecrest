@@ -83,7 +83,7 @@ end
 -- @param[opt] source The reloaded funciton chunk name
 if lua_minor <= 1 then
   function portable.loadWithEnv(f, env, source)
-    local loaded, err =  loadstring(string.dump(f, source))
+    local loaded, err = loadstring(string.dump(f, source))
     if not loaded then return nil, err end
     return setfenv(loaded, env)
   end

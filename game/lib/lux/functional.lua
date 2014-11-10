@@ -39,9 +39,8 @@ local functional = {}
 -- A function that, upon being called, does the same as f, but requires only
 -- the arguments beyond the first one.
 function functional.bindFirst (f, arg)
-  local up = arg
   return function (...)
-    return f(up, ...)
+    return f(arg, ...)
   end
 end
 
@@ -65,7 +64,7 @@ function functional.bindLeft (f, arg1, ...)
   if select('#', ...) == 0 then
     return functional.bindFirst(f, arg1)
   else
-    return functional.bindLeft(bindFirst(f, arg1), ...)
+    return functional.bindLeft(functional.bindFirst(f, arg1), ...)
   end
 end
 

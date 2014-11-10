@@ -1,16 +1,13 @@
 
 local class = require 'lux.oo.class'
 
-function class:UIElement ()
+function class:UIElement (the_pos, the_size)
 
   local vec2 = require 'lux.geom.Vector'
-  local visible, pos, size
 
-  function UIElement (the_pos, the_size)
-    visible = true
-    pos = the_pos or vec2:new{0, 0}
-    size = the_size or vec2:new{32, 32}
-  end
+  local visible = true
+  local pos = the_pos or vec2:new{0, 0}
+  local size = the_size or vec2:new{32, 32}
 
   function isVisible ()
     return visible
@@ -18,6 +15,10 @@ function class:UIElement ()
 
   function getPos ()
     return pos:clone()
+  end
+
+  function getSize ()
+    return size:clone()
   end
 
   function left ()
