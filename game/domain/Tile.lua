@@ -36,3 +36,5 @@ function class:Tile (typename)
   end
 
 end
+
+return class.Tile

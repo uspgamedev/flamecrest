@@ -1,9 +1,13 @@
 
+local class = require 'lux.oo.class'
 local UI
 
 function love.load ()
-  UI = require 'engine.UI' ()
-  UI:add(require 'ui.BattleScreen' ())
+  require 'engine.UI'
+  require 'ui.BattleScreen'
+  require 'domain.BattleField'
+  UI            = class:UI()
+  UI:add(class:BattleScreen(class:BattleField(5,5)))
 end
 
 function love.draw ()
