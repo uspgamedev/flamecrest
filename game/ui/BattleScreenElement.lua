@@ -22,6 +22,7 @@ function class:BattleScreenElement (the_battlefield)
   tileset.Forest = love.graphics.newImage "assets/images/hextile-forest.png"
 
   local function screenToHexpos (screenpos)
+    -- TODO: inject love.window dependency
     local origin = vec2:new{ love.window.getDimensions() }/2 - camera_pos:toVec2()
     local relpos = screenpos - origin
     local focus = hexpos:new {}
