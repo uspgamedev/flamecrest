@@ -3,6 +3,10 @@ local class = require 'lux.oo.class'
 
 function class:UI ()
 
+  local vec2 = require 'lux.geom.Vector'
+
+  ----
+
   local elements      = setmetatable({}, { __index = table })
   local reverse_index = {}
 
@@ -31,6 +35,12 @@ function class:UI ()
   function clear ()
     elements      = setmetatable({}, { __index = table })
     reverse_index = {}
+  end
+
+  --[[ Useful stuff ]]--
+
+  function getMousePos ()
+    return vec2:new{ love.mouse.getPosition() }
   end
 
   --[[ element events ]]--
