@@ -3,6 +3,10 @@ local class = require 'lux.oo.class'
 
 function class:UI ()
 
+  local vec2 = require 'lux.geom.Vector'
+
+  ----
+
   local elements      = setmetatable({}, { __index = table })
   local reverse_index = {}
 
@@ -35,12 +39,6 @@ function class:UI ()
 
   --[[ element events ]]--
 
-  function refresh ()
-    for _,element in ipairs(elements) do
-      element:onRefresh()
-    end
-  end
-
   local function mouseAction (type, pos, ...)
     for i = #elements,1,-1 do
       local element = elements[i]
@@ -48,6 +46,13 @@ function class:UI ()
         element[type] (element, pos - element:getPos(), info)
         return
       end
+    end
+  end
+
+  function refresh ()
+    mouseAction('onMouseHover', vec2:new{ love.mouse.getPosition() })
+    for _,element in ipairs(elements) do
+      element:onRefresh()
     end
   end
 
