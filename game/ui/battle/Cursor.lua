@@ -18,16 +18,20 @@ function class:Cursor (start_position, acceleration)
     return currentpos:clone()
   end
 
+  function getTarget ()
+    return target:clone()
+  end
+
   function setTarget (the_target)
     target = the_target
   end
 
   function stop ()
-    target:set(currentpos:getTruncated())
+    target = currentpos:rounded()
   end
 
   function move ()
-    currentpos  = currentpos + step
+    currentpos  = currentpos + step * (1/60)
     step        = (target - currentpos)*accel
   end
 

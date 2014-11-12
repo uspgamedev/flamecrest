@@ -37,19 +37,7 @@ function class:UI ()
     reverse_index = {}
   end
 
-  --[[ Useful stuff ]]--
-
-  function getMousePos ()
-    return vec2:new{ love.mouse.getPosition() }
-  end
-
   --[[ element events ]]--
-
-  function refresh ()
-    for _,element in ipairs(elements) do
-      element:onRefresh()
-    end
-  end
 
   local function mouseAction (type, pos, ...)
     for i = #elements,1,-1 do
@@ -58,6 +46,13 @@ function class:UI ()
         element[type] (element, pos - element:getPos(), info)
         return
       end
+    end
+  end
+
+  function refresh ()
+    mouseAction('onMouseHover', vec2:new{ love.mouse.getPosition() })
+    for _,element in ipairs(elements) do
+      element:onRefresh()
     end
   end
 

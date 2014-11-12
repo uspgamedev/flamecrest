@@ -38,6 +38,10 @@ function hexpos.__sub (lhs, rhs)
   }
 end
 
+function hexpos:__unm ()
+  return hexpos:new { -self[1], -self[2] }
+end
+
 function hexpos.__mul (lhs, rhs)
   if type(lhs) == "number" then
     return hexpos:new { lhs*rhs.j, lhs*rhs.i }

@@ -28,8 +28,8 @@ function class:BattleField (w, h)
   end
 
   function getTileAt (pos)
-    pos = pos:truncated()
-    return contains(pos) and tiles[pos.i][pos.j] or nil
+    pos = pos:rounded()
+    return self:contains(pos) and tiles[pos.i][pos.j] or nil
   end
 
   function eachTile (action)
