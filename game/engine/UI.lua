@@ -53,7 +53,7 @@ function class:UI ()
 
   --[[ element drawing ]]--
 
-  function draw (graphics)
+  function draw (graphics, window)
     for _,element in ipairs(elements) do
       if element:isVisible() then
         -- store current graphics state
@@ -61,7 +61,7 @@ function class:UI ()
         graphics.push()
         -- move to element's position and draw it
         graphics.translate(element:getPos():unpack())
-        element:draw(graphics)
+        element:draw(graphics, window)
         -- restore previous graphics state
         graphics.pop()
         graphics.setColor(currentcolor)

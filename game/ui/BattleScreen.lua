@@ -11,19 +11,29 @@ function class:BattleScreen(the_battlefield)
                       vec2:new{ love.window.getDimensions() })
 
   local battlefield = the_battlefield
-  local camera_pos = self:getSize()/2
+  local camera_pos = hexpos:new{0, 0}
   local tileset = {}
 
   tileset.Plains = love.graphics.newImage "assets/images/hextile-grass.png"
   tileset.Forest = love.graphics.newImage "assets/images/hextile-forest.png"
 
-  function draw (graphics)
+  function draw (graphics, window)
+    local frame = vec2:new{ window.getDimensions() }
+    graphics.translate((frame/2 - camera_pos:toVec2()):unpack())
     battlefield:eachTile(function (i, j, tile)
-      local pos = camera_pos + hexpos:new{i,j}:toVec2()
+      local pos = hexpos:new{i,j}:toVec2()
       local img = tileset[tile:getType()]
       graphics.draw(img, pos.x, pos.y, 0, 1, 1, img:getWidth()/2,
                     img:getHeight()/2)
     end)
+  end
+
+  function lookAt (i, j)
+    if type(i) == 'number' then
+      camera_pos = hexpos:new{i,j}
+    else
+      camera_pos = i:clone()
+    end
   end
 
 end

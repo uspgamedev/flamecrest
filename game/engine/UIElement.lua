@@ -48,7 +48,7 @@ function class:UIElement (the_pos, the_size)
     end
   end
 
-  function draw (graphics)
+  function draw (graphics, window)
     graphics.setColor(220, 80, 80, 255)
     graphics.rectangle('fill', pos.x, pos.y, size.x, size.y)
   end
