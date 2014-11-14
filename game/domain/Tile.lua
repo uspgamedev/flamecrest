@@ -1,40 +1,37 @@
 
 local class = require 'lux.oo.class'
+local tiletypes = require 'content.tiletypes'
 
 function class:Tile (typename)
-
-  local tiletypes = require 'content.tiletypes'
-
-  ----
 
   local attributes = tiletypes[typename or 'default']:new{}
   local unit
 
-  function setUnit (the_unit)
+  function self:setUnit (the_unit)
     assert(not unit)
     unit = the_unit
   end
 
-  function getUnit ()
+  function self:getUnit ()
     return unit
   end
 
-  function getType ()
+  function self:getType ()
     return attributes.name
   end
 
-  function getAvoid ()
+  function self:getAvoid ()
     return attributes.avoid
   end
 
-  function getDef ()
+  function self:getDef ()
     return attributes.def
   end
 
-  function getRes ()
+  function self:getRes ()
     return attributes.res
   end
 
 end
 
-return class.Tile
+return class:bind 'Tile'

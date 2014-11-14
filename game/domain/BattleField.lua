@@ -1,11 +1,10 @@
 
 local class = require 'lux.oo.class'
+local hexpos = require 'domain.hexpos'
+local Tile = require 'domain.Tile'
 
 function class:BattleField (w, h)
 
-  local class = require 'lux.oo.class'
-  local hexpos = require 'domain.hexpos'
-  require 'domain.Tile'
   --require 'model.battle.pathfinding'
   --require 'model.combat.fight'
 
@@ -19,20 +18,20 @@ function class:BattleField (w, h)
     tiles[i] = {}
     for j=1,width do
       local t = (love.math.random() > .5) and 'plains' or 'forest'
-      tiles[i][j] = class:Tile(t)
+      tiles[i][j] = Tile(t)
     end
   end
 
-  function contains (pos)
+  function self:contains (pos)
     return hexpos:new{1,1} <= pos and pos <= hexpos:new{height, width}
   end
 
-  function getTileAt (pos)
+  function self:getTileAt (pos)
     pos = pos:rounded()
     return self:contains(pos) and tiles[pos.i][pos.j] or nil
   end
 
-  function eachTile (action)
+  function self:eachTile (action)
     for i = 1, height do
       for j = 1, width do
         local tile = tiles[i][j]
@@ -101,4 +100,4 @@ function class:BattleField (w, h)
 
 end
 
-return class.BattleField
+return class:bind 'BattleField'

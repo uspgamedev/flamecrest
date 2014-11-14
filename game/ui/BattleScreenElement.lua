@@ -1,22 +1,19 @@
 
-local class = require 'lux.oo.class'
-
-require 'engine.UIElement'
-require 'ui.battle.Cursor'
+local class     = require 'lux.oo.class'
+local vec2      = require 'lux.geom.Vector'
+local hexpos    = require 'domain.hexpos'
+local class     = require 'lux.oo.class'
+local Cursor    = require 'ui.battle.Cursor'
 
 function class:BattleScreenElement (the_battlefield)
 
-  local vec2    = require 'lux.geom.Vector'
-  local hexpos  = require 'domain.hexpos'
-  local class   = require 'lux.oo.class'
-
-  __inherit.UIElement(self, vec2:new{0, 0},
-                      vec2:new{ love.window.getDimensions() })
+  require 'engine.UIElement'
+  class.UIElement(self, vec2:new{0, 0}, vec2:new{ love.window.getDimensions() })
 
   local battlefield = the_battlefield
   local camera_pos  = hexpos:new{0, 0}
   local tileset     = {}
-  local cursor      = class:Cursor()
+  local cursor      = Cursor()
 
   tileset.Plains = love.graphics.newImage "assets/images/hextile-grass.png"
   tileset.Forest = love.graphics.newImage "assets/images/hextile-forest.png"
@@ -47,7 +44,7 @@ function class:BattleScreenElement (the_battlefield)
     return focus
   end
 
-  function lookAt (i, j)
+  function self:lookAt (i, j)
     if type(i) == 'number' then
       camera_pos = hexpos:new{i,j}
     else
@@ -55,8 +52,8 @@ function class:BattleScreenElement (the_battlefield)
     end
   end
 
-  -- @override
-  function onMouseHover (pos)
+  --- Overrides @{UIElement:onMouseHover}
+  function self:onMouseHover (pos)
     local hex = screenToHexpos(pos)
     if battlefield:getTileAt(hex) then
       cursor:setTarget(hex)
@@ -66,12 +63,12 @@ function class:BattleScreenElement (the_battlefield)
   end
 
   -- @override
-  function onRefresh ()
+  function self:onRefresh ()
     cursor:move()
   end
 
   -- @override
-  function draw (graphics, window)
+  function self:draw (graphics, window)
     local frame = vec2:new{ window.getDimensions() }
     graphics.translate((frame/2 - camera_pos:toVec2()):unpack())
     battlefield:eachTile(function (i, j, tile)

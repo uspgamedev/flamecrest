@@ -1,11 +1,8 @@
 
 local class = require 'lux.oo.class'
+local vec2 = require 'lux.geom.Vector'
 
 function class:UI ()
-
-  local vec2 = require 'lux.geom.Vector'
-
-  ----
 
   local elements      = setmetatable({}, { __index = table })
   local reverse_index = {}
@@ -13,7 +10,7 @@ function class:UI ()
   --- Adds a element to the UI.
   -- Nothing happens if the element is currently in the UI.
   -- @param element The added element. Cannot be <code>nil</code>.
-  function add (element)
+  function self:add (element)
     if reverse_index[element] then return end
     elements:insert(element)
     reverse_index[element] = #elements
@@ -22,7 +19,7 @@ function class:UI ()
   --- Removes a element from the UI.
   -- Nothing happens if the element is not curently in the UI.
   -- @param element The removed element. Cannot be <code>nil</code>
-  function remove (element)
+  function self:remove (element)
     assert(element, "Cannot remove nil element.")
     elements:remove(reverse_index[element])
     for i = reverse_index[element],#elements do
@@ -32,7 +29,7 @@ function class:UI ()
   end
 
   --- Clears the UI of all elements.
-  function clear ()
+  function self:clear ()
     elements      = setmetatable({}, { __index = table })
     reverse_index = {}
   end
@@ -49,7 +46,7 @@ function class:UI ()
     end
   end
 
-  function refresh ()
+  function self:refresh ()
     mouseAction('onMouseHover', vec2:new{ love.mouse.getPosition() })
     for _,element in ipairs(elements) do
       element:onRefresh()
@@ -58,7 +55,7 @@ function class:UI ()
 
   --[[ element drawing ]]--
 
-  function draw (graphics, window)
+  function self:draw (graphics, window)
     for _,element in ipairs(elements) do
       if element:isVisible() then
         -- store current graphics state

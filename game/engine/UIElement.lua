@@ -1,74 +1,73 @@
 
 local class = require 'lux.oo.class'
+local vec2 = require 'lux.geom.Vector'
 
 function class:UIElement (the_pos, the_size)
-
-  local vec2 = require 'lux.geom.Vector'
 
   local visible = true
   local pos = the_pos or vec2:new{0, 0}
   local size = the_size or vec2:new{32, 32}
 
-  function isVisible ()
+  function self:isVisible ()
     return visible
   end
 
-  function getPos ()
+  function self:getPos ()
     return pos:clone()
   end
 
-  function getSize ()
+  function self:getSize ()
     return size:clone()
   end
 
-  function left ()
+  function self:left ()
     return pos.x
   end
 
-  function right ()
+  function self:right ()
     return pos.x + size.x
   end
 
-  function top ()
+  function self:top ()
     return pos.y
   end
 
-  function bottom ()
+  function self:bottom ()
     return pos.y + size.y
   end
 
-  function intersects (point)
-    if point.x < left() or
-       point.y < top() or
-       point.x > right() or
-       point.y > bottom() then
+  function self:intersects (point)
+    if point.x < self:left() or
+       point.y < self:top() or
+       point.x > self:right() or
+       point.y > self:bottom() then
       return false
     else
       return true
     end
   end
 
-  function draw (graphics, window)
+  function self:draw (graphics, window)
     graphics.setColor(220, 80, 80, 255)
     graphics.rectangle('fill', pos.x, pos.y, size.x, size.y)
   end
 
-  function onRefresh ()
+  function self:onRefresh ()
     -- abstract method
   end
 
-  function onMousePress (point, button)
+  function self:onMousePress (point, button)
     -- abstract method
   end
 
-  function onMouseRelease (point, button)
+  function self:onMouseRelease (point, button)
     -- abstract method
   end
 
-  function onMouseHover (point, mouse)
+  function self:onMouseHover (point, mouse)
     -- abstract method
   end
 
 end
 
-return class.UIElement
+return class:bind 'UIElement'
