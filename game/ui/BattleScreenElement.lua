@@ -2,7 +2,6 @@
 local class     = require 'lux.oo.class'
 local vec2      = require 'lux.geom.Vector'
 local hexpos    = require 'domain.hexpos'
-local class     = require 'lux.oo.class'
 local Cursor    = require 'ui.battle.Cursor'
 
 function class:BattleScreenElement (the_battlefield)
@@ -82,4 +81,4 @@ function class:BattleScreenElement (the_battlefield)
 
 end
 
-return class.BattleScreenElement
+return class:bind 'BattleScreenElement'

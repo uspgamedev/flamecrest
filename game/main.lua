@@ -13,7 +13,6 @@ function love.load ()
   screen = class:BattleScreenElement(class:BattleField(5,5))
   screen:lookAt(3, 3)
   UI:add(screen)
-
 end
 
 do
