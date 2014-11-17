@@ -42,16 +42,16 @@ function class:BattleField (w, h)
     end
   end
 
+  function self:putUnit (pos, unit)
+    pos = pos:floor()
+    if self:contains(pos) then
+      tiles[pos.i][pos.j]:setUnit(unit)
+    end
+  end
+
   --[[
   function map:selectiondistance ()
     return (controller.cursor.pos:truncated() - self.focus:truncated()):size()
-  end
-
-  function map:putunit (pos, unit)
-    pos = pos:truncated()
-    if self:inside(pos) then
-      self.tiles[pos.i][pos.j].unit = unit
-    end
   end
 
   function map:moveunit (originpos, targetpos)

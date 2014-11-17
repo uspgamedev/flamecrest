@@ -7,11 +7,13 @@ local Cursor    = require 'ui.battle.Cursor'
 function class:BattleScreenElement (the_battlefield)
 
   require 'engine.UIElement'
+  require 'ui.battle.Sprite'
   class.UIElement(self, vec2:new{0, 0}, vec2:new{ love.window.getDimensions() })
 
   local battlefield = the_battlefield
   local camera_pos  = hexpos:new{0, 0}
   local tileset     = {}
+  local sprites     = {}
   local cursor      = Cursor()
 
   tileset.Plains = love.graphics.newImage "assets/images/hextile-grass.png"
@@ -51,6 +53,15 @@ function class:BattleScreenElement (the_battlefield)
     end
   end
 
+  local function getSprite (name)
+    local sprite = sprites[name]
+    if not sprite then
+      sprite = class:Sprite(name)
+      sprites[name] = sprite
+    end
+    return sprite
+  end
+
   --- Overrides @{UIElement:onMouseHover}
   function self:onMouseHover (pos)
     local hex = screenToHexpos(pos)
@@ -75,6 +86,10 @@ function class:BattleScreenElement (the_battlefield)
       local img = tileset[tile:getType()]
       graphics.draw(img, pos.x, pos.y, 0, 1, 1, img:getWidth()/2,
                     img:getHeight()/2)
+      local unit = tile:getUnit()
+      if unit then
+        getSprite("soldiaaa_spritesheet_v1"):draw(graphics, pos)
+      end
     end)
     cursor:draw(graphics)
   end
