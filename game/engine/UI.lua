@@ -40,7 +40,7 @@ function class:UI ()
     for i = #elements,1,-1 do
       local element = elements[i]
       if element:isVisible() and element:intersects(pos) then
-        element[type] (element, pos - element:getPos(), info)
+        element[type] (element, pos - element:getPos(), ...)
         return
       end
     end
