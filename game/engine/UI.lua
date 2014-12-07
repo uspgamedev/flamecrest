@@ -36,20 +36,31 @@ function class:UI ()
 
   --[[ element events ]]--
 
-  local function mouseAction (type, pos, ...)
+  function self:mouseAction (type, pos, ...)
     for i = #elements,1,-1 do
       local element = elements[i]
       if element:isVisible() and element:intersects(pos) then
-        element[type] (element, pos - element:getPos(), ...)
+        element["onMouse"..type] (element, pos - element:getPos(), ...)
         return
       end
     end
   end
 
   function self:refresh ()
-    mouseAction('onMouseHover', vec2:new{ love.mouse.getPosition() })
     for _,element in ipairs(elements) do
       element:onRefresh()
+    end
+  end
+
+  function self:receiveResults (results)
+    for _,result in ipairs(results) do
+      for i = #elements,1,-1 do
+        local element = elements[i]
+        local callback = "on"..result.id
+        if element[callback] then
+          element[callback] (element, result.args())
+        end
+      end
     end
   end
 
