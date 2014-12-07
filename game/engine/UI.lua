@@ -47,6 +47,7 @@ function class:UI ()
   end
 
   function self:refresh ()
+    self:mouseAction('Hover', vec2:new{ love.mouse.getPosition() })
     for _,element in ipairs(elements) do
       element:onRefresh()
     end

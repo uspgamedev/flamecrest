@@ -22,7 +22,6 @@ do
     lag = lag + dt
     while lag >= FRAME do
       game_ui:receiveResults(current_activity:pollResults())
-      game_ui:mouseAction('Hover', vec2:new{ love.mouse.getPosition() })
       game_ui:refresh()
       lag = lag - FRAME
     end
