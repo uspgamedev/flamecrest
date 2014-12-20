@@ -25,6 +25,10 @@ function class:Activity ()
     -- abstract
   end
 
+  function self:updateTasks ()
+    -- TODO
+  end
+
 end
 
 return class:bind 'Activity'
