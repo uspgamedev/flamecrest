@@ -4,7 +4,7 @@ local vec2      = require 'lux.geom.Vector'
 local hexpos    = require 'domain.hexpos'
 local Cursor    = require 'ui.battle.Cursor'
 
-function class:BattleScreenElement ()
+function class:BattleScreenElement (battlefield)
 
   require 'engine.UIElement'
   require 'ui.battle.Sprite'
@@ -14,7 +14,6 @@ function class:BattleScreenElement ()
   local tileset     = {}
   local sprites     = {}
   local cursor      = Cursor()
-  local battlefield = nil
 
   tileset.Plains = love.graphics.newImage "assets/images/hextile-grass.png"
   tileset.Forest = love.graphics.newImage "assets/images/hextile-forest.png"
@@ -43,11 +42,6 @@ function class:BattleScreenElement ()
       end
     end
     return focus
-  end
-
-  function self:onBattleFieldCreated (the_battlefield)
-    battlefield = the_battlefield
-    self:lookAt(3, 3)
   end
 
   function self:lookAt (i, j)

@@ -2,8 +2,8 @@
 local FRAME = 1/60
 
 local vec2                = require 'lux.geom.Vector'
-local BattlePlayActivity      = require 'activity.BattlePlayActivity'
-local BattleScreenElement = require 'ui.BattleScreenElement'
+local BattlePlayActivity  = require 'activity.BattlePlayActivity'
+local BattleUIActivity    = require 'activity.BattleUIActivity'
 
 local game_ui             = require 'engine.UI' ()
 local activities          = {}
@@ -23,11 +23,10 @@ local function tick ()
 end
 
 function love.load ()
-  table.insert(activities, BattlePlayActivity(game_ui))
+  table.insert(activities, BattlePlayActivity())
+  table.insert(activities, BattleUIActivity(game_ui))
   table.insert(messages, { id = 'Load', args = function () end })
-  game_ui:add(BattleScreenElement())
   tick()
-  game_ui:receiveResults(messages)
 end
 
 do
@@ -39,7 +38,6 @@ do
     while lag >= FRAME do
       messages = {}
       tick()
-      game_ui:receiveResults(messages)
       game_ui:refresh()
       lag = lag - FRAME
     end
