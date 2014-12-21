@@ -2,7 +2,7 @@
 local FRAME = 1/60
 
 local vec2                = require 'lux.geom.Vector'
-local BattleActivity      = require 'activity.BattleActivity'
+local BattlePlayActivity      = require 'activity.BattlePlayActivity'
 local BattleScreenElement = require 'ui.BattleScreenElement'
 
 local game_ui             = require 'engine.UI' ()
@@ -23,7 +23,7 @@ local function tick ()
 end
 
 function love.load ()
-  table.insert(activities, BattleActivity(game_ui))
+  table.insert(activities, BattlePlayActivity(game_ui))
   table.insert(messages, { id = 'Load', args = function () end })
   game_ui:add(BattleScreenElement())
   tick()

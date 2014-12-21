@@ -8,7 +8,7 @@ require 'engine.Activity'
 require 'domain.BattleField'
 require 'domain.Unit'
 
-function class:BattleActivity ()
+function class:BattlePlayActivity ()
 
   class.Activity(self)
 
@@ -22,5 +22,5 @@ function class:BattleActivity ()
 
 end
 
-return class:bind 'BattleActivity'
+return class:bind 'BattlePlayActivity'
 
