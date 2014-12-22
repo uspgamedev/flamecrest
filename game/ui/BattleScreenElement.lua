@@ -4,13 +4,12 @@ local vec2      = require 'lux.geom.Vector'
 local hexpos    = require 'domain.hexpos'
 local Cursor    = require 'ui.battle.Cursor'
 
-function class:BattleScreenElement (the_battlefield)
+function class:BattleScreenElement (battlefield)
 
   require 'engine.UIElement'
   require 'ui.battle.Sprite'
   class.UIElement(self, vec2:new{0, 0}, vec2:new{ love.window.getDimensions() })
 
-  local battlefield = the_battlefield
   local camera_pos  = hexpos:new{0, 0}
   local tileset     = {}
   local sprites     = {}

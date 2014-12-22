@@ -5,14 +5,37 @@ function class:Activity ()
 
   require 'engine.UI'
 
-  local ui = class:UI()
+  local finished = false
+  local results = {}
 
-  function self:getUI ()
-    return ui
+  function self:isFinished ()
+    return finished
   end
 
-  function self:update ()
-    -- what?
+  function self:finish ()
+    finished = true
+  end
+
+  function self:pollResults ()
+    local temp = results
+    results = {}
+    return temp
+  end
+
+  function self:addResult (id, ...)
+    local info = { n = select('#',...), ... }
+    table.insert(
+      results,
+      { id = id, args = function () return unpack(info,1,info.n) end }
+    )
+  end
+
+  function self:onLoad ()
+    -- abstract
+  end
+
+  function self:updateTasks ()
+    -- TODO
   end
 
 end
