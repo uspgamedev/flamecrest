@@ -10,7 +10,11 @@ local activities          = {}
 local messages            = {}
 
 local function tick ()
-  for _,activity in ipairs(activities) do
+  if #activities == 0 then
+    return love.event.push 'quit'
+  end
+  local finished = {}
+  for i,activity in ipairs(activities) do
     for _,msg in ipairs(messages) do
       local receive = activity['on'..msg.id]
       if receive then
@@ -19,30 +23,45 @@ local function tick ()
     end
     activity:updateTasks()
     messages = activity:pollResults()
+    if activity:isFinished() then
+      table.insert(finished, i)
+    end
   end
+  for k=#finished,1,-1 do
+    table.remove(activities, finished[k])
+  end
+end
+
+local function pushMsg (id, ...)
+  local info = { n = select('#',...), ... }
+  table.insert(
+    messages,
+    { id = id, args = function () return unpack(info,1,info.n) end }
+  )
 end
 
 function love.load ()
   table.insert(activities, BattlePlayActivity())
   table.insert(activities, BattleUIActivity(game_ui))
-  table.insert(messages, { id = 'Load', args = function () end })
+  pushMsg 'Load'
   tick()
 end
 
 do
-
   local lag = 0
-
   function love.update (dt)
     lag = lag + dt
     while lag >= FRAME do
-      messages = {}
       tick()
       game_ui:refresh()
       lag = lag - FRAME
+      messages = {}
     end
   end
+end
 
+function love.keypressed (key)
+  pushMsg('KeyPressed', key)
 end
 
 function love.draw ()

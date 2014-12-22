@@ -20,6 +20,13 @@ function class:BattlePlayActivity ()
     self:addResult('BattleFieldCreated', battlefield)
   end
 
+  function self:onKeyPressed (key)
+    if key == 'escape' then
+      self:addResult('Halt')
+      self:finish()
+    end
+  end
+
 end
 
 return class:bind 'BattlePlayActivity'

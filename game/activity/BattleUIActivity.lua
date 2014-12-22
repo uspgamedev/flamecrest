@@ -19,6 +19,10 @@ function class:BattleUIActivity (UI)
     screen:lookAt(3, 3)
   end
 
+  function self:onHalt ()
+    self:finish()
+  end
+
 end
 
 return class:bind 'BattleUIActivity'
