@@ -1,6 +1,8 @@
 
 local class = require 'lux.oo.class'
 
+local Event = require 'engine.Event'
+
 function class:Activity ()
 
   require 'engine.UI'
@@ -23,11 +25,7 @@ function class:Activity ()
   end
 
   function self:addResult (id, ...)
-    local info = { n = select('#',...), ... }
-    table.insert(
-      results,
-      { id = id, args = function () return unpack(info,1,info.n) end }
-    )
+    table.insert(results, Event(id, ...))
   end
 
   function self:onLoad ()

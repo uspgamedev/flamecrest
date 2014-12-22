@@ -4,10 +4,11 @@ local FRAME = 1/60
 local vec2                = require 'lux.geom.Vector'
 local BattlePlayActivity  = require 'activity.BattlePlayActivity'
 local BattleUIActivity    = require 'activity.BattleUIActivity'
+local Event               = require 'engine.Event'
 
 local game_ui             = require 'engine.UI' ()
 local activities          = {}
-local messages            = {}
+local events              = {}
 
 local function tick ()
   if #activities == 0 then
@@ -15,14 +16,14 @@ local function tick ()
   end
   local finished = {}
   for i,activity in ipairs(activities) do
-    for _,msg in ipairs(messages) do
-      local receive = activity['on'..msg.id]
+    for _,ev in ipairs(events) do
+      local receive = activity['on'..ev:getID()]
       if receive then
-        receive(activity, msg.args())
+        receive(activity, ev.getArgs())
       end
     end
     activity:updateTasks()
-    messages = activity:pollResults()
+    events = activity:pollResults()
     if activity:isFinished() then
       table.insert(finished, i)
     end
@@ -33,11 +34,7 @@ local function tick ()
 end
 
 local function pushMsg (id, ...)
-  local info = { n = select('#',...), ... }
-  table.insert(
-    messages,
-    { id = id, args = function () return unpack(info,1,info.n) end }
-  )
+  table.insert(events, Event(id, ...))
 end
 
 function love.load ()
@@ -55,7 +52,7 @@ do
       tick()
       game_ui:refresh()
       lag = lag - FRAME
-      messages = {}
+      events = {}
     end
   end
 end
