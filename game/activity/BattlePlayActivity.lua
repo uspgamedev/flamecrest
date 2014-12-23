@@ -12,7 +12,7 @@ function class:BattlePlayActivity ()
 
   class.Activity(self)
 
-  local battlefield = class:BattleField(5,5)
+  local battlefield = class:BattleField(6, 6)
   local unit        = class:Unit("Leeroy Jenkins", true, spec:new{}, spec:new{})
 
   function self.__accept:Load ()

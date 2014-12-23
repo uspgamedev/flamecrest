@@ -2,11 +2,12 @@
 local class = require 'lux.oo.class'
 local vec2 = require 'lux.geom.Vector'
 
-function class:UIElement (the_pos, the_size)
+function class:UIElement (pos, size)
+
+  pos = pos or vec2:new{0, 0}
+  size = size or vec2:new{32, 32}
 
   local visible = true
-  local pos = the_pos or vec2:new{0, 0}
-  local size = the_size or vec2:new{32, 32}
 
   function self:isVisible ()
     return visible
@@ -16,8 +17,40 @@ function class:UIElement (the_pos, the_size)
     return pos:clone()
   end
 
+  function self:getX ()
+    return pos.x
+  end
+
+  function self:getY ()
+    return pos.y
+  end
+
+  function self:setPos (x, y)
+    if type(x) == 'number' then
+      pos = vec2:new{x,y}
+    else
+      pos = x:clone()
+    end
+  end
+
   function self:getSize ()
     return size:clone()
+  end
+
+  function self:getWidth ()
+    return size.x
+  end
+
+  function self:getHeight ()
+    return size.y
+  end
+
+  function self:setSize (w, h)
+    if type(w) == 'number' then
+      size = vec2:new{w,y}
+    else
+      size = w:clone()
+    end
   end
 
   function self:left ()
@@ -56,11 +89,11 @@ function class:UIElement (the_pos, the_size)
     -- abstract method
   end
 
-  function self:onMousePress (point, button)
+  function self:onMousePressed (point, button)
     -- abstract method
   end
 
-  function self:onMouseRelease (point, button)
+  function self:onMouseReleased (point, button)
     -- abstract method
   end
 

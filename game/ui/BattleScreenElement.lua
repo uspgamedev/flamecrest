@@ -3,6 +3,7 @@ local class     = require 'lux.oo.class'
 local vec2      = require 'lux.geom.Vector'
 local hexpos    = require 'domain.hexpos'
 local Cursor    = require 'ui.battle.Cursor'
+local Event     = require 'engine.Event'
 
 function class:BattleScreenElement (battlefield)
 
@@ -59,6 +60,17 @@ function class:BattleScreenElement (battlefield)
       sprites[name] = sprite
     end
     return sprite
+  end
+
+  --- Overrides @{UIElement:onMousePressed}
+  function self:onMousePressed (pos, button)
+    if button == 'l' then
+      local tile_hexpos   = screenToHexpos(pos)
+      local tile          = battlefield:getTileAt(tile_hexpos)
+      if tile then
+        broadcastEvent(Event('TileClicked', tile_hexpos, tile))
+      end
+    end
   end
 
   --- Overrides @{UIElement:onMouseHover}

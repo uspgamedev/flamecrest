@@ -19,7 +19,7 @@ local function removeActivity (index)
   table.remove(activities, index)
 end
 
-local function broadcastEvent (ev)
+function broadcastEvent (ev)
   for _,activity in ipairs(activities) do
     activity:receiveEvent(ev)
   end
@@ -66,6 +66,10 @@ end
 
 function love.keypressed (key)
   broadcastEvent(Event('KeyPressed', key))
+end
+
+function love.mousepressed (x, y, button)
+  game_ui:mouseAction('Pressed', vec2:new{x,y}, button)
 end
 
 function love.draw ()

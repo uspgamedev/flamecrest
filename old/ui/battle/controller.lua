@@ -112,7 +112,7 @@ module ("ui.battle.controller", package.seeall) do
     print("confirm: " .. mapscene.mode)
     if tile then
       return confirm_event[mapscene.mode](mapscene, tile_hexpos, tile)
-   end
+    end
     return mapscene.focus, mapscene.mode
   end
 

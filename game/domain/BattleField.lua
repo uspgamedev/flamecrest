@@ -3,15 +3,13 @@ local class = require 'lux.oo.class'
 local hexpos = require 'domain.hexpos'
 local Tile = require 'domain.Tile'
 
-function class:BattleField (w, h)
+function class:BattleField (width, height)
 
   --require 'model.battle.pathfinding'
   --require 'model.combat.fight'
 
   --local fight   = model.combat.fight
 
-  local width   = 5
-  local height  = 5
   local tiles   = {}
 
   for i=1,height do
