@@ -6,6 +6,21 @@ local hexpos    = require 'domain.hexpos'
 local Cursor    = require 'ui.battle.Cursor'
 local Event     = require 'engine.Event'
 
+local markereffectcode = [[
+  vec4 effect (vec4 color, Image texture, vec2 tex_pos, vec2 pix_pos) {
+    vec4 result = Texel(texture, tex_pos)*color;
+    number bright = 0.7+0.3*distance(tex_pos, vec2(0.5, 0.5));
+    return result+vec4(bright*%f, bright*%f, bright*%f, 1.0)*result.a;
+  }
+]]
+
+local function makemarkereffect (graphics, r, g, b)
+  return graphics.newShader(string.format(markereffectcode, r, g, b))
+end
+
+local moveglow = makemarkereffect(love.graphics, 0, 0, 1)
+local atkglow  = makemarkereffect(love.graphics, 0.8, 0.1, 0)
+
 function class:BattleScreenElement (battlefield)
 
   require 'engine.UIElement'
@@ -18,8 +33,9 @@ function class:BattleScreenElement (battlefield)
   local cursor      = Cursor()
   local range
 
-  tileset.Plains = love.graphics.newImage "assets/images/hextile-grass.png"
-  tileset.Forest = love.graphics.newImage "assets/images/hextile-forest.png"
+  tileset.Default  = love.graphics.newImage "assets/images/hextile-empty.png"
+  tileset.Plains    = love.graphics.newImage "assets/images/hextile-grass.png"
+  tileset.Forest    = love.graphics.newImage "assets/images/hextile-forest.png"
 
   local function screenToHexpos (screenpos)
     -- TODO: inject love.window dependency
@@ -56,9 +72,10 @@ function class:BattleScreenElement (battlefield)
   end
 
   function self:displayRange (pos)
-    local tile = battlefield:getTileAt(pos)
-    if tile:getUnit() then
+    local unit = battlefield:getTileAt(pos):getUnit()
+    if unit then
       range = battlefield:getActionRange(pos)
+      range.unit = unit
     else
       range = nil
     end
@@ -101,12 +118,20 @@ function class:BattleScreenElement (battlefield)
 
   local function drawTile (graphics, i, j, tile)
     local pos = hexpos:new{i,j}:toVec2()
-    local img = tileset[tile:getType()]
-    graphics.draw(img, pos.x, pos.y, 0, 1, 1, img:getWidth()/2,
-                  img:getHeight()/2)
-    local unit = tile:getUnit()
-    if unit then
-      getSprite("soldiaaa_spritesheet_v1"):draw(graphics, pos)
+    do -- draw the tile
+      local img = tileset[tile:getType()]
+      if range and range[i][j] and range[i][j] < range.unit:getMv() then
+        graphics.setShader(moveglow)
+      end
+      graphics.draw(img, pos.x, pos.y, 0, 1, 1, img:getWidth()/2,
+                    img:getHeight()/2)
+      graphics.setShader()
+    end
+    do -- draw the unit
+      local unit = tile:getUnit()
+      if unit then
+        getSprite("soldiaaa_spritesheet_v1"):draw(graphics, pos)
+      end
     end
   end
 
