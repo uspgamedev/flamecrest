@@ -16,6 +16,7 @@ function class:BattleScreenElement (battlefield)
   local tileset     = {}
   local sprites     = {}
   local cursor      = Cursor()
+  local range
 
   tileset.Plains = love.graphics.newImage "assets/images/hextile-grass.png"
   tileset.Forest = love.graphics.newImage "assets/images/hextile-forest.png"
@@ -51,6 +52,15 @@ function class:BattleScreenElement (battlefield)
       camera_pos = hexpos:new{i,j}
     else
       camera_pos = i:clone()
+    end
+  end
+
+  function self:displayRange (pos)
+    local tile = battlefield:getTileAt(pos)
+    if tile:getUnit() then
+      range = battlefield:getActionRange(pos)
+    else
+      range = nil
     end
   end
 

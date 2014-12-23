@@ -2,6 +2,7 @@
 local class = require 'lux.oo.class'
 local hexpos = require 'domain.hexpos'
 local Tile = require 'domain.Tile'
+local bfs = require 'domain.algorithm.bfs'
 
 function class:BattleField (width, height)
 
@@ -29,6 +30,14 @@ function class:BattleField (width, height)
     return self:contains(pos) and tiles[pos.i][pos.j] or nil
   end
 
+  function self:getWidth ()
+    return width
+  end
+
+  function self:getHeight ()
+    return height
+  end
+
   function self:eachTile (action)
     for i = 1, height do
       for j = 1, width do
@@ -45,6 +54,11 @@ function class:BattleField (width, height)
     if self:contains(pos) then
       tiles[pos.i][pos.j]:setUnit(unit)
     end
+  end
+
+  function self:getActionRange (pos)
+    local range = bfs(self, pos)
+    return range
   end
 
   --[[

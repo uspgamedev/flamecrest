@@ -32,11 +32,8 @@ function class:BattleUIActivity (UI)
 
   function self.__accept:TileClicked (hex, tile)
     local unit = tile:getUnit()
-    if unit then
-      unitname:setText(unit:getName())
-    else
-      unitname:setText("")
-    end
+    unitname:setText(unit and unit:getName() or "")
+    screen:displayRange(hex)
   end
 
 end

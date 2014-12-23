@@ -32,6 +32,15 @@ function oo:Unit (name, class, basespec, growthspec)
     return name
   end
 
+  function self:getMv ()
+    return mv
+  end
+
+  function self:getTerrainCostFor (terrain_type)
+    -- TODO derp
+    return (terrain_type == 'Plains') and 1 or 2
+  end
+
 end
 
 return oo:bind 'Unit'

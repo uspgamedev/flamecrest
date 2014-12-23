@@ -88,7 +88,7 @@ function hexpos:toVec2 ()
   return vec2:new{97*self.j-97*self.i, 32*self.j+32*self.i}
 end
 
-function hexpos:adjacent_positions ()
+function hexpos:adjacentPositions ()
    return {
       self + hexpos:new{ 0, 1},
       self + hexpos:new{ 1, 1},
