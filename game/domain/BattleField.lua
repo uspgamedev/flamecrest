@@ -58,6 +58,7 @@ function class:BattleField (width, height)
 
   function self:getActionRange (pos)
     local range = bfs(self, pos)
+    range.unit = self:getTileAt(pos):getUnit()
     return range
   end
 

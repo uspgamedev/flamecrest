@@ -72,13 +72,11 @@ function class:BattleScreenElement (battlefield)
   end
 
   function self:displayRange (pos)
-    local unit = battlefield:getTileAt(pos):getUnit()
-    if unit then
-      range = battlefield:getActionRange(pos)
-      range.unit = unit
-    else
-      range = nil
-    end
+    range = battlefield:getActionRange(pos)
+  end
+
+  function self:clearRange ()
+    range = nil
   end
 
   local function getSprite (name)
@@ -98,6 +96,8 @@ function class:BattleScreenElement (battlefield)
       if tile then
         broadcastEvent(Event('TileClicked', tile_hexpos, tile))
       end
+    elseif button == 'r' then
+      broadcastEvent(Event('Cancel'))
     end
   end
 

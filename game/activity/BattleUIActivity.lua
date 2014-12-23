@@ -15,6 +15,7 @@ function class:BattleUIActivity (UI)
 
   local screen = nil
   local unitname = nil
+  local state
 
   function self.__accept:BattleFieldCreated (battlefield)
     screen = class:BattleScreenElement(battlefield)
@@ -32,8 +33,24 @@ function class:BattleUIActivity (UI)
 
   function self.__accept:TileClicked (hex, tile)
     local unit = tile:getUnit()
-    unitname:setText(unit and unit:getName() or "")
-    screen:displayRange(hex)
+    if not state then
+      if unit then
+        unitname:setText(unit:getName())
+        screen:displayRange(hex)
+        state = { mode = 'selected', unit = unit }
+      end
+    elseif state.mode == 'selected' then
+      if unit then
+      end
+    end
+  end
+
+  function self.__accept:Cancel ()
+    if state and state.mode == 'selected' then
+      unitname:setText("")
+      screen:clearRange()
+      state = nil
+    end
   end
 
 end
