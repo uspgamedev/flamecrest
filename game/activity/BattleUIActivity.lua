@@ -21,7 +21,6 @@ function class:BattleUIActivity (UI)
 
   function self.__accept:KeyPressed (key)
     if key == 'escape' then
-      self:raiseEvent 'Halt' ()
       self:finish()
     end
   end

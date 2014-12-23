@@ -9,22 +9,19 @@ local Queue               = require 'engine.Queue'
 
 local game_ui             = require 'engine.UI' ()
 local activities          = {}
-local events              = {}
 
 local function addActivity (activity)
   table.insert(activities, activity)
-  events[activity] = Queue(32)
 end
 
 local function removeActivity (index)
   local activity = activities[index]
   table.remove(activities, index)
-  events[activity] = nil
 end
 
-local function pushEvent (ev)
+local function broadcastEvent (ev)
   for _,activity in ipairs(activities) do
-    events[activity]:push(ev)
+    activity:receiveEvent(ev)
   end
 end
 
@@ -34,13 +31,10 @@ local function tick ()
   end
   local finished = {}
   for i,activity in ipairs(activities) do
-    local queue = events[activity]
-    while not queue:isEmpty() do
-      activity:accept(queue:pop())
-    end
+    activity:processEvents()
     activity:updateTasks()
     for _,ev in ipairs(activity:pollEvents()) do
-      pushEvent(ev)
+      broadcastEvent(ev)
     end
     if activity:isFinished() then
       table.insert(finished, i)
@@ -54,7 +48,7 @@ end
 function love.load ()
   addActivity(BattlePlayActivity())
   addActivity(BattleUIActivity(game_ui))
-  pushEvent(Event 'Load')
+  broadcastEvent(Event 'Load')
   tick()
 end
 
@@ -71,7 +65,7 @@ do
 end
 
 function love.keypressed (key)
-  pushEvent(Event('KeyPressed', key))
+  broadcastEvent(Event('KeyPressed', key))
 end
 
 function love.draw ()

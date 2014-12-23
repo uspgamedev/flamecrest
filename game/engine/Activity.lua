@@ -8,8 +8,10 @@ function class:Activity ()
 
   require 'engine.UI'
 
+  local QUEUE_MAX_SIZE = 32
+
   local finished = false
-  local out_queue = Queue(32)
+  local in_queue, out_queue = Queue(QUEUE_MAX_SIZE), Queue(QUEUE_MAX_SIZE)
 
   self.__accept = {}
 
@@ -25,16 +27,23 @@ function class:Activity ()
     return { out_queue:popAll() }
   end
 
-  function self:raiseEvent (id)
+  function self:sendEvent (id)
     return function (...)
       out_queue:push(Event(id, ...))
     end
   end
 
-  function self:accept (ev)
-    local callback = self.__accept[ev:getID()]
-    if callback then
-      callback(self, ev.getArgs())
+  function self:receiveEvent (ev)
+    in_queue:push(ev)
+  end
+
+  function self:processEvents ()
+    while not in_queue:isEmpty() do
+      local ev = in_queue:pop()
+      local callback = self.__accept[ev:getID()]
+      if callback then
+        callback(self, ev.getArgs())
+      end
     end
   end
 

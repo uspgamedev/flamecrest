@@ -17,12 +17,11 @@ function class:BattlePlayActivity ()
 
   function self.__accept:Load ()
     battlefield:putUnit(hexpos:new{1,1}, unit)
-    self:raiseEvent 'BattleFieldCreated' (battlefield)
+    self:sendEvent 'BattleFieldCreated' (battlefield)
   end
 
   function self.__accept:KeyPressed (key)
     if key == 'escape' then
-      self:raiseEvent 'Halt' ()
       self:finish()
     end
   end
