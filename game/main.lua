@@ -33,7 +33,7 @@ local function tick ()
   for i,activity in ipairs(activities) do
     activity:processEvents()
     activity:updateTasks()
-    for _,ev in ipairs(activity:pollEvents()) do
+    for ev in activity:pollEvents() do
       broadcastEvent(ev)
     end
     if activity:isFinished() then

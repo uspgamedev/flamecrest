@@ -50,6 +50,16 @@ function class:Queue (max)
     return self:pop(size)
   end
 
+  local function iterate ()
+    while not self:isEmpty() do
+      coroutine.yield(self:pop())
+    end
+  end
+
+  function self:popEach ()
+    return coroutine.wrap(iterate)
+  end
+
 end
 
 return class:bind 'Queue'

@@ -24,7 +24,7 @@ function class:Activity ()
   end
 
   function self:pollEvents ()
-    return { out_queue:popAll() }
+    return out_queue:popEach()
   end
 
   function self:sendEvent (id)
@@ -38,8 +38,7 @@ function class:Activity ()
   end
 
   function self:processEvents ()
-    while not in_queue:isEmpty() do
-      local ev = in_queue:pop()
+    for ev in in_queue:popEach() do
       local callback = self.__accept[ev:getID()]
       if callback then
         callback(self, ev.getArgs())
