@@ -15,12 +15,12 @@ function class:BattlePlayActivity ()
   local battlefield = class:BattleField(5,5)
   local unit        = class:Unit("Leeroy Jenkins", true, spec:new{}, spec:new{})
 
-  function self:onLoad ()
+  function self.__accept:Load ()
     battlefield:putUnit(hexpos:new{1,1}, unit)
     self:raiseEvent 'BattleFieldCreated' (battlefield)
   end
 
-  function self:onKeyPressed (key)
+  function self.__accept:KeyPressed (key)
     if key == 'escape' then
       self:raiseEvent 'Halt' ()
       self:finish()

@@ -9,7 +9,9 @@ function class:Activity ()
   require 'engine.UI'
 
   local finished = false
-  local event_queue = Queue(32)
+  local out_queue = Queue(32)
+
+  self.__accept = {}
 
   function self:isFinished ()
     return finished
@@ -20,17 +22,20 @@ function class:Activity ()
   end
 
   function self:pollEvents ()
-    return { event_queue:popAll() }
+    return { out_queue:popAll() }
   end
 
   function self:raiseEvent (id)
     return function (...)
-      event_queue:push(Event(id, ...))
+      out_queue:push(Event(id, ...))
     end
   end
 
-  function self:onLoad ()
-    -- abstract
+  function self:accept (ev)
+    local callback = self.__accept[ev:getID()]
+    if callback then
+      callback(self, ev.getArgs())
+    end
   end
 
   function self:updateTasks ()

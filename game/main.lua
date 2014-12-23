@@ -36,11 +36,7 @@ local function tick ()
   for i,activity in ipairs(activities) do
     local queue = events[activity]
     while not queue:isEmpty() do
-      local ev = queue:pop()
-      local receive = activity['on'..ev:getID()]
-      if receive then
-        receive(activity, ev.getArgs())
-      end
+      activity:accept(queue:pop())
     end
     activity:updateTasks()
     for _,ev in ipairs(activity:pollEvents()) do

@@ -13,13 +13,13 @@ function class:BattleUIActivity (UI)
 
   local screen = nil
 
-  function self:onBattleFieldCreated (battlefield)
+  function self.__accept:BattleFieldCreated (battlefield)
     screen = class:BattleScreenElement(battlefield)
     UI:add(screen)
     screen:lookAt(3, 3)
   end
 
-  function self:onKeyPressed (key)
+  function self.__accept:KeyPressed (key)
     if key == 'escape' then
       self:raiseEvent 'Halt' ()
       self:finish()
