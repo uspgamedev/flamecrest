@@ -1,6 +1,7 @@
 
 local class     = require 'lux.oo.class'
 local vec2      = require 'lux.geom.Vector'
+local lambda    = require 'lux.functional'
 local hexpos    = require 'domain.hexpos'
 local Cursor    = require 'ui.battle.Cursor'
 local Event     = require 'engine.Event'
@@ -88,20 +89,22 @@ function class:BattleScreenElement (battlefield)
     cursor:move()
   end
 
+  local function drawTile (graphics, i, j, tile)
+    local pos = hexpos:new{i,j}:toVec2()
+    local img = tileset[tile:getType()]
+    graphics.draw(img, pos.x, pos.y, 0, 1, 1, img:getWidth()/2,
+                  img:getHeight()/2)
+    local unit = tile:getUnit()
+    if unit then
+      getSprite("soldiaaa_spritesheet_v1"):draw(graphics, pos)
+    end
+  end
+
   -- @override
   function self:draw (graphics, window)
     local frame = vec2:new{ window.getDimensions() }
     graphics.translate((frame/2 - camera_pos:toVec2()):unpack())
-    battlefield:eachTile(function (i, j, tile)
-      local pos = hexpos:new{i,j}:toVec2()
-      local img = tileset[tile:getType()]
-      graphics.draw(img, pos.x, pos.y, 0, 1, 1, img:getWidth()/2,
-                    img:getHeight()/2)
-      local unit = tile:getUnit()
-      if unit then
-        getSprite("soldiaaa_spritesheet_v1"):draw(graphics, pos)
-      end
-    end)
+    battlefield:eachTile(lambda.bindFirst(drawTile, graphics))
     cursor:draw(graphics)
   end
 
