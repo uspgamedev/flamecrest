@@ -2,13 +2,14 @@
 local class = require 'lux.oo.class'
 
 local Event = require 'engine.Event'
+local Queue = require 'engine.Queue'
 
 function class:Activity ()
 
   require 'engine.UI'
 
   local finished = false
-  local results = {}
+  local event_queue = Queue(32)
 
   function self:isFinished ()
     return finished
@@ -18,14 +19,14 @@ function class:Activity ()
     finished = true
   end
 
-  function self:pollResults ()
-    local temp = results
-    results = {}
-    return temp
+  function self:pollEvents ()
+    return { event_queue:popAll() }
   end
 
-  function self:addResult (id, ...)
-    table.insert(results, Event(id, ...))
+  function self:raiseEvent (id)
+    return function (...)
+      event_queue:push(Event(id, ...))
+    end
   end
 
   function self:onLoad ()

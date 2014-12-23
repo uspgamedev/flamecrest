@@ -19,8 +19,11 @@ function class:BattleUIActivity (UI)
     screen:lookAt(3, 3)
   end
 
-  function self:onHalt ()
-    self:finish()
+  function self:onKeyPressed (key)
+    if key == 'escape' then
+      self:raiseEvent 'Halt' ()
+      self:finish()
+    end
   end
 
 end

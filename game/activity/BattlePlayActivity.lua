@@ -17,12 +17,12 @@ function class:BattlePlayActivity ()
 
   function self:onLoad ()
     battlefield:putUnit(hexpos:new{1,1}, unit)
-    self:addResult('BattleFieldCreated', battlefield)
+    self:raiseEvent 'BattleFieldCreated' (battlefield)
   end
 
   function self:onKeyPressed (key)
     if key == 'escape' then
-      self:addResult('Halt')
+      self:raiseEvent 'Halt' ()
       self:finish()
     end
   end

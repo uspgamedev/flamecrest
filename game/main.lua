@@ -5,10 +5,28 @@ local vec2                = require 'lux.geom.Vector'
 local BattlePlayActivity  = require 'activity.BattlePlayActivity'
 local BattleUIActivity    = require 'activity.BattleUIActivity'
 local Event               = require 'engine.Event'
+local Queue               = require 'engine.Queue'
 
 local game_ui             = require 'engine.UI' ()
 local activities          = {}
 local events              = {}
+
+local function addActivity (activity)
+  table.insert(activities, activity)
+  events[activity] = Queue(32)
+end
+
+local function removeActivity (index)
+  local activity = activities[index]
+  table.remove(activities, index)
+  events[activity] = nil
+end
+
+local function pushEvent (ev)
+  for _,activity in ipairs(activities) do
+    events[activity]:push(ev)
+  end
+end
 
 local function tick ()
   if #activities == 0 then
@@ -16,31 +34,31 @@ local function tick ()
   end
   local finished = {}
   for i,activity in ipairs(activities) do
-    for _,ev in ipairs(events) do
+    local queue = events[activity]
+    while not queue:isEmpty() do
+      local ev = queue:pop()
       local receive = activity['on'..ev:getID()]
       if receive then
         receive(activity, ev.getArgs())
       end
     end
     activity:updateTasks()
-    events = activity:pollResults()
+    for _,ev in ipairs(activity:pollEvents()) do
+      pushEvent(ev)
+    end
     if activity:isFinished() then
       table.insert(finished, i)
     end
   end
   for k=#finished,1,-1 do
-    table.remove(activities, finished[k])
+    removeActivity(finished[k])
   end
 end
 
-local function pushMsg (id, ...)
-  table.insert(events, Event(id, ...))
-end
-
 function love.load ()
-  table.insert(activities, BattlePlayActivity())
-  table.insert(activities, BattleUIActivity(game_ui))
-  pushMsg 'Load'
+  addActivity(BattlePlayActivity())
+  addActivity(BattleUIActivity(game_ui))
+  pushEvent(Event 'Load')
   tick()
 end
 
@@ -52,13 +70,12 @@ do
       tick()
       game_ui:refresh()
       lag = lag - FRAME
-      events = {}
     end
   end
 end
 
 function love.keypressed (key)
-  pushMsg('KeyPressed', key)
+  pushEvent(Event('KeyPressed', key))
 end
 
 function love.draw ()
