@@ -65,17 +65,30 @@ function class:BattleField (width, height)
   function self:moveUnit (originpos, targetpos)
     local unit        = self:getTileAt(originpos):getUnit()
     local targettile  = self:getTileAt(targetpos)
-    local ttargetpos = targetpos:floor()
     assert(unit)
     if targettile.unit then
-      return targettile.unit == unit and originpos:floor() or nil
+      return nil
     end
-    local paths = bfs(self, originpos)
-    if paths[ttargetpos.i] and paths[ttargetpos.i][ttargetpos.j]
-       and paths[ttargetpos.i][ttargetpos.j] <= unit:getMv() then
+    local dists = bfs(self, originpos)
+    if dists[targetpos.i] and dists[targetpos.i][targetpos.j]
+       and dists[targetpos.i][targetpos.j] <= unit:getMv() then
       self:putUnit(targetpos, unit)
       self:putUnit(originpos, nil)
-      return ttargetpos
+      local path = {}
+      local current = targetpos
+      while dists[current.i][current.j] > 0 do
+        local min = dists[current.i][current.j]
+        for _,adj in ipairs(current:adjacentPositions()) do
+          if self:contains(adj) then
+            local dist = dists[adj.i][adj.j]
+            if dist and dist < min then
+              current, min = adj, dist
+            end
+          end
+        end
+        table.insert(path, current)
+      end
+      return path
     end
     return nil
   end

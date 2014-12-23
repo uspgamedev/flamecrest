@@ -44,8 +44,9 @@ function class:BattleUIActivity (UI)
     end
   end
 
-  function self.__accept:UnitMoveFinished ()
+  function self.__accept:UnitMoveFinished (path)
     if state and state.mode == 'selected' then
+      print(unpack(path))
       unitname:setText("")
       screen:clearRange()
       state = nil

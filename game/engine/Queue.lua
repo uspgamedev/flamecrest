@@ -25,7 +25,7 @@ function class:Queue (max)
     if not event and select('#', ...) == 0 then
       return
     elseif event then
-      assert(not self:isFull())
+      assert(not self:isFull(), "Queue full: "..size.."/"..max)
       queue[tail] = event
       tail = (tail%max) + 1
       size = size + 1

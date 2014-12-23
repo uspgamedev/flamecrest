@@ -62,6 +62,10 @@ function hexpos.__le (lhs, rhs)
   return lhs.i <= rhs.i and lhs.j <= rhs.j
 end
 
+function hexpos.__tostring (hex)
+  return string.format("(%d,%d)", hex:unpack())
+end
+
 function hexpos:size ()
   return self[1]*self[2] >= 0
     and max(abs(self[1]), abs(self[2]))

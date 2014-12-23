@@ -27,9 +27,9 @@ function class:BattlePlayActivity ()
   end
 
   function self.__accept:UnitMoveRequest (from, to)
-    local newpos = battlefield:moveUnit(from, to)
-    if newpos then
-      self:sendEvent 'UnitMoveFinished' ()
+    local path = battlefield:moveUnit(from, to)
+    if path then
+      self:sendEvent 'UnitMoveFinished' (path)
     end
   end
 
