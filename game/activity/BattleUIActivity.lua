@@ -37,11 +37,18 @@ function class:BattleUIActivity (UI)
       if unit then
         unitname:setText(unit:getName())
         screen:displayRange(hex)
-        state = { mode = 'selected', unit = unit }
+        state = { mode = 'selected', pos = hex, unit = unit }
       end
     elseif state.mode == 'selected' then
-      if unit then
-      end
+      self:sendEvent 'UnitMoveRequest' (state.pos, hex)
+    end
+  end
+
+  function self.__accept:UnitMoveFinished ()
+    if state and state.mode == 'selected' then
+      unitname:setText("")
+      screen:clearRange()
+      state = nil
     end
   end
 

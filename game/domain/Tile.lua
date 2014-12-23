@@ -8,7 +8,6 @@ function class:Tile (typename)
   local unit
 
   function self:setUnit (the_unit)
-    assert(not unit)
     unit = the_unit
   end
 

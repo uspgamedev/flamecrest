@@ -26,6 +26,13 @@ function class:BattlePlayActivity ()
     end
   end
 
+  function self.__accept:UnitMoveRequest (from, to)
+    local newpos = battlefield:moveUnit(from, to)
+    if newpos then
+      self:sendEvent 'UnitMoveFinished' ()
+    end
+  end
+
 end
 
 return class:bind 'BattlePlayActivity'

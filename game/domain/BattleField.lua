@@ -62,27 +62,29 @@ function class:BattleField (width, height)
     return range
   end
 
+  function self:moveUnit (originpos, targetpos)
+    local unit        = self:getTileAt(originpos):getUnit()
+    local targettile  = self:getTileAt(targetpos)
+    local ttargetpos = targetpos:floor()
+    assert(unit)
+    if targettile.unit then
+      return targettile.unit == unit and originpos:floor() or nil
+    end
+    local paths = bfs(self, originpos)
+    if paths[ttargetpos.i] and paths[ttargetpos.i][ttargetpos.j]
+       and paths[ttargetpos.i][ttargetpos.j] <= unit:getMv() then
+      self:putUnit(targetpos, unit)
+      self:putUnit(originpos, nil)
+      return ttargetpos
+    end
+    return nil
+  end
+
   --[[
   function map:selectiondistance ()
     return (controller.cursor.pos:truncated() - self.focus:truncated()):size()
   end
 
-  function map:moveunit (originpos, targetpos)
-    local unit        = self:tile(originpos).unit
-    local targettile  = self:tile(targetpos)
-    local ttargetpos = targetpos:truncated()
-    assert(unit)
-    if targettile.unit then
-      return targettile.unit == unit and originpos:truncated() or nil
-    end
-    local paths = breadthfirstsearch(self, unit, originpos)
-    if paths[ttargetpos.i] and paths[ttargetpos.i][ttargetpos.j] and paths[ttargetpos.i][ttargetpos.j] <= unit.attributes.mv then
-      self:putunit(targetpos, unit)
-      self:putunit(originpos, nil)
-      return ttargetpos
-    end
-    return nil
-  end
 
   function map:startcombat(originpos, targetpos)
     local attackertile = self:tile(originpos)

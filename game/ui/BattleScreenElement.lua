@@ -120,7 +120,7 @@ function class:BattleScreenElement (battlefield)
     local pos = hexpos:new{i,j}:toVec2()
     do -- draw the tile
       local img = tileset[tile:getType()]
-      if range and range[i][j] and range[i][j] < range.unit:getMv() then
+      if range and range[i][j] and range[i][j] <= range.unit:getMv() then
         graphics.setShader(moveglow)
       end
       graphics.draw(img, pos.x, pos.y, 0, 1, 1, img:getWidth()/2,
