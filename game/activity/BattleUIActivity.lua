@@ -40,25 +40,25 @@ function class:BattleUIActivity (UI)
       if unit then
         unitname:setText(unit:getName())
         screen:displayRange(hex)
-        state.mode = 'selected'
+        state.mode = 'select:move'
         state.pos = hex
         state.unit = unit
       end
-    elseif state.mode == 'selected' then
+    elseif state.mode == 'select:move' then
       self:sendEvent 'PathRequest' (state.pos, hex)
     end
   end
 
   function self.__accept:PathResult (path)
-    if state.mode == 'selected' then
+    if state.mode == 'select:move' then
       self:addTask('MoveAnimation', path)
-      state.mode = 'moving'
+      state.mode = 'animation:move'
       screen:clearRange()
     end
   end
 
   function self.__accept:Cancel ()
-    if state.mode == 'selected' then
+    if state.mode == 'select:move' then
       unitname:setText("")
       screen:clearRange()
       state.mode = 'idle'
@@ -66,8 +66,15 @@ function class:BattleUIActivity (UI)
   end
 
   function self.__accept:ListMenuOption (index, option)
-    state.mode = 'idle'
-    UI:remove(action_menu)
+    if state.mode == 'select:action' then
+      if option == "Wait" then
+        state.mode = 'idle'
+        UI:remove(action_menu)
+      elseif option == "Fight" then
+        state.mode = 'select:atktarget'
+        UI:remove(action_menu)
+      end
+    end
   end
 
   function self.__task:MoveAnimation (path)
@@ -77,7 +84,7 @@ function class:BattleUIActivity (UI)
       self:sendEvent 'MoveUnit' (path[i+1], dir)
     end
     unitname:setText("")
-    state.mode = 'action_menu'
+    state.mode = 'select:action'
     action_menu:setPos(screen:hexposToScreen(path[1])+vec2:new{-128, -160})
     UI:add(action_menu)
   end
