@@ -68,6 +68,11 @@ function oo:Unit (name, class, basespec, growthspec)
     end
   end
 
+  function self:withinAtkRange (range)
+    local minrange, maxrange = self:getAtkRange()
+    return range >= minrange and range <= maxrange
+  end
+
 end
 
 return oo:bind 'Unit'

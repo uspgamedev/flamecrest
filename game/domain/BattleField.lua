@@ -91,6 +91,25 @@ function class:BattleField (width, height)
     return range
   end
 
+  function self:getAtkRange(pos)
+    local unit = self:getTileAt(pos):getUnit()
+    local range = {}
+    for i = 1,height do
+      range[i] = {}
+      for j = 1,width do
+        local value = false
+        if unit then
+          local dist = (hexpos:new{i,j} - pos):size()
+          if unit:withinAtkRange(dist) then
+            value = { type = 'atk', value = dist }
+          end
+        end
+        range[i][j] = value
+      end
+    end
+    return range
+  end
+
   function self:findPath (originpos, targetpos)
     local unit        = self:getTileAt(originpos):getUnit()
     local targettile  = self:getTileAt(targetpos)

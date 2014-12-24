@@ -71,8 +71,9 @@ function class:BattleUIActivity (UI)
         state.mode = 'idle'
         UI:remove(action_menu)
       elseif option == "Fight" then
-        state.mode = 'select:atktarget'
         UI:remove(action_menu)
+        screen:displayAtkRange(state.pos)
+        state.mode = 'select:atktarget'
       end
     end
   end
@@ -85,6 +86,7 @@ function class:BattleUIActivity (UI)
     end
     unitname:setText("")
     state.mode = 'select:action'
+    state.pos  = path[1]
     action_menu:setPos(screen:hexposToScreen(path[1])+vec2:new{-128, -160})
     UI:add(action_menu)
   end

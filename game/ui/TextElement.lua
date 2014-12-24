@@ -17,7 +17,7 @@ function class:TextElement (text, fontsize, _pos, _size)
 
   function self:draw (graphics, window)
     local oldfont = graphics.getFont()
-    graphics.setColor(200, 200, 150, 255)
+    graphics.setColor(150, 150, 100, 255)
     graphics.rectangle(
       'fill',
       0, 0,

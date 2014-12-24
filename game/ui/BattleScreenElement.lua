@@ -82,6 +82,10 @@ function class:BattleScreenElement (battlefield)
     range = battlefield:getActionRange(pos)
   end
 
+  function self:displayAtkRange (pos)
+    range = battlefield:getAtkRange(pos)
+  end
+
   function self:clearRange ()
     range = nil
   end
