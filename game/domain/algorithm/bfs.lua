@@ -22,7 +22,7 @@ local function bfs(battlefield, startpos)
             for _,neighbor in ipairs(neighbors) do
                if battlefield:contains(neighbor) then
                   local curtile = battlefield:getTileAt(neighbor)
-                  if curtile then
+                  if curtile and not curtile:getUnit() then
                      local curdist = unit:getTerrainCostFor(curtile:getType())
                      queue:push {neighbor, d+curdist}
                   end
