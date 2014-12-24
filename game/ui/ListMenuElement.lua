@@ -27,6 +27,8 @@ function class:ListMenuElement (options, fontsize, _pos, _minwidth)
     class.UIElement(self, _pos, vec2:new{maxwidth, #options*getFontHeight()})
   end
 
+  local focus = 0
+
   local function getOption (y)
     return math.modf(y/getFontHeight())+1
   end
@@ -38,20 +40,30 @@ function class:ListMenuElement (options, fontsize, _pos, _minwidth)
     end
   end
 
+  function self:onMouseHover (pos)
+    focus = getOption(pos.y)
+  end
+
   function self:draw (graphics, window)
     local oldfont = graphics.getFont()
 
-    graphics.setColor(200, 200, 150, 255)
+    graphics.setColor(150, 150, 100, 255)
     graphics.rectangle('fill', 0, 0, self:getWidth(), self:getHeight())
 
     for i,option in ipairs(options) do
       local height = getFontHeight()
+      if focus == i then
+        graphics.setColor(200, 200, 150, 255)
+        graphics.rectangle('fill', 0, (i-1)*height, self:getWidth(), height)
+      end
       graphics.setColor(25, 25, 25, 255)
       graphics.setFont(font)
       graphics.printf(option, 0, (i-1)*height, self:getWidth(), 'center')
       graphics.setColor(255, 255, 255, 255)
       graphics.setFont(oldfont)
     end
+
+    focus = 0
   end
 
 end
