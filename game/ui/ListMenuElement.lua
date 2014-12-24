@@ -3,6 +3,7 @@ local class     = require 'lux.oo.class'
 local vec2      = require 'lux.geom.Vector'
 
 require 'engine.UIElement'
+require 'engine.Event'
 
 function class:ListMenuElement (options, fontsize, _pos, _minwidth)
 
@@ -24,6 +25,17 @@ function class:ListMenuElement (options, fontsize, _pos, _minwidth)
       end
     end
     class.UIElement(self, _pos, vec2:new{maxwidth, #options*getFontHeight()})
+  end
+
+  local function getOption (y)
+    return math.modf(y/getFontHeight())+1
+  end
+
+  function self:onMousePressed (pos, button)
+    if button == 'l' then
+      local i = getOption(pos.y)
+      broadcastEvent(class:Event('ListMenuOption', i, options[i]))
+    end
   end
 
   function self:draw (graphics, window)

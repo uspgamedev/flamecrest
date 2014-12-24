@@ -26,7 +26,6 @@ function class:BattleUIActivity (UI)
     unitname = class:TextElement("", 18, vec2:new{16, 16}, vec2:new{256, 20})
     UI:add(unitname)
     action_menu = class:ListMenuElement({"Fight", "Wait"}, 18, vec2:new{600, 16})
-    UI:add(action_menu)
   end
 
   function self.__accept:KeyPressed (key)
@@ -66,6 +65,11 @@ function class:BattleUIActivity (UI)
     end
   end
 
+  function self.__accept:ListMenuOption (index, option)
+    state.mode = 'idle'
+    UI:remove(action_menu)
+  end
+
   function self.__task:MoveAnimation (path)
     for i=#path-1,1,-1 do
       self:yield(10)
@@ -74,6 +78,8 @@ function class:BattleUIActivity (UI)
     end
     unitname:setText("")
     state.mode = 'action_menu'
+    action_menu:setPos(screen:hexposToScreen(path[1])+vec2:new{-128, -160})
+    UI:add(action_menu)
   end
 
 end
