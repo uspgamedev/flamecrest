@@ -20,12 +20,12 @@ function class:TextElement (text, fontsize, _pos, _size)
     graphics.setColor(200, 200, 150, 255)
     graphics.rectangle(
       'fill',
-      self:getX(), self:getY(),
+      0, 0,
       self:getWidth(), self:getHeight()
     )
     graphics.setColor(25, 25, 25, 255)
     graphics.setFont(font)
-    graphics.printf(text, self:getX(), self:getY(), self:getWidth(), 'center')
+    graphics.printf(text, 0, 0, self:getWidth(), 'center')
     graphics.setColor(255, 255, 255, 255)
     graphics.setFont(oldfont)
   end
