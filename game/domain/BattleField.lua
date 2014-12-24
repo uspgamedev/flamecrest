@@ -95,7 +95,7 @@ function class:BattleField (width, height)
     local unit        = self:getTileAt(originpos):getUnit()
     local targettile  = self:getTileAt(targetpos)
     assert(unit)
-    if targettile.unit then
+    if targettile:getUnit() then
       return nil
     end
     local dists = bfs(self, originpos)
