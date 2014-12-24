@@ -23,14 +23,20 @@ function class:BattlePlayActivity ()
   function self.__accept:KeyPressed (key)
     if key == 'escape' then
       self:finish()
+    elseif key == ' ' then
+      unit:resetSteps()
     end
   end
 
-  function self.__accept:UnitMoveRequest (from, to)
-    local path = battlefield:moveUnit(from, to)
+  function self.__accept:PathRequest (from, to)
+    local path = battlefield:findPath(from, to)
     if path then
-      self:sendEvent 'UnitMoveFinished' (path)
+      self:sendEvent 'PathResult' (path)
     end
+  end
+
+  function self.__accept:MoveUnit (pos, dir)
+    battlefield:moveUnit(pos, dir)
   end
 
 end

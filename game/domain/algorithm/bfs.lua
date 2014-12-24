@@ -12,7 +12,7 @@ local function bfs(battlefield, startpos)
    local unit = battlefield:getTileAt(startpos):getUnit()
    local queue = Queue(10*battlefield:getWidth()*battlefield:getHeight())
    queue:push { startpos, 0 }
-   local maxdist = unit:getMv()
+   local maxdist = unit:getStepsLeft()
    while not queue:isEmpty() do
       local pos, d = unpack(queue:pop())
       if d <= maxdist then

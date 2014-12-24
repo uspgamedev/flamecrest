@@ -40,16 +40,13 @@ function class:BattleUIActivity (UI)
         state = { mode = 'selected', pos = hex, unit = unit }
       end
     elseif state.mode == 'selected' then
-      self:sendEvent 'UnitMoveRequest' (state.pos, hex)
+      self:sendEvent 'PathRequest' (state.pos, hex)
     end
   end
 
-  function self.__accept:UnitMoveFinished (path)
+  function self.__accept:PathResult (path)
     if state and state.mode == 'selected' then
-      print(unpack(path))
-      unitname:setText("")
-      screen:clearRange()
-      state = nil
+      self:addTask('MoveAnimation', path)
     end
   end
 
@@ -59,6 +56,16 @@ function class:BattleUIActivity (UI)
       screen:clearRange()
       state = nil
     end
+  end
+
+  function self.__task:MoveAnimation (path)
+    for i=#path-1,1,-1 do
+      self:sendEvent 'MoveUnit' (path[i+1], path[i]-path[i+1])
+    end
+    unitname:setText("")
+    screen:clearRange()
+    state = nil
+    return false
   end
 
 end

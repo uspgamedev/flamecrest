@@ -62,7 +62,7 @@ function class:BattleField (width, height)
     return range
   end
 
-  function self:moveUnit (originpos, targetpos)
+  function self:findPath (originpos, targetpos)
     local unit        = self:getTileAt(originpos):getUnit()
     local targettile  = self:getTileAt(targetpos)
     assert(unit)
@@ -71,10 +71,8 @@ function class:BattleField (width, height)
     end
     local dists = bfs(self, originpos)
     if dists[targetpos.i] and dists[targetpos.i][targetpos.j]
-       and dists[targetpos.i][targetpos.j] <= unit:getMv() then
-      self:putUnit(targetpos, unit)
-      self:putUnit(originpos, nil)
-      local path = {}
+       and dists[targetpos.i][targetpos.j] <= unit:getStepsLeft() then
+      local path = { targetpos }
       local current = targetpos
       while dists[current.i][current.j] > 0 do
         local min = dists[current.i][current.j]
@@ -91,6 +89,17 @@ function class:BattleField (width, height)
       return path
     end
     return nil
+  end
+
+  function self:moveUnit (pos, dir)
+    assert(dir:size() == 1)
+    local unit  = self:getTileAt(pos):getUnit()
+    local tile  = self:getTileAt(pos+dir)
+    assert(unit)
+    assert(not self:getTileAt(pos+dir):getUnit())
+    unit:step(tile:getType())
+    self:putUnit(pos+dir, unit)
+    self:putUnit(pos, nil)
   end
 
   --[[

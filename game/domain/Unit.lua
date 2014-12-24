@@ -22,6 +22,7 @@ function oo:Unit (name, class, basespec, growthspec)
   local lv    = 1
   local exp   = 0
   local hp    = maxhp
+  local steps = 0
 
   local weapon
 
@@ -36,9 +37,23 @@ function oo:Unit (name, class, basespec, growthspec)
     return mv
   end
 
+  function self:getStepsLeft ()
+    return mv - steps
+  end
+
   function self:getTerrainCostFor (terrain_type)
     -- TODO derp
     return (terrain_type == 'Plains') and 1 or 2
+  end
+
+  function self:step (terrain_type)
+    local n = self:getTerrainCostFor(terrain_type)
+    assert(steps + n <= mv)
+    steps = steps + n
+  end
+
+  function self:resetSteps ()
+    steps = 0
   end
 
 end
