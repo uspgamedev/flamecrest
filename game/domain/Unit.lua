@@ -62,7 +62,7 @@ function oo:Unit (name, class, basespec, growthspec)
 
   function self:getAtkRange ()
     if not weapon then
-      return 0, 0
+      return 1, 1
     else
       return weapon:getMinRange(), weapon:getMaxRange()
     end
