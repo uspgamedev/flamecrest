@@ -21,11 +21,14 @@ function class:UI ()
   -- @param element The removed element. Cannot be <code>nil</code>
   function self:remove (element)
     assert(element, "Cannot remove nil element.")
-    elements:remove(reverse_index[element])
-    for i = reverse_index[element],#elements do
-      reverse_index[elements[i]] = i
+    local index = reverse_index[element]
+    if index then
+      elements:remove(index)
+      for i = index,#elements do
+        reverse_index[elements[i]] = i
+      end
+      reverse_index[element] = nil
     end
-    reverse_index[element] = nil
   end
 
   --- Clears the UI of all elements.

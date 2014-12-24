@@ -17,7 +17,46 @@ function class:BattleUIActivity (UI)
   local screen      = nil
   local unitname    = nil
   local action_menu = nil
-  local state       = { mode = 'idle' }
+  local state       = { mode = 'Idle' }
+  local __switch    = {}
+
+  local function switchTo (mode, ...)
+    state.mode = mode
+    __switch[mode](...)
+  end
+
+  function __switch.Idle ()
+    UI:remove(action_menu)
+    unitname:setText("")
+    screen:clearRange()
+    state.pos = nil
+    state.unit = nil
+  end
+
+  function __switch.SelectMove (pos, unit)
+    unitname:setText(unit:getName())
+    screen:displayRange(pos)
+    state.pos = pos
+    state.unit = unit
+  end
+
+  function __switch.SelectAction (pos)
+    action_menu:setPos(screen:hexposToScreen(pos)+vec2:new{-128, -160})
+    UI:add(action_menu)
+    screen:clearRange()
+    state.pos = pos
+  end
+
+  function __switch.SelectAtkTarget (pos)
+    UI:remove(action_menu)
+    screen:displayAtkRange(state.pos)
+    state.pos = pos
+  end
+
+  function __switch.AnimationMove (path)
+    self:addTask('MoveAnimation', path)
+    screen:clearRange()
+  end
 
   function self.__accept:BattleFieldCreated (battlefield)
     screen = class:BattleScreenElement(battlefield)
@@ -36,53 +75,37 @@ function class:BattleUIActivity (UI)
 
   function self.__accept:TileClicked (hex, tile)
     local unit = tile:getUnit()
-    if state.mode == 'idle' then
+    if state.mode == 'Idle' then
       if unit then
-        unitname:setText(unit:getName())
-        screen:displayRange(hex)
-        state.mode = 'select:move'
-        state.pos = hex
-        state.unit = unit
+        switchTo('SelectMove', hex, unit)
       end
-    elseif state.mode == 'select:move' then
+    elseif state.mode == 'SelectMove' then
       self:sendEvent 'PathRequest' (state.pos, hex)
-    elseif state.mode == 'select:atktarget' then
-      state.mode = 'idle'
+    elseif state.mode == 'SelectAtkTarget' then
+      switchTo('Idle')
     end
   end
 
   function self.__accept:PathResult (path)
-    if state.mode == 'select:move' then
-      self:addTask('MoveAnimation', path)
-      state.mode = 'animation:move'
-      screen:clearRange()
+    if state.mode == 'SelectMove' then
+      switchTo('AnimationMove', path)
     end
   end
 
   function self.__accept:Cancel ()
-    if state.mode == 'select:move' then
-      unitname:setText("")
-      screen:clearRange()
-      state.mode = 'idle'
-    elseif state.mode == 'select:atktarget' then
-      state.mode = 'select:action'
-      state.pos  = state.pos
-      action_menu:setPos(screen:hexposToScreen(state.pos)+vec2:new{-128, -160})
-      screen:clearRange()
-      UI:add(action_menu)
+    if state.mode == 'SelectMove' then
+      switchTo('Idle')
+    elseif state.mode == 'SelectAtkTarget' then
+      switchTo('SelectAction', state.pos)
     end
   end
 
   function self.__accept:ListMenuOption (index, option)
-    if state.mode == 'select:action' then
+    if state.mode == 'SelectAction' then
       if option == "Wait" then
-        state.mode = 'idle'
-        UI:remove(action_menu)
+        switchTo('Idle')
       elseif option == "Fight" then
-        UI:remove(action_menu)
-        screen:displayAtkRange(state.pos)
-        state.mode = 'select:atktarget'
-        state.pos = state.pos
+        switchTo('SelectAtkTarget', state.pos)
       end
     end
   end
@@ -93,11 +116,7 @@ function class:BattleUIActivity (UI)
       local dir = path[i]-path[i+1]
       self:sendEvent 'MoveUnit' (path[i+1], dir)
     end
-    unitname:setText("")
-    state.mode = 'select:action'
-    state.pos  = path[1]
-    action_menu:setPos(screen:hexposToScreen(path[1])+vec2:new{-128, -160})
-    UI:add(action_menu)
+    switchTo('SelectAction', path[1])
   end
 
 end
