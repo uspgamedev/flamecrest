@@ -73,8 +73,17 @@ function class:BattleScreenElement (battlefield)
     end
   end
 
+  function self:hexposToScreen (hex)
+    local frame = vec2:new{ love.window.getDimensions() }
+    return frame/2 - (camera_pos - hex):toVec2()
+  end
+
   function self:displayRange (pos)
     range = battlefield:getActionRange(pos)
+  end
+
+  function self:displayAtkRange (pos)
+    range = battlefield:getAtkRange(pos)
   end
 
   function self:clearRange ()

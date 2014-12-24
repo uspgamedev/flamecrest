@@ -58,9 +58,9 @@ do
     lag = lag + dt
     while lag >= FRAME do
       tick()
-      game_ui:refresh()
       lag = lag - FRAME
     end
+    game_ui:refresh()
   end
 end
 
