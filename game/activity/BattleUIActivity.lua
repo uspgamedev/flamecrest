@@ -47,6 +47,8 @@ function class:BattleUIActivity (UI)
   function self.__accept:PathResult (path)
     if state and state.mode == 'selected' then
       self:addTask('MoveAnimation', path)
+      state.mode = 'moving'
+      screen:clearRange()
     end
   end
 
@@ -60,7 +62,12 @@ function class:BattleUIActivity (UI)
 
   function self.__task:MoveAnimation (path)
     for i=#path-1,1,-1 do
-      self:sendEvent 'MoveUnit' (path[i+1], path[i]-path[i+1])
+      for i=1,20 do
+        self:yield()
+      end
+      local dir = path[i]-path[i+1]
+      self:sendEvent 'MoveUnit' (path[i+1], dir)
+      self:yield()
     end
     unitname:setText("")
     screen:clearRange()
