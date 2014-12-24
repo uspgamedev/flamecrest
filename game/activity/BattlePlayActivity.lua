@@ -13,10 +13,14 @@ function class:BattlePlayActivity ()
   class.Activity(self)
 
   local battlefield = class:BattleField(6, 6)
-  local unit        = class:Unit("Leeroy Jenkins", true, spec:new{}, spec:new{})
+  local units       = {
+    class:Unit("Leeroy Jenkins", true, spec:new{}, spec:new{}),
+    class:Unit("Juaum MacDude", true, spec:new{}, spec:new{})
+  }
 
   function self.__accept:Load ()
-    battlefield:putUnit(hexpos:new{1,1}, unit)
+    battlefield:putUnit(hexpos:new{1,1}, units[1])
+    battlefield:putUnit(hexpos:new{5,5}, units[2])
     self:sendEvent 'BattleFieldCreated' (battlefield)
   end
 
@@ -24,7 +28,9 @@ function class:BattlePlayActivity ()
     if key == 'escape' then
       self:finish()
     elseif key == ' ' then
-      unit:resetSteps()
+      for _,unit in ipairs(units) do
+        unit:resetSteps()
+      end
     end
   end
 

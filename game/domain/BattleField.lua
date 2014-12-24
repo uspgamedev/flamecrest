@@ -17,9 +17,7 @@ function class:BattleField (width, height)
     tiles[i] = {}
     for j=1,width do
       local t = (love.math.random() > .5) and 'plains' or 'forest'
-      if (i == 1 and j == 1) or love.math.random() > .2 then
-        tiles[i][j] = Tile(t)
-      end
+      tiles[i][j] = Tile(t)
     end
   end
 
