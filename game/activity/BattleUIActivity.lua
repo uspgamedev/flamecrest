@@ -46,6 +46,8 @@ function class:BattleUIActivity (UI)
       end
     elseif state.mode == 'select:move' then
       self:sendEvent 'PathRequest' (state.pos, hex)
+    elseif state.mode == 'select:atktarget' then
+      state.mode = 'idle'
     end
   end
 
@@ -62,6 +64,12 @@ function class:BattleUIActivity (UI)
       unitname:setText("")
       screen:clearRange()
       state.mode = 'idle'
+    elseif state.mode == 'select:atktarget' then
+      state.mode = 'select:action'
+      state.pos  = state.pos
+      action_menu:setPos(screen:hexposToScreen(state.pos)+vec2:new{-128, -160})
+      screen:clearRange()
+      UI:add(action_menu)
     end
   end
 
@@ -74,6 +82,7 @@ function class:BattleUIActivity (UI)
         UI:remove(action_menu)
         screen:displayAtkRange(state.pos)
         state.mode = 'select:atktarget'
+        state.pos = state.pos
       end
     end
   end
