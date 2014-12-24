@@ -62,17 +62,13 @@ function class:BattleUIActivity (UI)
 
   function self.__task:MoveAnimation (path)
     for i=#path-1,1,-1 do
-      for i=1,20 do
-        self:yield()
-      end
+      self:yield(10)
       local dir = path[i]-path[i+1]
       self:sendEvent 'MoveUnit' (path[i+1], dir)
-      self:yield()
     end
     unitname:setText("")
     screen:clearRange()
     state = nil
-    return false
   end
 
 end
