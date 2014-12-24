@@ -17,7 +17,9 @@ function class:BattleField (width, height)
     tiles[i] = {}
     for j=1,width do
       local t = (love.math.random() > .5) and 'plains' or 'forest'
-      tiles[i][j] = Tile(t)
+      if (i == 1 and j == 1) or love.math.random() > .2 then
+        tiles[i][j] = Tile(t)
+      end
     end
   end
 
@@ -57,7 +59,36 @@ function class:BattleField (width, height)
   end
 
   function self:getActionRange (pos)
-    local range = bfs(self, pos)
+    local dists = bfs(self, pos)
+    local unit = self:getTileAt(pos):getUnit()
+    local range = {}
+    for i,row in ipairs(dists) do
+      range[i] = {}
+      for j,dist in ipairs(row) do
+        if dist then
+          range[i][j] = { type = 'move', value = dist }
+        else
+          local minrange, maxrange = unit:getAtkRange()
+          local ok = false
+          for di = -maxrange,maxrange do
+            for dj = -maxrange,maxrange do
+              local d = hexpos:new{di, dj}
+              local size = d:size()
+              local check = hexpos:new{i+di, j+dj}
+              if self:contains(check) and dists[check.i][check.j]
+                 and size <= maxrange and size >= minrange then
+                 ok = true
+              end
+            end
+          end
+          if ok then
+            range[i][j] = { type = 'atk', value = size }
+          else
+            range[i][j] = false
+          end
+        end
+      end
+    end
     range.unit = self:getTileAt(pos):getUnit()
     return range
   end

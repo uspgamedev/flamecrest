@@ -18,8 +18,10 @@ local function makemarkereffect (graphics, r, g, b)
   return graphics.newShader(string.format(markereffectcode, r, g, b))
 end
 
-local moveglow = makemarkereffect(love.graphics, 0, 0, 1)
-local atkglow  = makemarkereffect(love.graphics, 0.8, 0.1, 0)
+local glow = {
+  move = makemarkereffect(love.graphics, 0, 0, 1),
+  atk  = makemarkereffect(love.graphics, 0.8, 0.1, 0)
+}
 
 function class:BattleScreenElement (battlefield)
 
@@ -120,8 +122,8 @@ function class:BattleScreenElement (battlefield)
     local pos = hexpos:new{i,j}:toVec2()
     do -- draw the tile
       local img = tileset[tile:getType()]
-      if range and range[i][j] and range[i][j] <= range.unit:getMv() then
-        graphics.setShader(moveglow)
+      if range and range[i][j] then
+        graphics.setShader(glow[range[i][j].type])
       end
       graphics.draw(img, pos.x, pos.y, 0, 1, 1, img:getWidth()/2,
                     img:getHeight()/2)

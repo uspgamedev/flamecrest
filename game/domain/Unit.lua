@@ -56,6 +56,18 @@ function oo:Unit (name, class, basespec, growthspec)
     steps = 0
   end
 
+  function self:getWeapon ()
+    return weapon
+  end
+
+  function self:getAtkRange ()
+    if not weapon then
+      return 0, 0
+    else
+      return weapon:getMinRange(), weapon:getMaxRange()
+    end
+  end
+
 end
 
 return oo:bind 'Unit'

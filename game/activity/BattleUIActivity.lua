@@ -67,7 +67,6 @@ function class:BattleUIActivity (UI)
       self:sendEvent 'MoveUnit' (path[i+1], dir)
     end
     unitname:setText("")
-    screen:clearRange()
     state = nil
   end
 
