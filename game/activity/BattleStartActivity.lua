@@ -32,7 +32,7 @@ function class:BattleStartActivity (UI)
     UI:add(stats)
     screen:lookAt(3, 3)
     self:switch(class:BattlePlayActivity(battlefield, units),
-                class:BattleIdleUIActivity(battlefield, UI))
+                class:BattleIdleUIActivity(UI, battlefield))
   end
 
 end

@@ -79,12 +79,8 @@ function class:BattleScreenElement (name, battlefield)
     return frame/2 - (camera_pos - hex):toVec2()
   end
 
-  function self:displayRange (pos)
-    range = battlefield:getActionRange(pos)
-  end
-
-  function self:displayAtkRange (pos)
-    range = battlefield:getAtkRange(pos)
+  function self:displayRange (the_range)
+    range = the_range
   end
 
   function self:clearRange ()

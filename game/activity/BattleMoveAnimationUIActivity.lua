@@ -5,19 +5,16 @@ local vec2    = require 'lux.geom.Vector'
 require 'engine.UI'
 require 'engine.Activity'
 require 'domain.BattleField'
-require 'domain.BattleAction'
 require 'domain.Unit'
-require 'activity.BattleTracePathUIActivity'
 
-function class:BattleIdleUIActivity (UI, battlefield)
+function class:BattleMoveAnimationUIActivity (UI, action)
 
   class.Activity(self)
 
   --[[ Event receivers ]]-------------------------------------------------------
 
   function self.__accept:Load ()
-    UI:remove("action_menu")
-    UI:find("stats"):setText("")
+    self:addTask('MoveAnimation')
     UI:find("screen"):clearRange()
   end
 
@@ -27,15 +24,17 @@ function class:BattleIdleUIActivity (UI, battlefield)
     end
   end
 
-  function self.__accept:TileClicked (tile)
-    local unit = tile:getUnit()
-    local action = class:BattleAction(battlefield, unit, tile:getPos())
-    if unit then
-      self:switch(class:BattleTracePathUIActivity(UI, action))
-    end
+  --[[ Tasks ]]-----------------------------------------------------------------
+
+  function self.__task:MoveAnimation (path)
+    repeat
+      self:yield(10)
+      action:moveUnit()
+    until action:pathFinished()
+    --switchTo('SelectAction', path[1], state.unit)
   end
 
 end
 
-return class:bind 'BattleIdleUIActivity'
+return class:bind 'BattleMoveAnimationUIActivity'
 

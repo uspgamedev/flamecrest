@@ -4,18 +4,17 @@ local vec2    = require 'lux.geom.Vector'
 
 require 'engine.UI'
 require 'engine.Activity'
-require 'domain.BattleField'
-require 'domain.Unit'
+require 'activity.BattleMoveAnimationUIActivity'
 
-function class:BattleTracePathUIActivity (battlefield, UI, from, unit)
+function class:BattleTracePathUIActivity (UI, action)
 
   class.Activity(self)
 
   --[[ Event receivers ]]-------------------------------------------------------
 
   function self.__accept:Load ()
-    UI:find("stats"):setText(unit:getName())
-    UI:find("screen"):displayRange(from:getPos())
+    UI:find("stats"):setText(action:getUnit():getName())
+    UI:find("screen"):displayRange(action:getActionRange())
   end
 
   function self.__accept:KeyPressed (key)
@@ -25,12 +24,13 @@ function class:BattleTracePathUIActivity (battlefield, UI, from, unit)
   end
 
   function self.__accept:TileClicked (tile)
-    local path = battlefield:findPath(from:getPos(), tile:getPos())
-    -- switch
+    action:findPath(tile:getPos())
+    self:switch(class:BattleMoveAnimationUIActivity(UI, action))
   end
 
   function self.__accept:Cancel ()
-    self:switch(class:BattleIdleUIActivity(battlefield, UI))
+    action:abort()
+    self:switch(class:BattleIdleUIActivity(UI, action:getField()))
   end
 
 end
