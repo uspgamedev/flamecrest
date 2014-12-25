@@ -17,8 +17,13 @@ function class:BattleAction (field, unit, start_pos)
     return unit
   end
 
+  function self:getCurrentPos ()
+    return current_pos:clone()
+  end
+
   function self:abort ()
     if (start_pos - current_pos):size() > 0 then
+      unit:resetSteps()
       field:putUnit(start_pos, unit)
       field:putUnit(current_pos, nil)
       current_pos = start_pos
@@ -103,19 +108,20 @@ function class:BattleAction (field, unit, start_pos)
   end
 
   function self:pathFinished ()
-    return step >= #path
+    return not path or (step >= #path)
   end
 
   function self:moveUnit ()
-    assert(path and step)
-    local next_pos = path[#path - step]
-    local tile = field:getTileAt(next_pos)
-    assert(not tile:getUnit())
-    unit:step(tile:getType())
-    field:putUnit(next_pos, unit)
-    field:putUnit(current_pos, nil)
-    current_pos = next_pos
-    step = step + 1
+    if path and step then
+      local next_pos = path[#path - step]
+      local tile = field:getTileAt(next_pos)
+      assert(not tile:getUnit())
+      unit:step(tile:getType())
+      field:putUnit(next_pos, unit)
+      field:putUnit(current_pos, nil)
+      current_pos = next_pos
+      step = step + 1
+    end
   end
 
   function self:startCombat(originpos, targetpos)

@@ -7,7 +7,7 @@ require 'engine.Activity'
 require 'domain.BattleField'
 require 'domain.BattleAction'
 require 'domain.Unit'
-require 'activity.BattleTracePathUIActivity'
+require 'activity.BattleTracePathActivity'
 
 function class:BattleIdleUIActivity (UI, battlefield)
 
@@ -31,7 +31,7 @@ function class:BattleIdleUIActivity (UI, battlefield)
     local unit = tile:getUnit()
     local action = class:BattleAction(battlefield, unit, tile:getPos())
     if unit then
-      self:switch(class:BattleTracePathUIActivity(UI, action))
+      self:switch(class:BattleTracePathActivity(UI, action))
     end
   end
 
