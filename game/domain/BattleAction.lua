@@ -107,7 +107,7 @@ function class:BattleAction (field, unit, start_pos)
     end
   end
 
-  function self:pathFinished ()
+  function self:validPath ()
     return not path or (step >= #path)
   end
 
