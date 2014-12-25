@@ -10,15 +10,20 @@ require 'ui.ListMenuElement'
 require 'domain.BattleField'
 require 'domain.Unit'
 
-function class:BattleUIActivity (UI)
+function class:BattleUIActivity (battlefield, UI)
 
   class.Activity(self)
 
-  local screen      = nil
-  local unitname    = nil
-  local action_menu = nil
   local state       = { mode = 'Idle' }
   local __switch    = {}
+
+  local screen = class:BattleScreenElement("screen", battlefield)
+  local unitname = class:TextElement("stats", "", 18, vec2:new{16, 16}, vec2:new{256, 20})
+  local action_menu = class:ListMenuElement("action_menu", {"Fight", "Wait"}, 18, vec2:new{600, 16})
+
+  UI:add(screen)
+  UI:add(unitname)
+  screen:lookAt(3, 3)
 
   local function switchTo (mode, ...)
     state.mode = mode
@@ -71,15 +76,6 @@ function class:BattleUIActivity (UI)
   end
 
   --[[ Event receivers ]]-------------------------------------------------------
-
-  function self.__accept:BattleFieldCreated (battlefield)
-    screen = class:BattleScreenElement(battlefield)
-    UI:add(screen)
-    screen:lookAt(3, 3)
-    unitname = class:TextElement("", 18, vec2:new{16, 16}, vec2:new{256, 20})
-    UI:add(unitname)
-    action_menu = class:ListMenuElement({"Fight", "Wait"}, 18, vec2:new{600, 16})
-  end
 
   function self.__accept:KeyPressed (key)
     if key == 'escape' then

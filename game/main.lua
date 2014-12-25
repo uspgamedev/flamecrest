@@ -2,8 +2,7 @@
 local FRAME = 1/60
 
 local vec2                = require 'lux.geom.Vector'
-local BattlePlayActivity  = require 'activity.BattlePlayActivity'
-local BattleUIActivity    = require 'activity.BattleUIActivity'
+local BattleStartActivity = require 'activity.BattleStartActivity'
 local Event               = require 'engine.Event'
 local Queue               = require 'engine.Queue'
 
@@ -51,8 +50,7 @@ local function tick ()
 end
 
 function love.load ()
-  addActivity(BattlePlayActivity())
-  addActivity(BattleUIActivity(game_ui))
+  addActivity(BattleStartActivity(game_ui))
   broadcastEvent(Event 'Load')
   tick()
 end

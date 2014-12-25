@@ -11,9 +11,9 @@ function class:UI ()
   -- Nothing happens if the element is currently in the UI.
   -- @param element The added element. Cannot be <code>nil</code>.
   function self:add (element)
-    if reverse_index[element] then return end
+    if reverse_index[element:getName()] then return end
     elements:insert(element)
-    reverse_index[element] = #elements
+    reverse_index[element:getName()] = #elements
   end
 
   --- Removes a element from the UI.
@@ -21,11 +21,14 @@ function class:UI ()
   -- @param element The removed element. Cannot be <code>nil</code>
   function self:remove (element)
     assert(element, "Cannot remove nil element.")
+    if type(element) ~= 'string' then
+      element = element:getName()
+    end
     local index = reverse_index[element]
     if index then
       elements:remove(index)
       for i = index,#elements do
-        reverse_index[elements[i]] = i
+        reverse_index[elements[i]:getName()] = i
       end
       reverse_index[element] = nil
     end

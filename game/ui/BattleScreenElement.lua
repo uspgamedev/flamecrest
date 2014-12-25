@@ -23,11 +23,12 @@ local glow = {
   atk  = makemarkereffect(love.graphics, 0.8, 0.1, 0)
 }
 
-function class:BattleScreenElement (battlefield)
+function class:BattleScreenElement (name, battlefield)
 
   require 'engine.UIElement'
   require 'ui.battle.Sprite'
-  class.UIElement(self, vec2:new{0, 0}, vec2:new{ love.window.getDimensions() })
+  class.UIElement(self, name, vec2:new{0, 0},
+                  vec2:new{ love.window.getDimensions() })
 
   local camera_pos  = hexpos:new{0, 0}
   local tileset     = {}

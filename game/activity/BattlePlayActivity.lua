@@ -1,28 +1,12 @@
 
 local class   = require 'lux.oo.class'
-local spec    = require 'domain.unitspec'
-local hexpos  = require 'domain.hexpos'
 
-require 'engine.UI'
 require 'engine.Activity'
-require 'domain.BattleField'
 require 'domain.Unit'
 
-function class:BattlePlayActivity ()
+function class:BattlePlayActivity (battlefield, units)
 
   class.Activity(self)
-
-  local battlefield = class:BattleField(6, 6)
-  local units       = {
-    class:Unit("Leeroy Jenkins", true, spec:new{}, spec:new{}),
-    class:Unit("Juaum MacDude", true, spec:new{}, spec:new{})
-  }
-
-  function self.__accept:Load ()
-    battlefield:putUnit(hexpos:new{1,1}, units[1])
-    battlefield:putUnit(hexpos:new{5,5}, units[2])
-    self:sendEvent 'BattleFieldCreated' (battlefield)
-  end
 
   function self.__accept:KeyPressed (key)
     if key == 'escape' then
