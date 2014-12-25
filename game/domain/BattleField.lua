@@ -150,17 +150,11 @@ function class:BattleField (width, height)
     self:putUnit(pos, nil)
   end
 
-  --[[
-  function map:selectiondistance ()
-    return (controller.cursor.pos:truncated() - self.focus:truncated()):size()
-  end
-
-
-  function map:startcombat(originpos, targetpos)
-    local attackertile = self:tile(originpos)
-    local targettile = self:tile(targetpos)
-    local attacker  = attackertile.unit
-    local target    = targettile.unit
+  function self:startCombat(originpos, targetpos)
+    local attackertile = self:getTileAt(originpos)
+    local targettile = self:getTileAt(targetpos)
+    local attacker  = attackertile:getUnit()
+    local target    = targettile:getUnit()
     local attackerbonus = attackertile.attributes
     local targetbonus = targettile.attributes
     if not attacker or not target then return end
@@ -180,6 +174,11 @@ function class:BattleField (width, height)
    }
    print(targetbonus, attackerbonus)
    return fight(attackerinfo, defenderinfo, distance)
+  end
+
+  --[[
+  function map:selectiondistance ()
+    return (controller.cursor.pos:truncated() - self.focus:truncated()):size()
   end
   ]]
 
