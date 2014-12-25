@@ -12,7 +12,7 @@ require 'ui.BattleScreenElement'
 require 'ui.TextElement'
 require 'ui.ListMenuElement'
 require 'activity.BattlePlayActivity'
-require 'activity.BattleIdleUIActivity'
+require 'activity.BattleIdleActivity'
 
 function class:BattleStartActivity (UI)
 
@@ -32,7 +32,7 @@ function class:BattleStartActivity (UI)
     UI:add(stats)
     screen:lookAt(3, 3)
     self:switch(class:BattlePlayActivity(battlefield, units),
-                class:BattleIdleUIActivity(UI, battlefield))
+                class:BattleIdleActivity(UI, battlefield))
   end
 
 end

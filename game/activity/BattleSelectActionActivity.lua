@@ -30,10 +30,12 @@ function class:BattleSelectActionActivity (UI, action)
 
   function self.__accept:ListMenuOption (index, option)
     if option == "Wait" then
-      --switchTo('Idle')
+      -- TODO mark unit as used for this turn
+      self:switch(class:BattleIdleActivity(UI, action:getField()))
     elseif option == "Fight" then
       --switchTo('SelectAtkTarget', state.pos, state.unit)
     end
+    UI:remove("action_menu")
   end
 
   function self.__accept:Cancel ()

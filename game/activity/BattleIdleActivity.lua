@@ -9,14 +9,13 @@ require 'domain.BattleAction'
 require 'domain.Unit'
 require 'activity.BattleTracePathActivity'
 
-function class:BattleIdleUIActivity (UI, battlefield)
+function class:BattleIdleActivity (UI, battlefield)
 
   class.Activity(self)
 
   --[[ Event receivers ]]-------------------------------------------------------
 
   function self.__accept:Load ()
-    UI:remove("action_menu")
     UI:find("stats"):setText("")
     UI:find("screen"):clearRange()
   end
@@ -37,5 +36,5 @@ function class:BattleIdleUIActivity (UI, battlefield)
 
 end
 
-return class:bind 'BattleIdleUIActivity'
+return class:bind 'BattleIdleActivity'
 

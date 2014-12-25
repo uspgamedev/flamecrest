@@ -41,7 +41,7 @@ function class:BattleTracePathActivity (UI, action)
       moving = false
       UI:find("screen"):displayRange(action:getActionRange())
     else
-      self:switch(class:BattleIdleUIActivity(UI, action:getField()))
+      self:switch(class:BattleIdleActivity(UI, action:getField()))
     end
   end
 
