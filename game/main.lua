@@ -17,6 +17,7 @@ end
 local function removeActivity (index)
   local activity = activities[index]
   table.remove(activities, index)
+  return activity
 end
 
 function broadcastEvent (ev)
@@ -41,7 +42,11 @@ local function tick ()
     end
   end
   for k=#finished,1,-1 do
-    removeActivity(finished[k])
+    local removed = removeActivity(finished[k])
+    local scheduled = removed:getScheduled()
+    for i = #scheduled,1,-1 do
+      table.insert(activities, finished[k], scheduled[i])
+    end
   end
 end
 
