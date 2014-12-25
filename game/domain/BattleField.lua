@@ -17,7 +17,7 @@ function class:BattleField (width, height)
     tiles[i] = {}
     for j=1,width do
       local t = (love.math.random() > .5) and 'plains' or 'forest'
-      tiles[i][j] = Tile(t)
+      tiles[i][j] = Tile(hexpos:new{i,j}, t)
     end
   end
 

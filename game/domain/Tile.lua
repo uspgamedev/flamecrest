@@ -2,10 +2,14 @@
 local class = require 'lux.oo.class'
 local tiletypes = require 'content.tiletypes'
 
-function class:Tile (typename)
+function class:Tile (pos, typename)
 
   local attributes = tiletypes[typename or 'default']:new{}
   local unit
+
+  function self:getPos ()
+    return pos
+  end
 
   function self:setUnit (the_unit)
     unit = the_unit

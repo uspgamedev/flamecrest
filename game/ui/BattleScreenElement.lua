@@ -106,7 +106,7 @@ function class:BattleScreenElement (name, battlefield)
       local tile_hexpos   = screenToHexpos(pos)
       local tile          = battlefield:getTileAt(tile_hexpos)
       if tile then
-        broadcastEvent(Event('TileClicked', tile_hexpos, tile))
+        broadcastEvent(Event('TileClicked', tile))
       end
     elseif button == 'r' then
       broadcastEvent(Event('Cancel'))

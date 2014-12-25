@@ -6,18 +6,16 @@ require 'engine.UI'
 require 'engine.Activity'
 require 'domain.BattleField'
 require 'domain.Unit'
-require 'activity.BattleTracePathUIActivity'
 
-function class:BattleIdleUIActivity (battlefield, UI)
+function class:BattleTracePathUIActivity (battlefield, UI, from, unit)
 
   class.Activity(self)
 
   --[[ Event receivers ]]-------------------------------------------------------
 
   function self.__accept:Load ()
-    UI:remove("action_menu")
-    UI:find("stats"):setText("")
-    UI:find("screen"):clearRange()
+    UI:find("stats"):setText(unit:getName())
+    UI:find("screen"):displayRange(from:getPos())
   end
 
   function self.__accept:KeyPressed (key)
@@ -27,13 +25,15 @@ function class:BattleIdleUIActivity (battlefield, UI)
   end
 
   function self.__accept:TileClicked (tile)
-    local unit = tile:getUnit()
-    if unit then
-      self:switch(class:BattleTracePathUIActivity(battlefield, UI, tile, unit))
-    end
+    local path = battlefield:findPath(from:getPos(), tile:getPos())
+    -- switch
+  end
+
+  function self.__accept:Cancel ()
+    self:switch(class:BattleIdleUIActivity(battlefield, UI))
   end
 
 end
 
-return class:bind 'BattleIdleUIActivity'
+return class:bind 'BattleTracePathUIActivity'
 

@@ -8,6 +8,9 @@ require 'engine.UI'
 require 'engine.Activity'
 require 'domain.BattleField'
 require 'domain.Unit'
+require 'ui.BattleScreenElement'
+require 'ui.TextElement'
+require 'ui.ListMenuElement'
 require 'activity.BattlePlayActivity'
 require 'activity.BattleIdleUIActivity'
 
@@ -15,13 +18,12 @@ function class:BattleStartActivity (UI)
 
   class.Activity(self)
 
-  local battlefield = class:BattleField(6, 6)
-  local units       = {
-    class:Unit("Leeroy Jenkins", true, spec:new{}, spec:new{}),
-    class:Unit("Juaum MacDude", true, spec:new{}, spec:new{})
-  }
-
   function self.__accept:Load ()
+    local battlefield = class:BattleField(6, 6)
+    local units       = {
+      class:Unit("Leeroy Jenkins", true, spec:new{}, spec:new{}),
+      class:Unit("Juaum MacDude", true, spec:new{}, spec:new{})
+    }
     battlefield:putUnit(hexpos:new{1,1}, units[1])
     battlefield:putUnit(hexpos:new{5,5}, units[2])
     local screen = class:BattleScreenElement("screen", battlefield)

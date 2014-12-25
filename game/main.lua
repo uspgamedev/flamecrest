@@ -9,8 +9,9 @@ local Queue               = require 'engine.Queue'
 local game_ui             = require 'engine.UI' ()
 local activities          = {}
 
-local function addActivity (activity)
-  table.insert(activities, activity)
+local function addActivity (activity, i)
+  i = i or #activities+1
+  table.insert(activities, i, activity)
   activity:receiveEvent(Event("Load"))
 end
 
@@ -45,7 +46,7 @@ local function tick ()
     local removed = removeActivity(finished[k])
     local scheduled = removed:getScheduled()
     for i = #scheduled,1,-1 do
-      table.insert(activities, finished[k], scheduled[i])
+      addActivity(scheduled[i], finished[k])
     end
   end
 end
