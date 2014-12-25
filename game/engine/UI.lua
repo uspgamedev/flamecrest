@@ -34,6 +34,11 @@ function class:UI ()
     end
   end
 
+  function self:find (name)
+    local index = reverse_index[name]
+    return index and elements[index]
+  end
+
   --- Clears the UI of all elements.
   function self:clear ()
     elements      = setmetatable({}, { __index = table })
