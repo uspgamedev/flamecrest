@@ -14,11 +14,13 @@ function class:BattleIdleUIActivity (battlefield, UI)
 
   class.Activity(self)
 
-  UI:remove("action_menu")
-  UI:find("stats"):setText("")
-  UI:find("screen"):clearRange()
-
   --[[ Event receivers ]]-------------------------------------------------------
+
+  function self.__accept:Load ()
+    UI:remove("action_menu")
+    UI:find("stats"):setText("")
+    UI:find("screen"):clearRange()
+  end
 
   function self.__accept:KeyPressed (key)
     if key == 'escape' then

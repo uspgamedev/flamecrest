@@ -11,6 +11,7 @@ local activities          = {}
 
 local function addActivity (activity)
   table.insert(activities, activity)
+  activity:receiveEvent(Event("Load"))
 end
 
 local function removeActivity (index)
@@ -51,7 +52,6 @@ end
 
 function love.load ()
   addActivity(BattleStartActivity(game_ui))
-  broadcastEvent(Event 'Load')
   tick()
 end
 
