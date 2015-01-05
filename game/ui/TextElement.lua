@@ -4,9 +4,9 @@ local vec2      = require 'lux.geom.Vector'
 
 require 'engine.UIElement'
 
-function class:TextElement (text, fontsize, _pos, _size)
+function class:TextElement (_name, text, fontsize, _pos, _size)
 
-  class.UIElement(self, _pos, _size)
+  class.UIElement(self, _name, _pos, _size)
 
   fontsize = fontsize or 24
   local font = love.graphics.newFont('assets/fonts/Verdana.ttf', fontsize)

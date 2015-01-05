@@ -23,11 +23,12 @@ local glow = {
   atk  = makemarkereffect(love.graphics, 0.8, 0.1, 0)
 }
 
-function class:BattleScreenElement (battlefield)
+function class:BattleScreenElement (name, battlefield)
 
   require 'engine.UIElement'
   require 'ui.battle.Sprite'
-  class.UIElement(self, vec2:new{0, 0}, vec2:new{ love.window.getDimensions() })
+  class.UIElement(self, name, vec2:new{0, 0},
+                  vec2:new{ love.window.getDimensions() })
 
   local camera_pos  = hexpos:new{0, 0}
   local tileset     = {}
@@ -78,12 +79,8 @@ function class:BattleScreenElement (battlefield)
     return frame/2 - (camera_pos - hex):toVec2()
   end
 
-  function self:displayRange (pos)
-    range = battlefield:getActionRange(pos)
-  end
-
-  function self:displayAtkRange (pos)
-    range = battlefield:getAtkRange(pos)
+  function self:displayRange (the_range)
+    range = the_range
   end
 
   function self:clearRange ()
@@ -105,7 +102,7 @@ function class:BattleScreenElement (battlefield)
       local tile_hexpos   = screenToHexpos(pos)
       local tile          = battlefield:getTileAt(tile_hexpos)
       if tile then
-        broadcastEvent(Event('TileClicked', tile_hexpos, tile))
+        broadcastEvent(Event('TileClicked', tile))
       end
     elseif button == 'r' then
       broadcastEvent(Event('Cancel'))

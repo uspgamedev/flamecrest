@@ -2,21 +2,23 @@
 local FRAME = 1/60
 
 local vec2                = require 'lux.geom.Vector'
-local BattlePlayActivity  = require 'activity.BattlePlayActivity'
-local BattleUIActivity    = require 'activity.BattleUIActivity'
+local BattleStartActivity = require 'activity.BattleStartActivity'
 local Event               = require 'engine.Event'
 local Queue               = require 'engine.Queue'
 
 local game_ui             = require 'engine.UI' ()
 local activities          = {}
 
-local function addActivity (activity)
-  table.insert(activities, activity)
+local function addActivity (activity, i)
+  i = i or #activities+1
+  table.insert(activities, i, activity)
+  activity:receiveEvent(Event("Load"))
 end
 
 local function removeActivity (index)
   local activity = activities[index]
   table.remove(activities, index)
+  return activity
 end
 
 function broadcastEvent (ev)
@@ -41,14 +43,16 @@ local function tick ()
     end
   end
   for k=#finished,1,-1 do
-    removeActivity(finished[k])
+    local removed = removeActivity(finished[k])
+    local scheduled = removed:getScheduled()
+    for i = #scheduled,1,-1 do
+      addActivity(scheduled[i], finished[k])
+    end
   end
 end
 
 function love.load ()
-  addActivity(BattlePlayActivity())
-  addActivity(BattleUIActivity(game_ui))
-  broadcastEvent(Event 'Load')
+  addActivity(BattleStartActivity(game_ui))
   tick()
 end
 

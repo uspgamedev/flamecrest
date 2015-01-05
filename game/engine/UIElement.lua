@@ -2,12 +2,22 @@
 local class = require 'lux.oo.class'
 local vec2 = require 'lux.geom.Vector'
 
-function class:UIElement (pos, size)
+local id = 0
 
+function class:UIElement (name, pos, size)
+
+  if not name then
+    name = "Generated-"..id
+    id = id + 1
+  end
   pos = pos or vec2:new{0, 0}
   size = size or vec2:new{32, 32}
 
   local visible = true
+
+  function self:getName ()
+    return name
+  end
 
   function self:isVisible ()
     return visible

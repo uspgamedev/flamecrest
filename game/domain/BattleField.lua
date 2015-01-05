@@ -6,18 +6,13 @@ local bfs = require 'domain.algorithm.bfs'
 
 function class:BattleField (width, height)
 
-  --require 'model.battle.pathfinding'
-  --require 'model.combat.fight'
-
-  --local fight   = model.combat.fight
-
   local tiles   = {}
 
   for i=1,height do
     tiles[i] = {}
     for j=1,width do
       local t = (love.math.random() > .5) and 'plains' or 'forest'
-      tiles[i][j] = Tile(t)
+      tiles[i][j] = Tile(hexpos:new{i,j}, t)
     end
   end
 
@@ -55,132 +50,6 @@ function class:BattleField (width, height)
       tiles[pos.i][pos.j]:setUnit(unit)
     end
   end
-
-  function self:getActionRange (pos)
-    local dists = bfs(self, pos)
-    local unit = self:getTileAt(pos):getUnit()
-    local range = {}
-    for i,row in ipairs(dists) do
-      range[i] = {}
-      for j,dist in ipairs(row) do
-        if dist then
-          range[i][j] = { type = 'move', value = dist }
-        else
-          local minrange, maxrange = unit:getAtkRange()
-          local ok = false
-          for di = -maxrange,maxrange do
-            for dj = -maxrange,maxrange do
-              local d = hexpos:new{di, dj}
-              local size = d:size()
-              local check = hexpos:new{i+di, j+dj}
-              if self:contains(check) and dists[check.i][check.j]
-                 and size <= maxrange and size >= minrange then
-                 ok = true
-              end
-            end
-          end
-          if ok then
-            range[i][j] = { type = 'atk', value = size }
-          else
-            range[i][j] = false
-          end
-        end
-      end
-    end
-    range.unit = self:getTileAt(pos):getUnit()
-    return range
-  end
-
-  function self:getAtkRange(pos)
-    local unit = self:getTileAt(pos):getUnit()
-    local range = {}
-    for i = 1,height do
-      range[i] = {}
-      for j = 1,width do
-        local value = false
-        if unit then
-          local dist = (hexpos:new{i,j} - pos):size()
-          if unit:withinAtkRange(dist) then
-            value = { type = 'atk', value = dist }
-          end
-        end
-        range[i][j] = value
-      end
-    end
-    return range
-  end
-
-  function self:findPath (originpos, targetpos)
-    local unit        = self:getTileAt(originpos):getUnit()
-    local targettile  = self:getTileAt(targetpos)
-    assert(unit)
-    if targettile:getUnit() then
-      return nil
-    end
-    local dists = bfs(self, originpos)
-    if dists[targetpos.i] and dists[targetpos.i][targetpos.j]
-       and dists[targetpos.i][targetpos.j] <= unit:getStepsLeft() then
-      local path = { targetpos }
-      local current = targetpos
-      while dists[current.i][current.j] > 0 do
-        local min = dists[current.i][current.j]
-        for _,adj in ipairs(current:adjacentPositions()) do
-          if self:contains(adj) then
-            local dist = dists[adj.i][adj.j]
-            if dist and dist < min then
-              current, min = adj, dist
-            end
-          end
-        end
-        table.insert(path, current)
-      end
-      return path
-    end
-    return nil
-  end
-
-  function self:moveUnit (pos, dir)
-    assert(dir:size() == 1)
-    local unit  = self:getTileAt(pos):getUnit()
-    local tile  = self:getTileAt(pos+dir)
-    assert(unit)
-    assert(not self:getTileAt(pos+dir):getUnit())
-    unit:step(tile:getType())
-    self:putUnit(pos+dir, unit)
-    self:putUnit(pos, nil)
-  end
-
-  function self:startCombat(originpos, targetpos)
-    local attackertile = self:getTileAt(originpos)
-    local targettile = self:getTileAt(targetpos)
-    local attacker  = attackertile:getUnit()
-    local target    = targettile:getUnit()
-    local attackerbonus = attackertile.attributes
-    local targetbonus = targettile.attributes
-    if not attacker or not target then return end
-    if attacker:isdead() or target:isdead() then return end
-    local distance  = (targetpos:truncated() - originpos:truncated()):size()
-    if distance < attacker.weapon.minrange
-      or distance > attacker.weapon.maxrange then
-      return
-   end
-   local attackerinfo = {
-      unit = attacker,
-      terraininfo = attackerbonus
-   }
-   local defenderinfo = {
-      unit = target,
-      terraininfo = targetbonus
-   }
-   print(targetbonus, attackerbonus)
-   return fight(attackerinfo, defenderinfo, distance)
-  end
-
-  --[[
-  function map:selectiondistance ()
-    return (controller.cursor.pos:truncated() - self.focus:truncated()):size()
-  end
-  ]]
 
 end
 

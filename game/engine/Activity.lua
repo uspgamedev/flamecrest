@@ -12,6 +12,7 @@ function class:Activity ()
   local QUEUE_MAX_SIZE = 32
 
   local finished = false
+  local scheduled = {}
   local in_queue, out_queue = Queue(QUEUE_MAX_SIZE), Queue(QUEUE_MAX_SIZE)
   local tasks = {}
   local new_tasks, finished_tasks = {}, {}
@@ -27,6 +28,17 @@ function class:Activity ()
 
   function self:finish ()
     finished = true
+  end
+
+  function self:switch (...)
+    for i = 1,select('#', ...) do
+      table.insert(scheduled, (select(i, ...)))
+    end
+    finished = true
+  end
+
+  function self:getScheduled ()
+    return scheduled
   end
 
   -- Event stuff
@@ -47,6 +59,7 @@ function class:Activity ()
 
   function self:processEvents ()
     for ev in in_queue:popEach() do
+      if finished then return end
       local callback = self.__accept[ev:getID()]
       if callback then
         callback(self, ev.getArgs())
@@ -70,6 +83,7 @@ function class:Activity ()
       tasks[task] = true
     end
     for task,_ in pairs(tasks) do
+      if finished then return end
       if not task:resume() then
         table.insert(finished_tasks, task)
       end

@@ -5,7 +5,7 @@ local vec2      = require 'lux.geom.Vector'
 require 'engine.UIElement'
 require 'engine.Event'
 
-function class:ListMenuElement (options, fontsize, _pos, _minwidth)
+function class:ListMenuElement (_name, options, fontsize, _pos, _minwidth)
 
 
   fontsize = fontsize or 24
@@ -24,7 +24,7 @@ function class:ListMenuElement (options, fontsize, _pos, _minwidth)
         maxwidth = width
       end
     end
-    class.UIElement(self, _pos, vec2:new{maxwidth, #options*getFontHeight()})
+    class.UIElement(self, _name, _pos, vec2:new{maxwidth, #options*getFontHeight()})
   end
 
   local focus = 0
