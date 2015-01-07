@@ -49,7 +49,7 @@ function class:BattleTracePathActivity (UI, action)
 
   --[[ Tasks ]]-----------------------------------------------------------------
 
-  function self.__task:MoveAnimation (path)
+  function self.__task:MoveAnimation ()
     repeat
       action:moveUnit()
       self:yield(10)

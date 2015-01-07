@@ -33,6 +33,10 @@ function oo:Unit (name, class, basespec, growthspec)
     return name
   end
 
+  function self:isDead ()
+    return hp <= 0
+  end
+
   function self:getMv ()
     return mv
   end
