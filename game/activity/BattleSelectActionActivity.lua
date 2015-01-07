@@ -5,6 +5,7 @@ local vec2    = require 'lux.geom.Vector'
 require 'engine.UI'
 require 'engine.Activity'
 require 'ui.ListMenuElement'
+require 'activity.BattlePickTargetActivity'
 
 function class:BattleSelectActionActivity (UI, action)
 
@@ -33,7 +34,7 @@ function class:BattleSelectActionActivity (UI, action)
       -- TODO mark unit as used for this turn
       self:switch(class:BattleIdleActivity(UI, action:getField()))
     elseif option == "Fight" then
-      --switchTo('SelectAtkTarget', state.pos, state.unit)
+      self:switch(class:BattlePickTargetActivity(UI, action))
     end
     UI:remove("action_menu")
   end

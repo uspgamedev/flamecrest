@@ -64,14 +64,14 @@ function class:BattleAction (field, unit, start_pos)
     return range
   end
 
-  function self:getAtkRange(pos)
+  function self:getAtkRange()
     local range = {}
-    for i = 1,height do
+    for i = 1,field:getHeight() do
       range[i] = {}
-      for j = 1,width do
+      for j = 1,field:getWidth() do
         local value = false
         if unit then
-          local dist = (hexpos:new{i,j} - pos):size()
+          local dist = (hexpos:new{i,j} - current_pos):size()
           if unit:withinAtkRange(dist) then
             value = { type = 'atk', value = dist }
           end
