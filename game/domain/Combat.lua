@@ -8,36 +8,33 @@ function class:Combat (attacker, defender)
   end
 
   local function calculatehit(atk, def)
-    local trianglehitbonus = weaponmechanics.trianglehitbonus(atk.unit.weapon,
-                def.unit.weapon)
-    local hit = atk.unit:hit() + trianglehitbonus
+    local trianglehitbonus = atk.unit:getWeapon()
+                                     :triangleHitBonus(def.unit:getWeapon())
+    local hit = atk.unit:getHit() + trianglehitbonus
     --TODO: Ver se unidade avua
-    local evade = def.unit:evade() + def.terraininfo.avoid
+    local evade = def.unit:getEvade() + def.tile:getAvoid()
 
     local hitchance = hit - evade
     return hitchance
   end
 
   local function calculatedmg(atk, def)
-    local trianglemtbonus =
-      weaponmechanics.triangledmgbonus(
-        atk.unit.weapon,
-        def.unit.weapon
-      )
-    local mt = atk.unit:mtagainst(def.unit) + trianglemtbonus
+    local trianglemtbonus = atk.unit:getWeapon()
+                                    :triangleDmgBonus(def.unit:getWeapon())
+    local mt = atk.unit:getMtAgainst(def.unit) + trianglemtbonus
     --TODO: Diferenciar dano fisico e magico, e ver se unidade avua
     local defense =
-      def.unit.attributes[atk.unit:defattr()]
+      def.unit['get'..atk.unit:getDefAttr()](def.unit)
       +
-      def.terraininfo.def
+      def.tile:getDef()
 
     local damage = mt - defense
     return damage
   end
 
   local function calculatecrit(atk, def)
-    local crit = atk.unit:crit()
-    local dodge = def.unit:dodge()
+    local crit = atk.unit:getCrit()
+    local dodge = def.unit:getDodge()
 
     -- Damage stuff
     local critchance = crit - dodge
@@ -54,6 +51,7 @@ function class:Combat (attacker, defender)
       local damage      = calculatedmg(atk, def)
       local critchance  = calculatecrit(atk, def)
 
+      local random = love.math.random
       local rand1 = random(100)
       local rand2 = random(100)
       if ((rand1 + rand2) / 2 <= hitchance) then --Double RNG as seen in the games
