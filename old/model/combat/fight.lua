@@ -20,14 +20,14 @@ module "model.combat" do
     end
     return false, false
   end
-  
+
   local function calculatehit(attacker, defender)
     local trianglehitbonus = weaponmechanics.trianglehitbonus(attacker.unit.weapon,
 								defender.unit.weapon)
     local hit = attacker.unit:hit() + trianglehitbonus
     --TODO: Ver se unidade avua
     local evade = defender.unit:evade() + defender.terraininfo.avoid
-    
+
     local hitchance = hit - evade
     return hitchance
   end
@@ -44,7 +44,7 @@ module "model.combat" do
       defender.unit.attributes[attacker.unit:defattr()]
       +
       defender.terraininfo.def
-    
+
     local damage = mt - defense
     return damage
   end
@@ -57,7 +57,7 @@ module "model.combat" do
     local critchance = crit - dodge
     return critchance
   end
-  
+
   local function strike (attacker, defender)
     if not attacker.unit.weapon or not attacker.unit.weapon:hasdurability() then
       return error "Cannot attack without weapon."
@@ -152,8 +152,8 @@ module "model.combat" do
   end
 
   function killexp (unit1, unit2)
-    local base = (unit2.lv * unit2:exppower() + unit2:expbonus()) - 
-                 (unit1.lv * unit1:exppower() + unit1:expbonus()) 
+    local base = (unit2.lv * unit2:exppower() + unit2:expbonus()) -
+                 (unit1.lv * unit1:exppower() + unit1:expbonus())
     local exp = combatexp(unit1, unit2) + base + 20 + unit2:bossbonus()
     exp = max(floor(exp), 1)
     return exp

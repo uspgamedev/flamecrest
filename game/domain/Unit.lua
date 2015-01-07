@@ -21,28 +21,51 @@ function oo:Unit (name, class, basespec, growthspec)
 
   local lv    = 1
   local exp   = 0
-  local hp    = maxhp
-  local steps = 0
-
-  local weapon
 
   local bossexpbonus = 0
-  local rescuedunit
 
   function self:getName ()
     return name
   end
 
-  function self:isDead ()
-    return hp <= 0
+  function self:getMaxHP ()
+    return maxhp
+  end
+
+  function self:getStr ()
+    return str
+  end
+
+  function self:getMag ()
+    return mag
+  end
+
+  function self:getDef ()
+    return def
+  end
+
+  function self:getRes ()
+    return res
+  end
+
+  function self:getSpd ()
+    return spd
+  end
+
+  function self:getSkl ()
+    return skl
+  end
+
+  function self:getLck ()
+    return lck
   end
 
   function self:getMv ()
     return mv
   end
 
-  function self:getStepsLeft ()
-    return mv - steps
+  function self:getCon ()
+    return con
   end
 
   function self:getTerrainCostFor (terrain_type)
@@ -50,31 +73,8 @@ function oo:Unit (name, class, basespec, growthspec)
     return (terrain_type == 'Plains') and 1 or 2
   end
 
-  function self:step (terrain_type)
-    local n = self:getTerrainCostFor(terrain_type)
-    assert(steps + n <= mv)
-    steps = steps + n
-  end
-
-  function self:resetSteps ()
-    steps = 0
-  end
-
-  function self:getWeapon ()
-    return weapon
-  end
-
-  function self:getAtkRange ()
-    if not weapon then
-      return 1, 1
-    else
-      return weapon:getMinRange(), weapon:getMaxRange()
-    end
-  end
-
-  function self:withinAtkRange (range)
-    local minrange, maxrange = self:getAtkRange()
-    return range >= minrange and range <= maxrange
+  function self:hasTrait (traitname)
+    return false -- TODO
   end
 
 end
