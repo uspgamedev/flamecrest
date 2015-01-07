@@ -6,8 +6,8 @@ local hexpos  = require 'domain.hexpos'
 function class:Sprite (imgname)
 
   local img = love.graphics.newImage("assets/images/"..imgname..".png")
-  local quadwidth = 224
-  local quadheight = 128
+  local quadwidth = 64
+  local quadheight = 64
   local quads = {}
   for i=1,4 do
     quads[i] = {}
@@ -16,11 +16,11 @@ function class:Sprite (imgname)
         quadwidth*(j-1),
         quadheight*(i-1),
         quadwidth, quadheight,
-        3*quadwidth, 4*quadheight
+        3*quadwidth, quadheight
       )
     end
   end
-  local currentindex = {1,1}
+  local currentindex = {1,2}
 
   local function currentQuad ()
     return quads[currentindex[1]][currentindex[2]]
@@ -35,7 +35,7 @@ function class:Sprite (imgname)
       0,
       1, 1,
       --64/sprite:getWidth(), 96/sprite:getHeight(),
-      2*quadwidth/3, quadheight-8)
+      quadwidth/2, quadheight-16)
   end
 
 end

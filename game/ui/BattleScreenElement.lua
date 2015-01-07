@@ -36,7 +36,7 @@ function class:BattleScreenElement (name, battlefield)
   local cursor      = Cursor()
   local range
 
-  tileset.Default  = love.graphics.newImage "assets/images/hextile-empty.png"
+  tileset.Default   = love.graphics.newImage "assets/images/hextile-empty.png"
   tileset.Plains    = love.graphics.newImage "assets/images/hextile-grass.png"
   tileset.Forest    = love.graphics.newImage "assets/images/hextile-forest.png"
 
@@ -138,7 +138,7 @@ function class:BattleScreenElement (name, battlefield)
     do -- draw the unit
       local unit = tile:getUnit()
       if unit then
-        getSprite("soldiaaa_spritesheet_v1"):draw(graphics, pos)
+        getSprite("chibi-soldier"):draw(graphics, pos)
       end
     end
   end
