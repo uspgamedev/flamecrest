@@ -42,6 +42,7 @@ function class:BattlePickTargetActivity (UI, action)
     -- TODO mark unit as used for this turn
     local log = combat:fight()
     for i,strike in ipairs(log) do
+      print(strike.atk:getName().." attacks "..strike.def.getName())
       self:yield()
     end
     self:switch(class:BattleIdleActivity(UI, action:getField()))

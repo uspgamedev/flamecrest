@@ -17,6 +17,10 @@ function class:UnitState (unit)
     return unit:getName()
   end
 
+  function self:takeDamage (amount)
+    hp = math.max(0, hp - amount)
+  end
+
   function self:isDead ()
     return hp <= 0
   end

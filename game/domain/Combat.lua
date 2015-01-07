@@ -7,8 +7,68 @@ function class:Combat (attacker, defender)
     return nil, nil
   end
 
+  local function calculatehit(atk, def)
+    local trianglehitbonus = weaponmechanics.trianglehitbonus(atk.unit.weapon,
+                def.unit.weapon)
+    local hit = atk.unit:hit() + trianglehitbonus
+    --TODO: Ver se unidade avua
+    local evade = def.unit:evade() + def.terraininfo.avoid
+
+    local hitchance = hit - evade
+    return hitchance
+  end
+
+  local function calculatedmg(atk, def)
+    local trianglemtbonus =
+      weaponmechanics.triangledmgbonus(
+        atk.unit.weapon,
+        def.unit.weapon
+      )
+    local mt = atk.unit:mtagainst(def.unit) + trianglemtbonus
+    --TODO: Diferenciar dano fisico e magico, e ver se unidade avua
+    local defense =
+      def.unit.attributes[atk.unit:defattr()]
+      +
+      def.terraininfo.def
+
+    local damage = mt - defense
+    return damage
+  end
+
+  local function calculatecrit(atk, def)
+    local crit = atk.unit:crit()
+    local dodge = def.unit:dodge()
+
+    -- Damage stuff
+    local critchance = crit - dodge
+    return critchance
+  end
+
   local function strike (atk, def)
-    return {}
+    local result = {
+      atk = atk.unit,
+      def = def.unit
+    }
+    if atk.unit:getWeapon() and atk.unit:getWeapon():hasDurability() then
+      local hitchance   = calculatehit(atk, def)
+      local damage      = calculatedmg(atk, def)
+      local critchance  = calculatecrit(atk, def)
+
+      local rand1 = random(100)
+      local rand2 = random(100)
+      if ((rand1 + rand2) / 2 <= hitchance) then --Double RNG as seen in the games
+        result.hit = true
+        rand1 = random(100)
+        if (rand1 <= critchance) then
+          damage = damage * 3
+          result.critical = true
+        end
+        def.unit:takeDamage(damage)
+        result.damage = damage
+        atk.unit:getWeapon():wearDown()
+      end
+    end
+    return result
   end
 
   function self:fight ()
