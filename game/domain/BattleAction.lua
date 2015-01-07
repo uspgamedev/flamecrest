@@ -2,6 +2,7 @@
 local class = require 'lux.oo.class'
 local hexpos = require 'domain.hexpos'
 local bfs = require 'domain.algorithm.bfs'
+local Combat = require 'domain.Combat'
 
 function class:BattleAction (field, unit, start_pos)
 
@@ -64,7 +65,7 @@ function class:BattleAction (field, unit, start_pos)
     return range
   end
 
-  function self:getAtkRange()
+  function self:getAtkRange ()
     local range = {}
     for i = 1,field:getHeight() do
       range[i] = {}
@@ -124,30 +125,25 @@ function class:BattleAction (field, unit, start_pos)
     end
   end
 
-  function self:startCombat(originpos, targetpos)
-    local attackertile = field:getTileAt(originpos)
-    local targettile = field:getTileAt(targetpos)
+  function self:startCombat(targettile)
+    local attackertile = field:getTileAt(current_pos)
     local attacker  = attackertile:getUnit()
     local target    = targettile:getUnit()
-    local attackerbonus = attackertile.attributes
-    local targetbonus = targettile.attributes
     if not attacker or not target then return end
-    if attacker:isdead() or target:isdead() then return end
-    local distance  = (targetpos:truncated() - originpos:truncated()):size()
-    if distance < attacker.weapon.minrange
-      or distance > attacker.weapon.maxrange then
+    if attacker:isDead() or target:isDead() then return end
+    local distance  = (targettile:getPos() - current_pos):size()
+    if not attacker:withinAtkRange(distance) then
       return
    end
-   local attackerinfo = {
+   local attacker_info = {
       unit = attacker,
-      terraininfo = attackerbonus
+      tile = attackertile
    }
-   local defenderinfo = {
+   local defender_info = {
       unit = target,
-      terraininfo = targetbonus
+      tile = targettarget
    }
-   print(targetbonus, attackerbonus)
-   return fight(attackerinfo, defenderinfo, distance)
+   return Combat(attacker_info, defender_info)
   end
 
   --[[
