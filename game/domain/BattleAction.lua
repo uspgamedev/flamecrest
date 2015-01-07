@@ -141,16 +141,10 @@ function class:BattleAction (field, unit, start_pos)
    }
    local defender_info = {
       unit = target,
-      tile = targettarget
+      tile = targettile
    }
    return Combat(attacker_info, defender_info)
   end
-
-  --[[
-  function map:selectiondistance ()
-    return (controller.cursor.pos:truncated() - self.focus:truncated()):size()
-  end
-  ]]
 
 end
 

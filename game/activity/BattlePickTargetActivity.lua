@@ -24,7 +24,7 @@ function class:BattlePickTargetActivity (UI, action)
   end
 
   function self.__accept:TileClicked (tile)
-    local combat = action:startCombat(tile)
+    combat = action:startCombat(tile)
     if combat then
       UI:find("screen"):clearRange()
       self:addTask('CombatAnimation', combat)
@@ -38,8 +38,12 @@ function class:BattlePickTargetActivity (UI, action)
 
   --[[ Tasks ]]-----------------------------------------------------------------
 
-  function self.__task:CombatAnimation (combat_log)
+  function self.__task:CombatAnimation ()
     -- TODO mark unit as used for this turn
+    local log = combat:fight()
+    for i,strike in ipairs(log) do
+      self:yield()
+    end
     self:switch(class:BattleIdleActivity(UI, action:getField()))
   end
 
