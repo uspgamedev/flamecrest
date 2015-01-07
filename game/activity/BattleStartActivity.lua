@@ -8,6 +8,7 @@ require 'engine.UI'
 require 'engine.Activity'
 require 'domain.BattleField'
 require 'domain.Unit'
+require 'domain.UnitState'
 require 'ui.BattleScreenElement'
 require 'ui.TextElement'
 require 'ui.ListMenuElement'
@@ -24,8 +25,8 @@ function class:BattleStartActivity (UI)
       class:Unit("Leeroy Jenkins", true, spec:new{}, spec:new{}),
       class:Unit("Juaum MacDude", true, spec:new{}, spec:new{})
     }
-    battlefield:putUnit(hexpos:new{1,1}, units[1])
-    battlefield:putUnit(hexpos:new{5,5}, units[2])
+    battlefield:putUnit(hexpos:new{1,1}, class:UnitState(units[1]))
+    battlefield:putUnit(hexpos:new{5,5}, class:UnitState(units[2]))
     local screen = class:BattleScreenElement("screen", battlefield)
     local stats = class:TextElement("stats", "", 18, vec2:new{16, 16}, vec2:new{256, 20})
     UI:add(screen)
