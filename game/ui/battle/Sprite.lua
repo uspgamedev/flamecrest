@@ -53,7 +53,7 @@ function class:Sprite (imgname)
     graphics.push()
     if strike_dir then
       local d = 1 - math.abs(strike_time - STRIKE_DURATION)/STRIKE_DURATION
-      graphics.translate((24*d*d*strike_dir):unpack())
+      graphics.translate((24*(d^3)*strike_dir):unpack())
     end
     graphics.draw(img, quad, pos.x, pos.y, 0, 1, 1, quadwidth/2, quadheight-16)
     graphics.pop()
