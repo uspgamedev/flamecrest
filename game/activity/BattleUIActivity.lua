@@ -31,51 +31,60 @@ function class:BattleUIActivity (UI)
 
   --[[ Tasks ]]-----------------------------------------------------------------
 
-  local function strikeMotion (strike)
-    local dir = (strike.deftile:getPos() - strike.atktile:getPos()):toVec2()
-                                                                   :normalized()
-    local sprite = UI:find("screen"):getSprite(strike.atk)
-    local pos = UI:find("screen"):hexposToScreen(strike.deftile:getPos())
-    pos:add(vec2:new{-32, -64})
-    local hpbar = class:EnergyBarElement("hpbar", pos, vec2:new{64,8})
-    UI:add(hpbar)
-    local hp = strike.def:getHP()
-    local damage = strike.damage or 0
-    hpbar:setValue((hp + damage)/strike.def:getMaxHP())
-    self:yield(20)
-    for i=1,STRIKE_DURATION do
-      local d = 1 - math.abs(i - STRIKE_DURATION)/STRIKE_DURATION
-      sprite:setOffset(24*(d^3)*dir)
-      self:yield()
-    end
-    self:addTask('HitSplash', strike, pos, hpbar)
-    self:yield(20)
-    for i=STRIKE_DURATION+1,STRIKE_DURATION*2 do
-      local d = 1 - math.abs(i - STRIKE_DURATION)/STRIKE_DURATION
-      sprite:setOffset(24*(d^3)*dir)
-      self:yield()
-    end
-    UI:remove(hpbar)
+  local function strikeDir (strike)
+    return
+      (strike.deftile:getPos() - strike.atktile:getPos()):toVec2():normalized()
   end
 
-  function self.__task:HitSplash (strike, pos, hpbar)
-    local hp = strike.def:getHP()
-    local damage = strike.damage or 0
-    pos = pos - vec2:new{0, 16}
+  local function infoSpot (strike)
+    local offset = vec2:new{-32, -64}
+    return UI:find("screen"):hexposToScreen(strike.deftile:getPos()) + offset
+  end
+
+  local function hitSplash (strike, pos, hpbar, hp, damage)
     local splash
+    pos = pos - vec2:new{0, 16}
     if strike.hit then
       splash = class:TextElement("splash", "-"..strike.damage, 18, pos, vec2:new{64, 20})
     else
       splash = class:TextElement("splash", "Miss!", 18, pos, vec2:new{64, 20})
     end
     UI:add(splash)
-    hpbar:setValue((hp + damage)/strike.def:getMaxHP())
     for i=1,20 do
       splash:setPos(pos + vec2:new{0, -i})
       hpbar:setValue((hp + damage*(1-i/20))/strike.def:getMaxHP())
       self:yield()
     end
     UI:remove(splash)
+  end
+
+  local function strikeMotion (strike)
+    local sprite  = UI:find("screen"):getSprite(strike.atk)
+    local dir     = strikeDir(strike)
+    local pos     = infoSpot(strike)
+    local hpbar   = class:EnergyBarElement("hpbar", pos, vec2:new{64,8})
+    local hp      = strike.def:getHP()
+    local damage  = strike.damage or 0
+    -- Show HP bar with life before damage
+    UI:add(hpbar)
+    hpbar:setValue((hp + damage)/strike.def:getMaxHP())
+    self:yield(20)
+    -- Forward motion
+    for i=1,STRIKE_DURATION do
+      local d = i/STRIKE_DURATION
+      sprite:setOffset(24*(d^3)*dir)
+      self:yield()
+    end
+    -- Show hit splash
+    hitSplash(strike, pos, hpbar, hp, damage)
+    -- Backward motion
+    for i=1,STRIKE_DURATION do
+      local d = 1 - i/STRIKE_DURATION
+      sprite:setOffset(24*(d^3)*dir)
+      self:yield()
+    end
+    --- Clean up
+    UI:remove(hpbar)
   end
 
   function self.__task:StrikeAnimation (strike)

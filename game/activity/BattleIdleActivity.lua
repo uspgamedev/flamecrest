@@ -28,8 +28,8 @@ function class:BattleIdleActivity (UI, battlefield)
 
   function self.__accept:TileClicked (tile)
     local unit = tile:getUnit()
-    local action = class:BattleAction(battlefield, unit, tile:getPos())
     if unit then
+      local action = class:BattleAction(battlefield, unit, tile:getPos())
       self:switch(class:BattleTracePathActivity(UI, action))
     end
   end
