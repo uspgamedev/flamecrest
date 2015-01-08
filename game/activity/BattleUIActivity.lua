@@ -42,13 +42,14 @@ function class:BattleUIActivity (UI)
   end
 
   local function hitSplash (strike, pos, hpbar, hp, damage)
-    local splash
     pos = pos - vec2:new{0, 16}
+    local msg
     if strike.hit then
-      splash = class:TextElement("splash", "-"..strike.damage, 18, pos, vec2:new{64, 20})
+      msg = "-"..strike.damage
     else
-      splash = class:TextElement("splash", "Miss!", 18, pos, vec2:new{64, 20})
+      msg = "Miss!"
     end
+    local splash = class:TextElement("splash", msg, 18, pos, vec2:new{64, 20})
     UI:add(splash)
     for i=1,20 do
       splash:setPos(pos + vec2:new{0, -i})
@@ -58,7 +59,7 @@ function class:BattleUIActivity (UI)
     UI:remove(splash)
   end
 
-  local function strikeMotion (strike)
+  function self.__task:StrikeAnimation (strike)
     local sprite  = UI:find("screen"):getSprite(strike.atk)
     local dir     = strikeDir(strike)
     local pos     = infoSpot(strike)
@@ -85,10 +86,6 @@ function class:BattleUIActivity (UI)
     end
     --- Clean up
     UI:remove(hpbar)
-  end
-
-  function self.__task:StrikeAnimation (strike)
-    strikeMotion(strike)
     self:sendEvent 'StrikeAnimationFinished' ()
   end
 
