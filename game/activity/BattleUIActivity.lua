@@ -10,70 +10,11 @@ require 'ui.ListMenuElement'
 require 'domain.BattleField'
 require 'domain.Unit'
 
-function class:BattleUIActivity (battlefield, UI)
+local STRIKE_DURATION = 10
+
+function class:BattleUIActivity (UI)
 
   class.Activity(self)
-
-  local state       = { mode = 'Idle' }
-  local __switch    = {}
-
-  local screen = class:BattleScreenElement("screen", battlefield)
-  local unitname = class:TextElement("stats", "", 18, vec2:new{16, 16}, vec2:new{256, 20})
-  local action_menu = class:ListMenuElement("action_menu", {"Fight", "Wait"}, 18, vec2:new{600, 16})
-
-  UI:add(screen)
-  UI:add(unitname)
-  screen:lookAt(3, 3)
-
-  local function switchTo (mode, ...)
-    state.mode = mode
-    __switch[mode](...)
-  end
-
-  --[[ State transitions ]]-----------------------------------------------------
-
-  function __switch.Idle ()
-    UI:remove(action_menu)
-    unitname:setText("")
-    screen:clearRange()
-    state.pos = nil
-    state.unit = nil
-  end
-
-  function __switch.SelectMove (pos, unit)
-    unitname:setText(unit:getName())
-    screen:displayRange(pos)
-    state.pos = pos
-    state.unit = unit
-  end
-
-  function __switch.SelectAction (pos, unit)
-    action_menu:setPos(screen:hexposToScreen(pos)+vec2:new{-128, -160})
-    UI:add(action_menu)
-    screen:clearRange()
-    state.pos = pos
-    state.unit = unit
-  end
-
-  function __switch.SelectAtkTarget (pos, unit)
-    UI:remove(action_menu)
-    screen:displayAtkRange(state.pos)
-    state.pos = pos
-    state.unit = unit
-  end
-
-  function __switch.AnimationMove (path, unit)
-    self:addTask('MoveAnimation', path)
-    screen:clearRange()
-    state.unit = unit
-  end
-
-  function __switch.AnimationAtk (pos, unit, target, enemy)
-    screen:clearRange()
-    state.pos = pos
-    state.unit = unit
-    state.target = target
-  end
 
   --[[ Event receivers ]]-------------------------------------------------------
 
@@ -83,54 +24,44 @@ function class:BattleUIActivity (battlefield, UI)
     end
   end
 
-  function self.__accept:TileClicked (hex, tile)
-    local unit = tile:getUnit()
-    if state.mode == 'Idle' then
-      if unit then
-        switchTo('SelectMove', hex, unit)
-      end
-    elseif state.mode == 'SelectMove' then
-      self:sendEvent 'PathRequest' (state.pos, hex)
-    elseif state.mode == 'SelectAtkTarget' then
-      if unit and state.unit:withinAtkRange((hex - state.pos):size()) then
-        switchTo('AnimationAtk', state.pos, state.unit, hex, unit)
-      end
-    end
-  end
-
-  function self.__accept:PathResult (path)
-    if state.mode == 'SelectMove' then
-      switchTo('AnimationMove', path, state.unit)
-    end
-  end
-
-  function self.__accept:Cancel ()
-    if state.mode == 'SelectMove' then
-      switchTo('Idle')
-    elseif state.mode == 'SelectAtkTarget' then
-      switchTo('SelectAction', state.pos, state.unit)
-    end
-  end
-
-  function self.__accept:ListMenuOption (index, option)
-    if state.mode == 'SelectAction' then
-      if option == "Wait" then
-        switchTo('Idle')
-      elseif option == "Fight" then
-        switchTo('SelectAtkTarget', state.pos, state.unit)
-      end
-    end
+  function self.__accept:ShowStrikeAnimation (strike)
+    self:addTask('StrikeAnimation', strike)
   end
 
   --[[ Tasks ]]-----------------------------------------------------------------
 
-  function self.__task:MoveAnimation (path)
-    for i=#path-1,1,-1 do
-      self:yield(10)
-      local dir = path[i]-path[i+1]
-      self:sendEvent 'MoveUnit' (path[i+1], dir)
+  local function strikeMotion (strike)
+    local dir = (strike.deftile:getPos() - strike.atktile:getPos()):toVec2()
+                                                                   :normalized()
+    local sprite = UI:find("screen"):getSprite(strike.atk)
+    for i=1,STRIKE_DURATION*2 do
+      local d = 1 - math.abs(i - STRIKE_DURATION)/STRIKE_DURATION
+      sprite:setOffset(24*(d^3)*dir)
+      self:yield()
     end
-    switchTo('SelectAction', path[1], state.unit)
+  end
+
+  local function hitSplash (strike)
+    local splash
+    local pos = UI:find("screen"):hexposToScreen(strike.deftile:getPos())
+    pos:add(vec2:new{-32, -43})
+    if strike.hit then
+      splash = class:TextElement("splash", "-"..strike.damage, 18, pos, vec2:new{64, 20})
+    else
+      splash = class:TextElement("splash", "Miss!", 18, pos, vec2:new{64, 20})
+    end
+    UI:add(splash)
+    for i=1,20 do
+      splash:setPos(splash:getPos() + vec2:new{0, -1})
+      self:yield()
+    end
+    UI:remove(splash)
+  end
+
+  function self.__task:StrikeAnimation (strike)
+    strikeMotion(strike)
+    hitSplash(strike)
+    self:sendEvent 'StrikeAnimationFinished' ()
   end
 
 end

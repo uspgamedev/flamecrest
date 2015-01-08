@@ -66,7 +66,7 @@ function class:BattleScreenElement (name, battlefield)
     return focus
   end
 
-  local function getSprite (unit)
+  function self:getSprite (unit)
     local sprite = sprites[unit]
     if not sprite then
       sprite = class:Sprite("chibi-soldier")
@@ -94,10 +94,6 @@ function class:BattleScreenElement (name, battlefield)
 
   function self:clearRange ()
     range = nil
-  end
-
-  function self:makeStrikeEffect (unit, dir)
-    getSprite(unit):makeStrikeEffect(dir:toVec2())
   end
 
   --- Overrides @{UIElement:onMousePressed}
@@ -145,7 +141,7 @@ function class:BattleScreenElement (name, battlefield)
     do -- draw the unit
       local unit = tile:getUnit()
       if unit then
-        getSprite(unit):draw(graphics, pos)
+        self:getSprite(unit):draw(graphics, pos)
       end
     end
   end

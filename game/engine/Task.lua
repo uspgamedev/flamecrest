@@ -30,10 +30,13 @@ function class:Task (func, ...)
     elseif delay > 0 then
       delay = delay - 1
     elseif not onhold then
-      local _, n = assert(coroutine.resume(task, unpack(params, 1, params.n)))
+      local check, result = coroutine.resume(task, unpack(params, 1, params.n))
+      if not check then
+        error(debug.traceback(task, result))
+      end
       params = {}
-      if type(n) == 'number' and n > 1 then
-        delay = n
+      if type(result) == 'number' and result > 1 then
+        delay = result
       end
     end
   end

@@ -9,7 +9,7 @@ local Queue               = require 'engine.Queue'
 local game_ui             = require 'engine.UI' ()
 local activities          = {}
 
-local function addActivity (activity, i)
+function addActivity (activity, i)
   i = i or #activities+1
   table.insert(activities, i, activity)
   activity:receiveEvent(Event("Load"))

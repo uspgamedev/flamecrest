@@ -44,13 +44,12 @@ function class:BattlePickTargetActivity (UI, action)
     for i,strike in ipairs(log) do
       print(strike.atk:getName().." attacks "..strike.def.getName())
       print("  Hits? "..tostring(not not strike.hit))
-      local dir = (strike.deftile:getPos() - strike.atktile:getPos())
       if strike.hit then
         print("  Crits? "..tostring(not not strike.critical))
         print("  Damage: "..strike.damage)
       end
-      UI:find("screen"):makeStrikeEffect(strike.atk, dir)
-      self:yield('StrikeEffectFinished')
+      self:sendEvent 'ShowStrikeAnimation' (strike)
+      self:yield('StrikeAnimationFinished')
     end
     self:switch(class:BattleIdleActivity(UI, action:getField()))
   end
