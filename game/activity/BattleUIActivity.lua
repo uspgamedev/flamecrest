@@ -7,6 +7,7 @@ require 'engine.Activity'
 require 'ui.BattleScreenElement'
 require 'ui.TextElement'
 require 'ui.ListMenuElement'
+require 'ui.EnergyBarElement'
 require 'domain.BattleField'
 require 'domain.Unit'
 
@@ -34,23 +35,29 @@ function class:BattleUIActivity (UI)
     local dir = (strike.deftile:getPos() - strike.atktile:getPos()):toVec2()
                                                                    :normalized()
     local sprite = UI:find("screen"):getSprite(strike.atk)
+    local pos = UI:find("screen"):hexposToScreen(strike.deftile:getPos())
+    pos:add(vec2:new{-32, -64})
+    local bar = class:EnergyBarElement("lifebar", pos, vec2:new{64,8})
+    UI:add(bar)
+    self:yield(20)
     for i=1,STRIKE_DURATION do
       local d = 1 - math.abs(i - STRIKE_DURATION)/STRIKE_DURATION
       sprite:setOffset(24*(d^3)*dir)
       self:yield()
     end
-    self:addTask('HitSplash', strike)
+    self:addTask('HitSplash', strike, pos)
+    self:yield(15)
     for i=STRIKE_DURATION+1,STRIKE_DURATION*2 do
       local d = 1 - math.abs(i - STRIKE_DURATION)/STRIKE_DURATION
       sprite:setOffset(24*(d^3)*dir)
       self:yield()
     end
+    UI:remove(bar)
   end
 
-  function self.__task:HitSplash (strike)
+  function self.__task:HitSplash (strike, pos)
+    pos = pos - vec2:new{0, 16}
     local splash
-    local pos = UI:find("screen"):hexposToScreen(strike.deftile:getPos())
-    pos:add(vec2:new{-32, -43})
     if strike.hit then
       splash = class:TextElement("splash", "-"..strike.damage, 18, pos, vec2:new{64, 20})
     else
@@ -58,7 +65,7 @@ function class:BattleUIActivity (UI)
     end
     UI:add(splash)
     for i=1,20 do
-      splash:setPos(splash:getPos() + vec2:new{0, -1})
+      splash:setPos(pos + vec2:new{0, -i})
       self:yield()
     end
     UI:remove(splash)
