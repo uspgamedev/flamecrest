@@ -23,6 +23,10 @@ function class:UnitState (unit)
     return hp
   end
 
+  function self:getMaxHP ()
+    return unit:getMaxHP()
+  end
+
   function self:getStr ()
     return unit:getStr()
   end

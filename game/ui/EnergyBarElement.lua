@@ -31,7 +31,7 @@ function class:EnergyBarElement (_name, _pos, _size)
       0, 0,
       self:getWidth()*value, self:getHeight()
     )
-    graphics.setColor(50, 50, 50, 255)
+    graphics.setColor(25, 25, 25, 255)
     graphics.rectangle(
       'line',
       0, 0,

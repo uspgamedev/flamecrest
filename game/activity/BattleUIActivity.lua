@@ -37,25 +37,30 @@ function class:BattleUIActivity (UI)
     local sprite = UI:find("screen"):getSprite(strike.atk)
     local pos = UI:find("screen"):hexposToScreen(strike.deftile:getPos())
     pos:add(vec2:new{-32, -64})
-    local bar = class:EnergyBarElement("lifebar", pos, vec2:new{64,8})
-    UI:add(bar)
+    local hpbar = class:EnergyBarElement("hpbar", pos, vec2:new{64,8})
+    UI:add(hpbar)
+    local hp = strike.def:getHP()
+    local damage = strike.damage or 0
+    hpbar:setValue((hp + damage)/strike.def:getMaxHP())
     self:yield(20)
     for i=1,STRIKE_DURATION do
       local d = 1 - math.abs(i - STRIKE_DURATION)/STRIKE_DURATION
       sprite:setOffset(24*(d^3)*dir)
       self:yield()
     end
-    self:addTask('HitSplash', strike, pos)
-    self:yield(15)
+    self:addTask('HitSplash', strike, pos, hpbar)
+    self:yield(20)
     for i=STRIKE_DURATION+1,STRIKE_DURATION*2 do
       local d = 1 - math.abs(i - STRIKE_DURATION)/STRIKE_DURATION
       sprite:setOffset(24*(d^3)*dir)
       self:yield()
     end
-    UI:remove(bar)
+    UI:remove(hpbar)
   end
 
-  function self.__task:HitSplash (strike, pos)
+  function self.__task:HitSplash (strike, pos, hpbar)
+    local hp = strike.def:getHP()
+    local damage = strike.damage or 0
     pos = pos - vec2:new{0, 16}
     local splash
     if strike.hit then
@@ -64,8 +69,10 @@ function class:BattleUIActivity (UI)
       splash = class:TextElement("splash", "Miss!", 18, pos, vec2:new{64, 20})
     end
     UI:add(splash)
+    hpbar:setValue((hp + damage)/strike.def:getMaxHP())
     for i=1,20 do
       splash:setPos(pos + vec2:new{0, -i})
+      hpbar:setValue((hp + damage*(1-i/20))/strike.def:getMaxHP())
       self:yield()
     end
     UI:remove(splash)
