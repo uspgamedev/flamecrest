@@ -29,7 +29,7 @@ function class:BattleTracePathActivity (UI, action)
     if not moving then
       action:abort()
       action:findPath(tile:getPos())
-      if not action:validPath() then
+      if action:validPath() then
         UI:find("screen"):clearRange()
         moving = true
         self:addTask('MoveAnimation')
@@ -53,7 +53,7 @@ function class:BattleTracePathActivity (UI, action)
     repeat
       action:moveUnit()
       self:yield(10)
-    until action:validPath()
+    until action:finishedPath()
     if moving then
       self:switch(class:BattleSelectActionActivity(UI, action))
     end

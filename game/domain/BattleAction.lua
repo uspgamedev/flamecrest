@@ -85,7 +85,7 @@ function class:BattleAction (field, unit, start_pos)
 
   function self:findPath (target_pos)
     local targettile = field:getTileAt(target_pos)
-    if not targettile:getUnit() then
+    if not targettile:getUnit() or targettile:getUnit() == unit then
       local dists = bfs(field, current_pos)
       if dists[target_pos.i] and dists[target_pos.i][target_pos.j]
          and dists[target_pos.i][target_pos.j] <= unit:getStepsLeft() then
@@ -109,11 +109,15 @@ function class:BattleAction (field, unit, start_pos)
   end
 
   function self:validPath ()
-    return not path or (step >= #path)
+    return path and step
+  end
+
+  function self:finishedPath ()
+    return not self:validPath() or step >= #path
   end
 
   function self:moveUnit ()
-    if path and step then
+    if not self:finishedPath() then
       local next_pos = path[#path - step]
       local tile = field:getTileAt(next_pos)
       assert(not tile:getUnit())
