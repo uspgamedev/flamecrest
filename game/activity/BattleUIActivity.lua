@@ -34,14 +34,20 @@ function class:BattleUIActivity (UI)
     local dir = (strike.deftile:getPos() - strike.atktile:getPos()):toVec2()
                                                                    :normalized()
     local sprite = UI:find("screen"):getSprite(strike.atk)
-    for i=1,STRIKE_DURATION*2 do
+    for i=1,STRIKE_DURATION do
+      local d = 1 - math.abs(i - STRIKE_DURATION)/STRIKE_DURATION
+      sprite:setOffset(24*(d^3)*dir)
+      self:yield()
+    end
+    self:addTask('HitSplash', strike)
+    for i=STRIKE_DURATION+1,STRIKE_DURATION*2 do
       local d = 1 - math.abs(i - STRIKE_DURATION)/STRIKE_DURATION
       sprite:setOffset(24*(d^3)*dir)
       self:yield()
     end
   end
 
-  local function hitSplash (strike)
+  function self.__task:HitSplash (strike)
     local splash
     local pos = UI:find("screen"):hexposToScreen(strike.deftile:getPos())
     pos:add(vec2:new{-32, -43})
@@ -60,7 +66,6 @@ function class:BattleUIActivity (UI)
 
   function self.__task:StrikeAnimation (strike)
     strikeMotion(strike)
-    hitSplash(strike)
     self:sendEvent 'StrikeAnimationFinished' ()
   end
 
