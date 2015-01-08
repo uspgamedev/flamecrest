@@ -42,12 +42,6 @@ function class:BattlePickTargetActivity (UI, action)
     -- TODO mark unit as used for this turn
     local log = combat:fight()
     for i,strike in ipairs(log) do
-      print(strike.atk:getName().." attacks "..strike.def.getName())
-      print("  Hits? "..tostring(not not strike.hit))
-      if strike.hit then
-        print("  Crits? "..tostring(not not strike.critical))
-        print("  Damage: "..strike.damage)
-      end
       self:sendEvent 'ShowStrikeAnimation' (strike)
       self:yield('StrikeAnimationFinished')
     end
