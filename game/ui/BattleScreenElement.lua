@@ -66,6 +66,15 @@ function class:BattleScreenElement (name, battlefield)
     return focus
   end
 
+  local function getSprite (unit)
+    local sprite = sprites[unit]
+    if not sprite then
+      sprite = class:Sprite("chibi-soldier")
+      sprites[unit] = sprite
+    end
+    return sprite
+  end
+
   function self:lookAt (i, j)
     if type(i) == 'number' then
       camera_pos = hexpos:new{i,j}
@@ -87,13 +96,8 @@ function class:BattleScreenElement (name, battlefield)
     range = nil
   end
 
-  local function getSprite (name)
-    local sprite = sprites[name]
-    if not sprite then
-      sprite = class:Sprite(name)
-      sprites[name] = sprite
-    end
-    return sprite
+  function self:makeStrikeEffect (unit, dir)
+    getSprite(unit):makeStrikeEffect(dir:toVec2())
   end
 
   --- Overrides @{UIElement:onMousePressed}
@@ -122,6 +126,9 @@ function class:BattleScreenElement (name, battlefield)
   -- @override
   function self:onRefresh ()
     cursor:move()
+    for _,sprite in pairs(sprites) do
+      sprite:refresh()
+    end
   end
 
   local function drawTile (graphics, i, j, tile)
@@ -138,7 +145,7 @@ function class:BattleScreenElement (name, battlefield)
     do -- draw the unit
       local unit = tile:getUnit()
       if unit then
-        getSprite("chibi-soldier"):draw(graphics, pos)
+        getSprite(unit):draw(graphics, pos)
       end
     end
   end

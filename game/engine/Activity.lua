@@ -19,6 +19,7 @@ function class:Activity ()
 
   self.__accept = {}
   self.__task   = {}
+  local current_task
 
   -- Generic stuff
 
@@ -69,8 +70,20 @@ function class:Activity ()
 
   -- Task stuff
 
-  function self:yield (...)
-    return coroutine.yield(...)
+  function self:yield (opt, ...)
+    if type(opt) == 'string' then
+      local task = current_task
+      task:hold()
+      self.__accept[opt] = function (self, ...)
+        task:release(...)
+        self.__accept[opt] = nil
+      end
+    end
+    return coroutine.yield(opt, ...)
+  end
+
+  function self:currentTask ()
+    return current_task
   end
 
   function self:addTask (name, ...)
@@ -84,9 +97,11 @@ function class:Activity ()
     end
     for task,_ in pairs(tasks) do
       if finished then return end
+      current_task = task
       if not task:resume() then
         table.insert(finished_tasks, task)
       end
+      current_task = nil
     end
     for _,task in ipairs(finished_tasks) do
       tasks[task] = nil

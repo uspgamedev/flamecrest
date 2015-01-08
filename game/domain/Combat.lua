@@ -44,7 +44,9 @@ function class:Combat (attacker, defender)
   local function strike (atk, def)
     local result = {
       atk = atk.unit,
-      def = def.unit
+      def = def.unit,
+      atktile = atk.tile,
+      deftile = def.tile
     }
     if atk.unit:getWeapon() and atk.unit:getWeapon():hasDurability() then
       local hitchance   = calculatehit(atk, def)
