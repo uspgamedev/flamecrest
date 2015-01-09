@@ -35,9 +35,9 @@ function ui:ScreenElement (name, battlefield)
   local cursor      = ui.Cursor()
   local range
 
-  tileset.Default   = love.graphics.newImage "assets/images/hextile-empty.png"
-  tileset.Plains    = love.graphics.newImage "assets/images/hextile-grass.png"
-  tileset.Forest    = love.graphics.newImage "assets/images/hextile-forest.png"
+  tileset.Default   = require 'assets.tiles.Default'
+  tileset.Plains    = require 'assets.tiles.Plains'
+  tileset.Forest    = require 'assets.tiles.Forest'
 
   local function screenToHexpos (screenpos)
     -- TODO: inject love.window dependency
@@ -129,12 +129,11 @@ function ui:ScreenElement (name, battlefield)
   local function drawTile (graphics, i, j, tile)
     local pos = hexpos:new{i,j}:toVec2()
     do -- draw the tile
-      local img = tileset[tile:getType()]
+      local draw = tileset[tile:getType()]
       if range and range[i][j] then
         graphics.setShader(glow[range[i][j].type])
       end
-      graphics.draw(img, pos.x, pos.y, 0, 1, 1, img:getWidth()/2,
-                    img:getHeight()/2)
+      draw(graphics, pos)
       graphics.setShader()
     end
     do -- draw the unit
