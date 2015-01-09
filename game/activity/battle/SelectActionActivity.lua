@@ -17,7 +17,6 @@ function battle:SelectActionActivity (UI, action)
                 + vec2:new{-128, -96}
     action_menu:setPos(pos)
     UI:add(action_menu)
-    UI:find("screen"):clearRange()
   end
 
   function self.__accept:KeyPressed (key)
