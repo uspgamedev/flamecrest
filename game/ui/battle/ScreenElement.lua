@@ -65,11 +65,11 @@ function ui:ScreenElement (name, battlefield)
     return focus
   end
 
-  function self:getSprite (unit)
-    local sprite = sprites[unit]
+  function self:getSprite (obj)
+    local sprite = sprites[obj]
     if not sprite then
       sprite = ui.Sprite("chibi-soldier")
-      sprites[unit] = sprite
+      sprites[obj] = sprite
     end
     return sprite
   end
@@ -128,20 +128,23 @@ function ui:ScreenElement (name, battlefield)
 
   local function drawTile (graphics, i, j, tile)
     local pos = hexpos:new{i,j}:toVec2()
-    do -- draw the tile
-      local draw = tileset[tile:getType()]
+    local function shader ()
       if range and range[i][j] then
-        graphics.setShader(glow[range[i][j].type])
+        return glow[range[i][j].type]
       end
-      draw(graphics, pos)
-      graphics.setShader()
     end
-    do -- draw the unit
+    local function drawUnit ()
       local unit = tile:getUnit()
       if unit then
+        graphics.setShader()
         self:getSprite(unit):draw(graphics, pos)
+        graphics.setShader(shader())
       end
     end
+    local draw = tileset[tile:getType()]
+    graphics.setShader(shader())
+    draw(graphics, pos, drawUnit)
+    graphics.setShader()
   end
 
   -- @override

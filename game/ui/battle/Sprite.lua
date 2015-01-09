@@ -36,6 +36,10 @@ function ui:Sprite (imgname)
     offset = o:clone()
   end
 
+  function self:getOffset ()
+    return offset:clone()
+  end
+
   function self:refresh ()
     tick = tick + 1
     if tick > frame then
