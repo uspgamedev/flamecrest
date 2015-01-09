@@ -45,10 +45,14 @@
 --
 --  @module lux.oo
 
---- A special table for defining classes.
---  By defining a named method in it, a new class is created. It uses the given
---  method to create its instances. Once defined, the class can be retrieved by
---  using accessing the @{class} table with its name.
+--- A special table for defining classes through a simple package system.
+--
+--  In order to use it in any way, call the <code>class.package</code> function
+--  to get a package (all classes belong in package). Then, by defining a named
+--  method in it, a new class is created. It uses the given method to create its
+--  instances. Once defined, the class can be retrieved by using accessing the
+--  package table with its name. If it is not defined, the package tries to
+--  <code>require</code> using its name concatenated with the class' name.
 --
 --  Since the fields are declared in a scope of
 --  their own, local variables are kept their closures. Thus, it is
@@ -56,20 +60,21 @@
 --  the <code>local</code> keyword or explicitly referring to <code>self</code>
 --  within the class definition.
 --
---  Inheritance is possible through a special field in the classes, '__inherit'.
+--  Inheritance is possible through the <code>my_class:inherit()</code> method.
 --  You use it inside the class definition passing self as the first parameter.
 --
 --  @feature class
 --  @usage
 --  local class = require 'lux.oo.class'
---  function class:MyClass()
+--  local pack  = class.package 'pack'
+--  function pack:MyClass()
 --    local a_number = 42
 --    function show ()
 --      print(a_number)
 --    end
 --  end
---  function class:MyChildClass()
---    __inherit.MyClass(self)
+--  function pack:MyChildClass()
+--    pack.MyClass:inherit(self)
 --    local a_string = "foo"
 --    function show_twice ()
 --      show()
@@ -79,10 +84,8 @@
 --
 local class = {}
 
-local port              = require 'lux.portable'
 local lambda            = require 'lux.functional'
-local classes           = {}
-local definition_scope  = {}
+local packages          = {}
 local obj_metatable     = {}
 local no_op             = function () end
 
@@ -90,59 +93,62 @@ local function makeEmptyObject (the_class)
   return {
     __inherit = class,
     __class = the_class,
-    __meta = obj_metatable,
-    __members = {}
+    __meta = {},
   }
-end
-
-function obj_metatable:__index (key)
-  return self.__members[key] or _G[key]
 end
 
 local function construct (the_class, obj, ...)
-  local owns
-  if not obj or obj == class then
-    obj = makeEmptyObject(the_class)
-    owns = true
-  end
-  setmetatable(obj, definition_scope)
-  assert(port.loadWithEnv(the_class.definition, obj)) (obj, ...)
-  rawset(obj, the_class.name, lambda.bindLeft(construct, the_class, nil))
-  if owns then
-    setmetatable(obj, obj.__meta);
-  end
+  assert(the_class.definition) (obj, ...)
   return obj
 end
 
-definition_scope.__index = obj_metatable.__index
-
-function definition_scope.__newindex (obj, key, value)
-  if type(value) == 'function' then
-    rawset(obj.__members, key, function(_, ...) return value(...) end)
-  else
-    rawset(obj.__members, key, value)
-  end
+local function createAndConstruct (the_class, ...)
+  local obj = makeEmptyObject(the_class)
+  construct(the_class, obj, ...)
+  return setmetatable(obj, obj.__meta);
 end
 
-function class:define (name, definition)
-  assert(not classes[name], "Redefinition of class '"..name.."'")
+local redef_err = "Redefinition of class '%s' in package '%s'"
+
+local function define (pack, name, definition)
+  assert(not rawget(pack, name), redef_err:format(name, current_package))
   local new_class = {
     name = name,
     definition = definition,
-    __isclass = true
+    inherit = construct
   }
-  setmetatable(new_class, { __call = construct })
-  classes[name] = new_class
+  setmetatable(new_class, { __call = createAndConstruct })
+  rawset(pack, name, new_class)
 end
 
-function class:forName (name)
-  return classes[name]
+local function import (pack, name)
+  local result = rawget(pack, name)
+  if not result then
+    local maybe = require(pack.__name.."."..name)
+    result = rawget(pack, name) or maybe
+  end
+  return result
 end
 
-setmetatable(class, {
-  __index     = class.forName,
-  __newindex  = class.define
-})
+local package_mttab = {
+  __index = import,
+  __newindex = define
+}
+
+--- Loads a class package
+--  Tries to provide a previously registered package with the given name. If it
+--  is not found, it is created, registered and returned.
+--  @param name The package name
+function class.package (name)
+  local pack = packages[name]
+  if not pack then
+    pack = setmetatable({ __name = name }, package_mttab)
+    packages[name] = pack
+  end
+  return pack
+end
+
+class:package 'std'
 
 return class
 

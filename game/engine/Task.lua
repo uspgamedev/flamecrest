@@ -1,7 +1,7 @@
 
-local class = require 'lux.oo.class'
+local engine = require 'lux.oo.class' .package 'engine'
 
-function class:Task (func, ...)
+function engine:Task (func, ...)
 
   local function bootstrap (...)
     coroutine.yield()
@@ -42,5 +42,3 @@ function class:Task (func, ...)
   end
 
 end
-
-return class:bind 'Task'

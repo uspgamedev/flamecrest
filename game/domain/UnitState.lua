@@ -1,7 +1,7 @@
 
-local class = require 'lux.oo.class'
+local domain = require 'lux.oo.class' .package 'domain'
 
-function class:UnitState (unit)
+function domain:UnitState (unit)
 
   local hp = unit:getMaxHP()
   local steps = 0
@@ -163,5 +163,3 @@ function class:UnitState (unit)
   end
 
 end
-
-return class:bind 'UnitState'

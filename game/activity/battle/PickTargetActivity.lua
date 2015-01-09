@@ -2,12 +2,12 @@
 local class   = require 'lux.oo.class'
 local vec2    = require 'lux.geom.Vector'
 
-require 'engine.UI'
-require 'engine.Activity'
+local engine  = class.package 'engine'
+local battle  = class.package 'activity.battle'
 
-function class:BattlePickTargetActivity (UI, action)
+function battle:PickTargetActivity (UI, action)
 
-  class.Activity(self)
+  engine.Activity:inherit(self)
 
   local combat
 
@@ -33,7 +33,7 @@ function class:BattlePickTargetActivity (UI, action)
 
   function self.__accept:Cancel ()
     UI:find("screen"):clearRange()
-    self:switch(class:BattleSelectActionActivity(UI, action))
+    self:switch(battle.SelectActionActivity(UI, action))
   end
 
   --[[ Tasks ]]-----------------------------------------------------------------
@@ -45,10 +45,7 @@ function class:BattlePickTargetActivity (UI, action)
       self:sendEvent 'ShowStrikeAnimation' (strike)
       self:yield('StrikeAnimationFinished')
     end
-    self:switch(class:BattleIdleActivity(UI, action:getField()))
+    self:switch(battle.IdleActivity(UI, action:getField()))
   end
 
 end
-
-return class:bind 'BattleSelectActionActivity'
-

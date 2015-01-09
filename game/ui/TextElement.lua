@@ -2,11 +2,12 @@
 local class     = require 'lux.oo.class'
 local vec2      = require 'lux.geom.Vector'
 
-require 'engine.UIElement'
+local engine    = class.package 'engine'
+local ui        = class.package 'ui'
 
-function class:TextElement (_name, text, fontsize, _pos, _size)
+function ui:TextElement (_name, text, fontsize, _pos, _size)
 
-  class.UIElement(self, _name, _pos, _size)
+  engine.UIElement:inherit(self, _name, _pos, _size)
 
   fontsize = fontsize or 24
   local font = love.graphics.newFont('assets/fonts/Verdana.ttf', fontsize)
@@ -31,5 +32,3 @@ function class:TextElement (_name, text, fontsize, _pos, _size)
   end
 
 end
-
-return class:bind 'TextElement'

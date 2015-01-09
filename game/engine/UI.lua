@@ -1,8 +1,8 @@
 
-local class = require 'lux.oo.class'
-local vec2 = require 'lux.geom.Vector'
+local engine  = require 'lux.oo.class' .package 'engine'
+local vec2    = require 'lux.geom.Vector'
 
-function class:UI ()
+function engine:UI ()
 
   local elements      = setmetatable({}, { __index = table })
   local reverse_index = {}
@@ -95,5 +95,3 @@ function class:UI ()
   end
 
 end
-
-return class.UI

@@ -1,7 +1,7 @@
 
-local class = require 'lux.oo.class'
+local engine = require 'lux.oo.class' .package 'engine'
 
-function class:Queue (max)
+function engine:Queue (max)
 
   assert(max > 1)
 
@@ -61,5 +61,3 @@ function class:Queue (max)
   end
 
 end
-
-return class:bind 'Queue'

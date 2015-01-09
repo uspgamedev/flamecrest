@@ -1,7 +1,7 @@
 
-local oo = require 'lux.oo.class'
+local domain = require 'lux.oo.class' .package 'domain'
 
-function oo:Unit (name, class, basespec, growthspec)
+function domain:Unit (name, class, basespec, growthspec)
 
   assert(name)
   assert(class)
@@ -78,5 +78,3 @@ function oo:Unit (name, class, basespec, growthspec)
   end
 
 end
-
-return oo:bind 'Unit'

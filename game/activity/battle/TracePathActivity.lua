@@ -1,14 +1,11 @@
 
 local class   = require 'lux.oo.class'
-local vec2    = require 'lux.geom.Vector'
+local engine  = class.package 'engine'
+local battle  = class.package 'activity.battle'
 
-require 'engine.UI'
-require 'engine.Activity'
-require 'activity.BattleSelectActionActivity'
+function battle:TracePathActivity (UI, action)
 
-function class:BattleTracePathActivity (UI, action)
-
-  class.Activity(self)
+  engine.Activity:inherit(self)
 
   local moving = false
 
@@ -43,7 +40,7 @@ function class:BattleTracePathActivity (UI, action)
       moving = false
       UI:find("screen"):displayRange(action:getActionRange())
     else
-      self:switch(class:BattleIdleActivity(UI, action:getField()))
+      self:switch(battle.IdleActivity(UI, action:getField()))
     end
   end
 
@@ -55,11 +52,9 @@ function class:BattleTracePathActivity (UI, action)
       self:yield(10)
     until action:finishedPath()
     if moving then
-      self:switch(class:BattleSelectActionActivity(UI, action))
+      self:switch(battle.SelectActionActivity(UI, action))
     end
   end
 
 end
-
-return class:bind 'BattleTracePathActivity'
 

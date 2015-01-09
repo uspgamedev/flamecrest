@@ -1,7 +1,7 @@
 
-local class = require 'lux.oo.class'
+local engine = require 'lux.oo.class' .package 'engine'
 
-function class:Event (id, ...)
+function engine:Event (id, ...)
 
   local args = { n = select('#', ...), ... }
 
@@ -14,5 +14,3 @@ function class:Event (id, ...)
   end
 
 end
-
-return class:bind 'Event'

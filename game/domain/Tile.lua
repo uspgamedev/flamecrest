@@ -1,8 +1,10 @@
 
-local class = require 'lux.oo.class'
+local class     = require 'lux.oo.class'
 local tiletypes = require 'content.tiletypes'
 
-function class:Tile (pos, typename)
+local domain    = class.package 'domain'
+
+function domain:Tile (pos, typename)
 
   local attributes = tiletypes[typename or 'default']:new{}
   local unit
@@ -36,5 +38,3 @@ function class:Tile (pos, typename)
   end
 
 end
-
-return class:bind 'Tile'

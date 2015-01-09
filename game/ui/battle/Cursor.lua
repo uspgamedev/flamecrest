@@ -1,9 +1,9 @@
 
-local class   = require 'lux.oo.class'
+local ui      = require 'lux.oo.class' .package 'ui.battle'
 local vec2    = require 'lux.geom.Vector'
 local hexpos  = require 'domain.hexpos'
 
-function class:Cursor (start_position, acceleration)
+function ui:Cursor (start_position, acceleration)
 
   local accel       = acceleration or 25
   local currentpos  = start_position or hexpos:new {1,1}
@@ -39,5 +39,3 @@ function class:Cursor (start_position, acceleration)
   end
 
 end
-
-return class:bind 'Cursor'

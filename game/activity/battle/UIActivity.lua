@@ -2,20 +2,16 @@
 local class   = require 'lux.oo.class'
 local vec2    = require 'lux.geom.Vector'
 
-require 'engine.UI'
-require 'engine.Activity'
-require 'ui.BattleScreenElement'
-require 'ui.TextElement'
-require 'ui.ListMenuElement'
-require 'ui.EnergyBarElement'
-require 'domain.BattleField'
-require 'domain.Unit'
+local engine  = class.package 'engine'
+local ui      = class.package 'ui'
+local domain  = class.package 'domain'
+local battle  = class.package 'activity.battle'
 
 local STRIKE_DURATION = 10
 
-function class:BattleUIActivity (UI)
+function battle:UIActivity (UI)
 
-  class.Activity(self)
+  engine.Activity:inherit(self)
 
   --[[ Event receivers ]]-------------------------------------------------------
 
@@ -49,7 +45,7 @@ function class:BattleUIActivity (UI)
     else
       msg = "Miss!"
     end
-    local splash = class:TextElement("splash", msg, 18, pos, vec2:new{64, 20})
+    local splash = ui.TextElement("splash", msg, 18, pos, vec2:new{64, 20})
     UI:add(splash)
     for i=1,20 do
       splash:setPos(pos + vec2:new{0, -i})
@@ -63,7 +59,7 @@ function class:BattleUIActivity (UI)
     local sprite  = UI:find("screen"):getSprite(strike.atk)
     local dir     = strikeDir(strike)
     local pos     = infoSpot(strike)
-    local hpbar   = class:EnergyBarElement("hpbar", pos, vec2:new{64,8})
+    local hpbar   = ui.EnergyBarElement("hpbar", pos, vec2:new{64,8})
     local hp      = strike.def:getHP()
     local damage  = strike.damage or 0
     -- Show HP bar with life before damage
@@ -90,6 +86,3 @@ function class:BattleUIActivity (UI)
   end
 
 end
-
-return class:bind 'BattleUIActivity'
-

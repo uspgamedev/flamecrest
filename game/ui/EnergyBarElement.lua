@@ -1,12 +1,13 @@
 
-local class     = require 'lux.oo.class'
-local vec2      = require 'lux.geom.Vector'
+local class   = require 'lux.oo.class'
+local vec2    = require 'lux.geom.Vector'
 
-require 'engine.UIElement'
+local engine  = class.package 'engine'
+local ui      = class.package 'ui'
 
-function class:EnergyBarElement (_name, _pos, _size)
+function ui:EnergyBarElement (_name, _pos, _size)
 
-  class.UIElement(self, _name, _pos, _size)
+  engine.UIElement:inherit(self, _name, _pos, _size)
 
   local value = 1
 
@@ -40,5 +41,3 @@ function class:EnergyBarElement (_name, _pos, _size)
   end
 
 end
-
-return class:bind 'EnergyBarElement'

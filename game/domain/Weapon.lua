@@ -1,5 +1,5 @@
 
-local class = require 'lux.oo.class'
+local domain = require 'lux.oo.class' .package 'domain'
 
 local weapontypenames = {
   sword = true,
@@ -76,7 +76,7 @@ local basebonus = {
   hit = 15
 }
 
-function class:Weapon (name, weaponspec)
+function domain:Weapon (name, weaponspec)
 
   local mt        = weaponspec.mt
   local hit       = weaponspec.hit
@@ -166,5 +166,3 @@ function class:Weapon (name, weaponspec)
   end
 
 end
-
-return class:bind "Weapon"

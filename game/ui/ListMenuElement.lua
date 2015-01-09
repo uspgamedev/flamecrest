@@ -1,11 +1,11 @@
 
-local class     = require 'lux.oo.class'
-local vec2      = require 'lux.geom.Vector'
+local class   = require 'lux.oo.class'
+local vec2    = require 'lux.geom.Vector'
 
-require 'engine.UIElement'
-require 'engine.Event'
+local engine  = class.package 'engine'
+local ui      = class.package 'ui'
 
-function class:ListMenuElement (_name, options, fontsize, _pos, _minwidth)
+function ui:ListMenuElement (_name, options, fontsize, _pos, _minwidth)
 
 
   fontsize = fontsize or 24
@@ -24,7 +24,8 @@ function class:ListMenuElement (_name, options, fontsize, _pos, _minwidth)
         maxwidth = width
       end
     end
-    class.UIElement(self, _name, _pos, vec2:new{maxwidth, #options*getFontHeight()})
+    engine.UIElement:inherit(self, _name, _pos,
+                             vec2:new{maxwidth, #options*getFontHeight()})
   end
 
   local focus = 0
@@ -36,7 +37,7 @@ function class:ListMenuElement (_name, options, fontsize, _pos, _minwidth)
   function self:onMousePressed (pos, button)
     if button == 'l' then
       local i = getOption(pos.y)
-      broadcastEvent(class:Event('ListMenuOption', i, options[i]))
+      broadcastEvent(engine.Event('ListMenuOption', i, options[i]))
     end
   end
 
@@ -67,5 +68,3 @@ function class:ListMenuElement (_name, options, fontsize, _pos, _minwidth)
   end
 
 end
-
-return class:bind 'ListMenuElement'

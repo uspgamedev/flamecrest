@@ -2,9 +2,10 @@
 local class   = require 'lux.oo.class'
 local vec2    = require 'lux.geom.Vector'
 local hexpos  = require 'domain.hexpos'
-local Event   = require 'engine.Event'
 
-function class:Sprite (imgname)
+local ui      = class.package 'ui.battle'
+
+function ui:Sprite (imgname)
 
   local img = love.graphics.newImage("assets/images/"..imgname..".png")
   local quadwidth = 64
@@ -45,5 +46,3 @@ function class:Sprite (imgname)
   end
 
 end
-
-return class:bind 'Sprite'

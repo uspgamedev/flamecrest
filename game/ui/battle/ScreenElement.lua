@@ -3,8 +3,9 @@ local class     = require 'lux.oo.class'
 local vec2      = require 'lux.geom.Vector'
 local lambda    = require 'lux.functional'
 local hexpos    = require 'domain.hexpos'
-local Cursor    = require 'ui.battle.Cursor'
-local Event     = require 'engine.Event'
+
+local engine    = class.package 'engine'
+local ui        = class.package 'ui.battle'
 
 local markereffectcode = [[
   vec4 effect (vec4 color, Image texture, vec2 tex_pos, vec2 pix_pos) {
@@ -23,17 +24,15 @@ local glow = {
   atk  = makemarkereffect(love.graphics, 0.8, 0.1, 0)
 }
 
-function class:BattleScreenElement (name, battlefield)
+function ui:ScreenElement (name, battlefield)
 
-  require 'engine.UIElement'
-  require 'ui.battle.Sprite'
-  class.UIElement(self, name, vec2:new{0, 0},
-                  vec2:new{ love.window.getDimensions() })
+  engine.UIElement:inherit(self, name, vec2:new{0, 0},
+                           vec2:new{ love.window.getDimensions() })
 
   local camera_pos  = hexpos:new{0, 0}
   local tileset     = {}
   local sprites     = {}
-  local cursor      = Cursor()
+  local cursor      = ui.Cursor()
   local range
 
   tileset.Default   = love.graphics.newImage "assets/images/hextile-empty.png"
@@ -69,7 +68,7 @@ function class:BattleScreenElement (name, battlefield)
   function self:getSprite (unit)
     local sprite = sprites[unit]
     if not sprite then
-      sprite = class:Sprite("chibi-soldier")
+      sprite = ui.Sprite("chibi-soldier")
       sprites[unit] = sprite
     end
     return sprite
@@ -102,10 +101,10 @@ function class:BattleScreenElement (name, battlefield)
       local tile_hexpos   = screenToHexpos(pos)
       local tile          = battlefield:getTileAt(tile_hexpos)
       if tile then
-        broadcastEvent(Event('TileClicked', tile))
+        broadcastEvent(engine.Event('TileClicked', tile))
       end
     elseif button == 'r' then
-      broadcastEvent(Event('Cancel'))
+      broadcastEvent(engine.Event('Cancel'))
     end
   end
 
@@ -155,5 +154,3 @@ function class:BattleScreenElement (name, battlefield)
   end
 
 end
-
-return class:bind 'BattleScreenElement'

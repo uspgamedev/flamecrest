@@ -1,10 +1,10 @@
 
-local class = require 'lux.oo.class'
-local vec2 = require 'lux.geom.Vector'
+local engine  = require 'lux.oo.class' .package 'engine'
+local vec2    = require 'lux.geom.Vector'
 
 local id = 0
 
-function class:UIElement (name, pos, size)
+function engine:UIElement (name, pos, size)
 
   if not name then
     name = "Generated-"..id
@@ -112,5 +112,3 @@ function class:UIElement (name, pos, size)
   end
 
 end
-
-return class:bind 'UIElement'

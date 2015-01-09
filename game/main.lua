@@ -1,18 +1,19 @@
 
 local FRAME = 1/60
 
-local vec2                = require 'lux.geom.Vector'
-local BattleStartActivity = require 'activity.BattleStartActivity'
-local Event               = require 'engine.Event'
-local Queue               = require 'engine.Queue'
+local class       = require 'lux.oo.class'
+local vec2        = require 'lux.geom.Vector'
 
-local game_ui             = require 'engine.UI' ()
-local activities          = {}
+local engine      = class.package 'engine'
+local battle      = class.package 'activity.battle'
+
+local game_ui
+local activities  = {}
 
 function addActivity (activity, i)
   i = i or #activities+1
   table.insert(activities, i, activity)
-  activity:receiveEvent(Event("Load"))
+  activity:receiveEvent(engine.Event("Load"))
 end
 
 local function removeActivity (index)
@@ -52,7 +53,8 @@ local function tick ()
 end
 
 function love.load ()
-  addActivity(BattleStartActivity(game_ui))
+  game_ui = engine.UI()
+  addActivity(battle.StartActivity(game_ui))
   tick()
 end
 
@@ -69,7 +71,7 @@ do
 end
 
 function love.keypressed (key)
-  broadcastEvent(Event('KeyPressed', key))
+  broadcastEvent(engine.Event('KeyPressed', key))
 end
 
 function love.mousepressed (x, y, button)

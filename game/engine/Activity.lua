@@ -1,13 +1,11 @@
 
-local class = require 'lux.oo.class'
+local engine = require 'lux.oo.class' .package 'engine'
 
-local Event = require 'engine.Event'
-local Queue = require 'engine.Queue'
-local Task  = require 'engine.Task'
+local Event = engine.Event
+local Queue = engine.Queue
+local Task  = engine.Task
 
-function class:Activity ()
-
-  require 'engine.UI'
+function engine:Activity ()
 
   local QUEUE_MAX_SIZE = 32
 
@@ -109,5 +107,3 @@ function class:Activity ()
   end
 
 end
-
-return class:bind 'Activity'

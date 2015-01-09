@@ -1,5 +1,5 @@
 
-local Queue = require 'engine.Queue'
+local Queue = require 'lux.oo.class' .package 'engine' .Queue
 
 local function bfs(battlefield, startpos)
    local resp = {}
