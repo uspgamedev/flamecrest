@@ -11,23 +11,25 @@ function ui:Sprite (imgname)
   local quadwidth = 64
   local quadheight = 64
   local quads = {}
-  for i=1,4 do
-    quads[i] = {}
-    for j=1,3 do
-      quads[i][j] = love.graphics.newQuad(
+  for i=1,1 do
+    for j=1,2 do
+      local quad = love.graphics.newQuad(
         quadwidth*(j-1),
         quadheight*(i-1),
         quadwidth, quadheight,
-        3*quadwidth, quadheight
+        img:getWidth(), img:getHeight()
       )
+      table.insert(quads, quad)
     end
   end
-  local currentindex = {1,2}
+  local currentindex = 1
+  local frame = 10
+  local tick  = 0
 
   local offset = vec2:new{}
 
   local function currentQuad ()
-    return quads[currentindex[1]][currentindex[2]]
+    return quads[currentindex]
   end
 
   function self:setOffset (o)
@@ -35,6 +37,11 @@ function ui:Sprite (imgname)
   end
 
   function self:refresh ()
+    tick = tick + 1
+    if tick > frame then
+      tick = 0
+      currentindex = (currentindex % #quads) + 1
+    end
   end
 
   function self:draw (graphics, pos)
