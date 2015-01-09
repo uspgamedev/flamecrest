@@ -12,10 +12,9 @@ function battle:SelectActionActivity (UI, action)
   --[[ Event receivers ]]-------------------------------------------------------
 
   function self.__accept:Load ()
-    local action_menu = ui.ListMenuElement("action_menu", {"Fight", "Wait"},
-                                              18, vec2:new{600, 16})
+    local action_menu = ui.ListMenuElement("action_menu", {"Fight", "Wait"}, 18)
     local pos = UI:find("screen"):hexposToScreen(action:getCurrentPos())
-                + vec2:new{-128, -160}
+                + vec2:new{-128, -96}
     action_menu:setPos(pos)
     UI:add(action_menu)
     UI:find("screen"):clearRange()
