@@ -171,7 +171,10 @@ function ui:ScreenElement (name, battlefield)
   -- @override
   function self:draw (graphics, window)
     local frame = vec2:new{ window.getDimensions() }
-    graphics.translate((frame/2 - camera_pos:toVec2()):unpack())
+    local offset = frame/2 - camera_pos:toVec2()
+    offset.x = math.floor(offset.x)
+    offset.y = math.floor(offset.y)
+    graphics.translate(offset:unpack())
     battlefield:eachTile(lambda.bindFirst(drawTile, graphics))
     cursor:draw(graphics)
   end

@@ -70,7 +70,13 @@ function domain:Unit (name, class, basespec, growthspec)
 
   function self:getTerrainCostFor (terrain_type)
     -- TODO derp
-    return (terrain_type == 'Plains') and 1 or 2
+    if terrain_type == 'Plains' then
+      return 1
+    elseif terrain_type == 'Forest' then
+      return 2
+    else
+      return 1337
+    end
   end
 
   function self:hasTrait (traitname)

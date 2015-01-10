@@ -28,8 +28,8 @@ function ui:Cursor (start_position, acceleration)
   end
 
   function self:move ()
-    currentpos  = currentpos + step * (1/60)
     step        = (target - currentpos)*accel
+    currentpos  = currentpos + step * (1/60)
   end
 
   function self:draw (graphics)
