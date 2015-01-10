@@ -30,7 +30,12 @@ function ui:ScreenElement (name, battlefield)
                            vec2:new{ love.window.getDimensions() })
 
   local camera_pos  = hexpos:new{0, 0}
-  local scrolling
+  local scrolling   = {
+    old_pos = camera_pos:clone(),
+    origin = vec2:new{},
+    current = vec2:new{},
+    step = vec2:new{}
+  }
   local tileset     = {}
   local sprites     = {}
   local cursor      = ui.Cursor()
@@ -69,6 +74,17 @@ function ui:ScreenElement (name, battlefield)
       end
     end
     return focus
+  end
+
+  local function activateScrolling (pos)
+    scrolling.old_pos = camera_pos:clone()
+    scrolling.origin = pos:clone()
+    scrolling.current = pos:clone()
+    scrolling.active = true
+  end
+
+  local function deactivateScrolling ()
+    scrolling.active = false
   end
 
   function self:getSprite (obj)
@@ -112,23 +128,21 @@ function ui:ScreenElement (name, battlefield)
     elseif button == 'r' then
       broadcastEvent(engine.Event('Cancel'))
     elseif button == 'm' then
-      scrolling = pos:clone()
+      activateScrolling(pos)
     end
   end
 
   --- Overrides @{UIElement:onMouseReleased}
   function self:onMouseReleased (pos, button)
     if button == 'm' then
-      scrolling = nil
+      deactivateScrolling()
     end
   end
 
   --- Overrides @{UIElement:onMouseHover}
   function self:onMouseHover (pos)
-    if scrolling then
-      local diff = (pos - scrolling)
-      scrolling = pos
-      camera_pos = camera_pos - vec2ToHexpos(diff)
+    if scrolling.active then
+      scrolling.step = (pos - scrolling.current)*0.2
     else
       local hex = screenToHexpos(pos)
       if battlefield:getTileAt(hex) then
@@ -145,6 +159,14 @@ function ui:ScreenElement (name, battlefield)
     for _,sprite in pairs(sprites) do
       sprite:refresh()
     end
+    scrolling.current = scrolling.current + scrolling.step
+    camera_pos = scrolling.old_pos
+                 - vec2ToHexpos(scrolling.current - scrolling.origin)
+    local step = scrolling.step*0.9
+    if math.abs(step.x) + math.abs(step.y) < 0.1 then
+      step = vec2:new{}
+    end
+    scrolling.step = step
   end
 
   local function drawTile (graphics, i, j, tile)
