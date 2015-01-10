@@ -29,12 +29,11 @@ function ui:ScreenElement (name, battlefield)
   engine.UIElement:inherit(self, name, vec2:new{0, 0},
                            vec2:new{ love.window.getDimensions() })
 
-  local camera_pos  = hexpos:new{0, 0}
+  local camera      = ui.Moveable(hexpos:new{0, 0}, 10)
   local scrolling   = {
-    old_pos = camera_pos:clone(),
+    old_pos = camera:getPos():clone(),
     origin = vec2:new{},
-    current = vec2:new{},
-    step = vec2:new{}
+    active = false
   }
   local tileset     = {}
   local sprites     = {}
@@ -52,7 +51,8 @@ function ui:ScreenElement (name, battlefield)
 
   local function screenToHexpos (screenpos)
     -- TODO: inject love.window dependency
-    local origin = vec2:new{ love.window.getDimensions() }/2 - camera_pos:toVec2()
+    local origin = vec2:new{ love.window.getDimensions() }/2
+                   - camera:getPos():toVec2()
     local relpos = screenpos - origin
     local focus = hexpos:new {}
     local floor = math.floor
@@ -77,9 +77,8 @@ function ui:ScreenElement (name, battlefield)
   end
 
   local function activateScrolling (pos)
-    scrolling.old_pos = camera_pos:clone()
+    scrolling.old_pos = camera:getPos():clone()
     scrolling.origin = pos:clone()
-    scrolling.current = pos:clone()
     scrolling.active = true
   end
 
@@ -98,15 +97,15 @@ function ui:ScreenElement (name, battlefield)
 
   function self:lookAt (i, j)
     if type(i) == 'number' then
-      camera_pos = hexpos:new{i,j}
+      camera:setTarget(hexpos:new{i,j})
     else
-      camera_pos = i:clone()
+      camera:setTarget(i:clone())
     end
   end
 
   function self:hexposToScreen (hex)
     local frame = vec2:new{ love.window.getDimensions() }
-    return frame/2 - (camera_pos - hex):toVec2()
+    return frame/2 - (camera:getPos() - hex):toVec2()
   end
 
   function self:displayRange (the_range)
@@ -142,7 +141,8 @@ function ui:ScreenElement (name, battlefield)
   --- Overrides @{UIElement:onMouseHover}
   function self:onMouseHover (pos)
     if scrolling.active then
-      scrolling.step = (pos - scrolling.current)*0.2
+      local diff = vec2ToHexpos(pos - scrolling.origin)
+      camera:setTarget(scrolling.old_pos - diff)
     else
       local hex = screenToHexpos(pos)
       if battlefield:getTileAt(hex) then
@@ -156,17 +156,10 @@ function ui:ScreenElement (name, battlefield)
   -- @override
   function self:onRefresh ()
     cursor:move()
+    camera:move()
     for _,sprite in pairs(sprites) do
       sprite:refresh()
     end
-    scrolling.current = scrolling.current + scrolling.step
-    camera_pos = scrolling.old_pos
-                 - vec2ToHexpos(scrolling.current - scrolling.origin)
-    local step = scrolling.step*0.9
-    if math.abs(step.x) + math.abs(step.y) < 0.1 then
-      step = vec2:new{}
-    end
-    scrolling.step = step
   end
 
   local function drawTile (graphics, i, j, tile)
@@ -193,7 +186,7 @@ function ui:ScreenElement (name, battlefield)
   -- @override
   function self:draw (graphics, window)
     local frame = vec2:new{ window.getDimensions() }
-    local offset = frame/2 - camera_pos:toVec2()
+    local offset = frame/2 - camera:getPos():toVec2()
     offset.x = math.floor(offset.x)
     offset.y = math.floor(offset.y)
     graphics.translate(offset:unpack())
