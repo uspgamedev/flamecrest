@@ -78,6 +78,10 @@ function love.mousepressed (x, y, button)
   game_ui:mouseAction('Pressed', vec2:new{x,y}, button)
 end
 
+function love.mousereleased (x, y, button)
+  game_ui:mouseAction('Released', vec2:new{x,y}, button)
+end
+
 function love.draw ()
   game_ui:draw(love.graphics, love.window)
 end

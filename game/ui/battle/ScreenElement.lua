@@ -30,6 +30,7 @@ function ui:ScreenElement (name, battlefield)
                            vec2:new{ love.window.getDimensions() })
 
   local camera_pos  = hexpos:new{0, 0}
+  local scrolling
   local tileset     = {}
   local sprites     = {}
   local cursor      = ui.Cursor()
@@ -38,6 +39,11 @@ function ui:ScreenElement (name, battlefield)
   tileset.Default   = require 'assets.tiles.Default'
   tileset.Plains    = require 'assets.tiles.Plains'
   tileset.Forest    = require 'assets.tiles.Forest'
+
+  local function vec2ToHexpos (pos)
+    pos = pos.x/192*vec2:new{1,-1} + pos.y/64*vec2:new{1,1}
+    return hexpos:new{pos.y, pos.x}
+  end
 
   local function screenToHexpos (screenpos)
     -- TODO: inject love.window dependency
@@ -105,16 +111,31 @@ function ui:ScreenElement (name, battlefield)
       end
     elseif button == 'r' then
       broadcastEvent(engine.Event('Cancel'))
+    elseif button == 'm' then
+      scrolling = pos:clone()
+    end
+  end
+
+  --- Overrides @{UIElement:onMouseReleased}
+  function self:onMouseReleased (pos, button)
+    if button == 'm' then
+      scrolling = nil
     end
   end
 
   --- Overrides @{UIElement:onMouseHover}
   function self:onMouseHover (pos)
-    local hex = screenToHexpos(pos)
-    if battlefield:getTileAt(hex) then
-      cursor:setTarget(hex)
+    if scrolling then
+      local diff = (pos - scrolling)
+      scrolling = pos
+      camera_pos = camera_pos - vec2ToHexpos(diff)
     else
-      cursor:stop()
+      local hex = screenToHexpos(pos)
+      if battlefield:getTileAt(hex) then
+        cursor:setTarget(hex)
+      else
+        cursor:stop()
+      end
     end
   end
 
