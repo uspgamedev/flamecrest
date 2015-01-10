@@ -12,7 +12,7 @@ function domain:BattleField (width, height)
   for i=1,height do
     tiles[i] = {}
     for j=1,width do
-      local t = (love.math.random() > .3) and 'plains' or 'forest'
+      local t = (love.math.random() > .2) and 'plains' or 'forest'
       tiles[i][j] = domain.Tile(hexpos:new{i,j}, t)
     end
   end

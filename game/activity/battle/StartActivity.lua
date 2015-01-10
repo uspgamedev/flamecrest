@@ -16,7 +16,7 @@ function battle:StartActivity (UI)
   engine.Activity:inherit(self)
 
   function self.__accept:Load ()
-    local battlefield = domain.BattleField(15, 10)
+    local battlefield = domain.BattleField(15, 15)
     local units       = {
       domain.UnitState(domain.Unit("Leeroy Jenkins", true, spec:new{},
                                  spec:new{})),
