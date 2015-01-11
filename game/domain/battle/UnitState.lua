@@ -1,8 +1,9 @@
 
 local battle = require 'lux.oo.class' .package 'domain.battle'
 
-function battle:UnitState (unit)
+function battle:UnitState (unit, team)
 
+  assert(unit and team)
   local hp = unit:getMaxHP()
   local steps = 0
 
@@ -15,8 +16,16 @@ function battle:UnitState (unit)
     return unit
   end
 
+  function self:getTeam ()
+    return team
+  end
+
   function self:getName ()
     return unit:getName()
+  end
+
+  function self:getLv ()
+    return unit:getLv()
   end
 
   function self:getHP ()

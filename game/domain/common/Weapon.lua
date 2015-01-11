@@ -95,6 +95,10 @@ function common:Weapon (name, weaponspec)
 
   local dur = maxdur
 
+  function self:getName ()
+    return name
+  end
+
   function self:getMt ()
     return mt
   end

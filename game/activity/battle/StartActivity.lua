@@ -23,15 +23,17 @@ function battle:StartActivity (UI)
   function self.__accept:Load ()
     local battlefield = Field(15, 15)
     local units       = {
-      UnitState(Unit("Leeroy Jenkins", true, spec:new{}, spec:new{})),
-      UnitState(Unit("Juaum MacDude", true, spec:new{}, spec:new{}))
+      UnitState(Unit("Leeroy Jenkins", true, spec:new{}, spec:new{}), 'Blue'),
+      UnitState(Unit("Juaum MacDude", true, spec:new{}, spec:new{}), 'Red')
     }
     units[1]:setWeapon(Weapon('Iron Lance', wpnspec:new{}))
     units[2]:setWeapon(Weapon('Iron Bow', wpnspec:new{ minrange=2,maxrange=2}))
     battlefield:putUnit(hexpos:new{1,1}, units[1])
     battlefield:putUnit(hexpos:new{5,5}, units[2])
     local screen = battleui.ScreenElement("screen", battlefield)
-    local stats = ui.TextElement("stats", "", 18, vec2:new{16, 16}, vec2:new{256, 20})
+    local stats = ui.TextElement("stats", "", 18,
+                                 vec2:new{16, screen:getHeight()-120-16},
+                                 vec2:new{256, 120}, 'left')
     UI:add(screen)
     UI:add(stats)
     screen:lookAt(6, 6)

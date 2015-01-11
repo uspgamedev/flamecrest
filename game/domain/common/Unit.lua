@@ -28,6 +28,10 @@ function common:Unit (name, class, basespec, growthspec)
     return name
   end
 
+  function self:getLv ()
+    return lv
+  end
+
   function self:getMaxHP ()
     return maxhp
   end

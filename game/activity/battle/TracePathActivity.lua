@@ -3,6 +3,14 @@ local class   = require 'lux.oo.class'
 local engine  = class.package 'engine'
 local battle  = class.package 'activity.battle'
 
+local stats_display = [[
+%s
+Team: %s
+Lv: %d
+HP: %d/%d
+Wpn: %s
+]]
+
 function battle:TracePathActivity (UI, action)
 
   engine.Activity:inherit(self)
@@ -11,8 +19,13 @@ function battle:TracePathActivity (UI, action)
 
   --[[ Event receivers ]]-------------------------------------------------------
 
+
   function self.__accept:Load ()
-    UI:find("stats"):setText(action:getUnit():getName())
+    local unit = action:getUnit()
+    UI:find("stats"):setText(stats_display:format(
+      unit:getName(), unit:getTeam(), unit:getLv(), unit:getHP(),
+      unit:getMaxHP(), unit:getWeapon():getName()
+    ))
     UI:find("screen"):displayRange(action:getActionRange())
   end
 
