@@ -2,7 +2,7 @@
 local class     = require 'lux.oo.class'
 local vec2      = require 'lux.geom.Vector'
 local lambda    = require 'lux.functional'
-local hexpos    = require 'domain.hexpos'
+local hexpos    = require 'domain.common.hexpos'
 
 local engine    = class.package 'engine'
 local ui        = class.package 'ui.battle'

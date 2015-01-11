@@ -4,7 +4,6 @@ local vec2    = require 'lux.geom.Vector'
 
 local engine  = class.package 'engine'
 local ui      = class.package 'ui'
-local domain  = class.package 'domain'
 local battle  = class.package 'activity.battle'
 
 local STRIKE_DURATION = 10

@@ -1,11 +1,13 @@
 
 local class   = require 'lux.oo.class'
-local hexpos  = require 'domain.hexpos'
+local hexpos  = require 'domain.common.hexpos'
 local bfs     = require 'domain.algorithm.bfs'
 
-local domain  = class.package 'domain'
+local battle  = class.package 'domain.battle'
 
-function domain:BattleField (width, height)
+local Tile    = battle.Tile
+
+function battle:Field (width, height)
 
   local tiles   = {}
 
@@ -13,7 +15,7 @@ function domain:BattleField (width, height)
     tiles[i] = {}
     for j=1,width do
       local t = (love.math.random() > .2) and 'plains' or 'forest'
-      tiles[i][j] = domain.Tile(hexpos:new{i,j}, t)
+      tiles[i][j] = Tile(hexpos:new{i,j}, t)
     end
   end
 

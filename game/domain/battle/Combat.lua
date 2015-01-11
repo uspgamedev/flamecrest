@@ -1,9 +1,9 @@
 
 local class = require 'lux.oo.class'
 
-local domain = class.package 'domain'
+local battle = class.package 'domain.battle'
 
-function domain:Combat (attacker, defender)
+function battle:Combat (attacker, defender)
 
   local function muchFaster ()
     return nil, nil

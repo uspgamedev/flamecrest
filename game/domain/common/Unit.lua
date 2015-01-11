@@ -1,7 +1,7 @@
 
-local domain = require 'lux.oo.class' .package 'domain'
+local common = require 'lux.oo.class' .package 'domain.common'
 
-function domain:Unit (name, class, basespec, growthspec)
+function common:Unit (name, class, basespec, growthspec)
 
   assert(name)
   assert(class)

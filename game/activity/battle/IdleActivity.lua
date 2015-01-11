@@ -1,8 +1,9 @@
 
-local class   = require 'lux.oo.class'
-local engine  = class.package 'engine'
-local battle  = class.package 'activity.battle'
-local domain  = class.package 'domain'
+local class     = require 'lux.oo.class'
+local engine    = class.package 'engine'
+local battle    = class.package 'activity.battle'
+
+local Action    = class.package 'domain.battle' .Action
 
 function battle:IdleActivity (UI, battlefield)
 
@@ -24,7 +25,7 @@ function battle:IdleActivity (UI, battlefield)
   function self.__accept:TileClicked (tile)
     local unit = tile:getUnit()
     if unit then
-      local action = domain.BattleAction(battlefield, unit, tile:getPos())
+      local action = Action(battlefield, unit, tile:getPos())
       self:switch(battle.TracePathActivity(UI, action))
     end
   end

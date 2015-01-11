@@ -1,11 +1,11 @@
 
 local class   = require 'lux.oo.class'
-local hexpos  = require 'domain.hexpos'
+local hexpos  = require 'domain.common.hexpos'
 local bfs     = require 'domain.algorithm.bfs'
 
-local domain  = class.package 'domain'
+local battle  = class.package 'domain.battle'
 
-function domain:BattleAction (field, unit, start_pos)
+function battle:Action (field, unit, start_pos)
 
   assert(field and unit and start_pos)
   local current_pos = start_pos
@@ -148,7 +148,7 @@ function domain:BattleAction (field, unit, start_pos)
       unit = target,
       tile = targettile
    }
-   return domain.Combat(attacker_info, defender_info)
+   return battle.Combat(attacker_info, defender_info)
   end
 
 end

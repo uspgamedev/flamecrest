@@ -1,6 +1,6 @@
 
 local ui      = require 'lux.oo.class' .package 'ui.battle'
-local hexpos  = require 'domain.hexpos'
+local hexpos  = require 'domain.common.hexpos'
 
 function ui:Moveable (start_position, acceleration)
 

@@ -1,5 +1,4 @@
 
-
 local vec2  = require 'lux.geom.Vector'
 local max   = math.max
 local abs   = math.abs
