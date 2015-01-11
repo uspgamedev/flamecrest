@@ -19,7 +19,6 @@ function battle:TracePathActivity (UI, action)
 
   --[[ Event receivers ]]-------------------------------------------------------
 
-
   function self.__accept:Load ()
     local unit = action:getUnit()
     UI:find("stats"):setText(stats_display:format(
