@@ -24,8 +24,8 @@ function battle:StartActivity (UI)
   function self.__accept:Load ()
     local battlefield = Field(15, 15)
     local teams       = {
-      Team('Blue', {0, 0, 255, 255}),
-      Team('Red', {255, 0, 0, 255})
+      Team('Blue', {0, 80, 200, 255}),
+      Team('Red', {200, 80, 0, 255})
     }
     local units       = {
       UnitState(Unit("Leeroy Jenkins", true, spec:new{}, spec:new{}), teams[1]),
