@@ -18,7 +18,7 @@ function battle:PickTargetActivity (UI, action)
   end
 
   function self.__accept:KeyPressed (key)
-    if key == 'escape' then
+    if not combat and key == 'escape' then
       self:finish()
     end
   end
@@ -32,8 +32,10 @@ function battle:PickTargetActivity (UI, action)
   end
 
   function self.__accept:Cancel ()
-    UI:find("screen"):clearRange()
-    self:switch(battle.SelectActionActivity(UI, action))
+    if not combat then
+      UI:find("screen"):clearRange()
+      self:switch(battle.SelectActionActivity(UI, action))
+    end
   end
 
   --[[ Tasks ]]-----------------------------------------------------------------
