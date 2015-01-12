@@ -24,7 +24,25 @@ function battle:UIActivity (UI)
     self:addTask('StrikeAnimation', strike)
   end
 
+  function self.__accept:TurnStart (team)
+    self:addTask("TurnAnimation", team)
+  end
+
   --[[ Tasks ]]-----------------------------------------------------------------
+
+  function self.__task:TurnAnimation (team)
+    local message = ui.TextElement('message', "", 48, nil, nil, 'center')
+    local x, y = 64, 16
+    self:yield(5)
+    UI:add(message)
+    message:setSize(512, 64)
+    message:setText(string.format("%s's Turn", team))
+    for i=1,64 do
+      message:setPos(x + 6*(i-1), y)
+      self:yield()
+    end
+    UI:remove(message)
+  end
 
   local function strikeDir (strike)
     return

@@ -8,13 +8,13 @@ function battle:PlayActivity (battlefield, units)
 
   engine.Activity:inherit(self)
 
+  function self.__accept:Load ()
+    self:sendEvent "TurnStart"  (battlefield:getCurrentTeam())
+  end
+
   function self.__accept:KeyPressed (key)
     if key == 'escape' then
       self:finish()
-    elseif key == ' ' then
-      for _,unit in ipairs(units) do
-        unit:resetSteps()
-      end
     end
   end
 

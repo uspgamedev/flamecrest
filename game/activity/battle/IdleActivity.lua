@@ -19,8 +19,8 @@ function battle:IdleActivity (UI, battlefield)
     UI:find("screen"):clearRange()
     if not battlefield:hasUnusedUnits() then
       battlefield:endTurn()
+      self:sendEvent "TurnStart" (battlefield:getCurrentTeam())
     end
-    self:addTask("TurnAnimation")
   end
 
   function self.__accept:KeyPressed (key)
@@ -36,24 +36,6 @@ function battle:IdleActivity (UI, battlefield)
       local action = Action(battlefield, unit, tile:getPos())
       self:switch(battle.TracePathActivity(UI, action))
     end
-  end
-
-  --[[ Tasks ]]-----------------------------------------------------------------
-
-  function self.__task:TurnAnimation ()
-    lock = true
-    local message = ui.TextElement('message', "", 48, nil, nil, 'center')
-    local x, y = 64, 16
-    self:yield(5)
-    UI:add(message)
-    message:setSize(512, 64)
-    message:setText(string.format("%s's Turn", battlefield:getCurrentTeam()))
-    for i=1,64 do
-      message:setPos(x + 6*(i-1), y)
-      self:yield()
-    end
-    UI:remove(message)
-    lock = false
   end
 
 end
