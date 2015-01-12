@@ -36,7 +36,7 @@ function battle:UIActivity (UI)
     self:yield(5)
     UI:add(message)
     message:setSize(512, 64)
-    message:setText(string.format("%s's Turn", team))
+    message:setText(string.format("%s's Turn", team:getName()))
     for i=1,64 do
       message:setPos(x + 6*(i-1), y)
       self:yield()
