@@ -10,8 +10,6 @@ function battle:IdleActivity (UI, battlefield)
 
   engine.Activity:inherit(self)
 
-  local lock = false
-
   --[[ Event receivers ]]-------------------------------------------------------
 
   function self.__accept:Load ()
@@ -24,15 +22,15 @@ function battle:IdleActivity (UI, battlefield)
   end
 
   function self.__accept:KeyPressed (key)
-    if not lock and key == 'escape' then
+    if key == 'escape' then
       self:finish()
     end
   end
 
   function self.__accept:TileClicked (tile)
     local unit = tile:getUnit()
-    if not lock and unit and unit:getTeam() == battlefield:getCurrentTeam()
-                and not unit:isUsed() then
+    if unit and unit:getTeam() == battlefield:getCurrentTeam()
+            and not unit:isUsed() then
       local action = Action(battlefield, unit, tile:getPos())
       self:switch(battle.TracePathActivity(UI, action))
     end
