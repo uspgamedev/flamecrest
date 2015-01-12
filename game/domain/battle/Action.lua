@@ -25,7 +25,7 @@ function battle:Action (field, unit, start_pos)
 
   function self:abort ()
     if (start_pos - current_pos):size() > 0 then
-      unit:resetSteps()
+      unit:resetAction()
       field:putUnit(start_pos, unit)
       field:putUnit(current_pos, nil)
       current_pos = start_pos

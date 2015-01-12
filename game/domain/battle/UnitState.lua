@@ -6,6 +6,7 @@ function battle:UnitState (unit, team)
   assert(unit and team)
   local hp = unit:getMaxHP()
   local steps = 0
+  local used  = false
 
   local weapon
   local rescuedunit
@@ -90,6 +91,10 @@ function battle:UnitState (unit, team)
     return hp <= 0
   end
 
+  function self:isUsed ()
+    return used
+  end
+
   function self:getStepsLeft ()
     return self:getMv() - steps
   end
@@ -102,10 +107,12 @@ function battle:UnitState (unit, team)
     local n = unit:getTerrainCostFor(terrain_type)
     assert(steps + n <= unit:getMv())
     steps = steps + n
+    used = true
   end
 
-  function self:resetSteps ()
+  function self:resetAction ()
     steps = 0
+    used  = false
   end
 
   -- Weapon stuff

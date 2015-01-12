@@ -10,6 +10,8 @@ local Tile    = battle.Tile
 function battle:Field (width, height)
 
   local tiles   = {}
+  local teams   = {}
+  local turn    = 1
 
   for i=1,height do
     tiles[i] = {}
@@ -52,6 +54,48 @@ function battle:Field (width, height)
     if self:contains(pos) then
       tiles[pos.i][pos.j]:setUnit(unit)
     end
+  end
+
+  function self:getCurrentTeam ()
+    return teams[turn]
+  end
+
+  function self:setTeams (team, ...)
+    if team then
+      table.insert(teams, team)
+      return self:setTeams(...)
+    end
+  end
+
+  function self:endTurn ()
+    turn = (turn % #teams) + 1
+    for i = 1, height do
+      for j = 1, width do
+        local tile = tiles[i][j]
+        if tile then
+          local unit = tile:getUnit()
+          if unit and unit:getTeam() == self:getCurrentTeam() then
+            unit:resetAction()
+          end
+        end
+      end
+    end
+  end
+
+  function self:hasUnusedUnits ()
+    for i = 1, height do
+      for j = 1, width do
+        local tile = tiles[i][j]
+        if tile then
+          local unit = tile:getUnit()
+          if unit and unit:getTeam() == self:getCurrentTeam()
+                  and not unit:isUsed() then
+            return true
+          end
+        end
+      end
+    end
+    return false
   end
 
 end

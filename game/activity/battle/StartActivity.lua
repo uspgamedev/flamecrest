@@ -30,6 +30,7 @@ function battle:StartActivity (UI)
     units[2]:setWeapon(Weapon('Iron Bow', wpnspec:new{ minrange=2,maxrange=2}))
     battlefield:putUnit(hexpos:new{1,1}, units[1])
     battlefield:putUnit(hexpos:new{5,5}, units[2])
+    battlefield:setTeams('Blue', 'Red')
     local screen = battleui.ScreenElement("screen", battlefield)
     local stats = ui.TextElement("stats", "", 18,
                                  vec2:new{16, screen:getHeight()-120-16},

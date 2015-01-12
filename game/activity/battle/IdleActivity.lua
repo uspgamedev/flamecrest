@@ -14,6 +14,10 @@ function battle:IdleActivity (UI, battlefield)
   function self.__accept:Load ()
     UI:find("stats"):setText("")
     UI:find("screen"):clearRange()
+    if not battlefield:hasUnusedUnits() then
+      battlefield:endTurn()
+    end
+    print(battlefield:getCurrentTeam())
   end
 
   function self.__accept:KeyPressed (key)
@@ -24,7 +28,8 @@ function battle:IdleActivity (UI, battlefield)
 
   function self.__accept:TileClicked (tile)
     local unit = tile:getUnit()
-    if unit then
+    if unit and unit:getTeam() == battlefield:getCurrentTeam()
+            and not unit:isUsed() then
       local action = Action(battlefield, unit, tile:getPos())
       self:switch(battle.TracePathActivity(UI, action))
     end
