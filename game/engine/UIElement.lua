@@ -57,7 +57,7 @@ function engine:UIElement (name, pos, size)
 
   function self:setSize (w, h)
     if type(w) == 'number' then
-      size = vec2:new{w,y}
+      size = vec2:new{w,h}
     else
       size = w:clone()
     end
