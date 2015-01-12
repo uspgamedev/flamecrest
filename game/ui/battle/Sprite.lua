@@ -5,7 +5,15 @@ local hexpos  = require 'domain.common.hexpos'
 
 local ui      = class.package 'ui.battle'
 
-function ui:Sprite (imgname)
+local shadercode = [[
+  vec4 effect (vec4 color, Image texture, vec2 tex_pos, vec2 pix_pos) {
+    vec4 pixel = Texel(texture, tex_pos);
+    number mask  = Texel(texture, tex_pos + vec2(.0, .5)).a;
+    return color*pixel*mask + pixel*(1.0-mask);
+  }
+]]
+
+function ui:Sprite (imgname, color)
 
   local img = love.graphics.newImage("assets/images/"..imgname..".png")
   local quadwidth = 64
@@ -25,6 +33,7 @@ function ui:Sprite (imgname)
   local currentindex = 1
   local frame = 10
   local tick  = 0
+  local shader = love.graphics.newShader(shadercode)
 
   local offset = vec2:new{}
 
@@ -52,7 +61,11 @@ function ui:Sprite (imgname)
     local quad = currentQuad()
     graphics.push()
     graphics.translate(offset:unpack())
+    graphics.setColor(color or { 0, 0, 255, 255 })
+    graphics.setShader(shader)
     graphics.draw(img, quad, pos.x, pos.y, 0, 1, 1, quadwidth/2, quadheight-16)
+    graphics.setShader()
+    graphics.setColor(255, 255, 255, 255)
     graphics.pop()
   end
 
