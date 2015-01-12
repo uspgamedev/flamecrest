@@ -24,12 +24,15 @@ function battle:StartActivity (UI)
     local battlefield = Field(15, 15)
     local units       = {
       UnitState(Unit("Leeroy Jenkins", true, spec:new{}, spec:new{}), 'Blue'),
-      UnitState(Unit("Juaum MacDude", true, spec:new{}, spec:new{}), 'Red')
+      UnitState(Unit("Juaum MacDude", true, spec:new{}, spec:new{}), 'Red'),
+      UnitState(Unit("Yohannes MacDude", true, spec:new{}, spec:new{}), 'Red')
     }
     units[1]:setWeapon(Weapon('Iron Lance', wpnspec:new{}))
     units[2]:setWeapon(Weapon('Iron Bow', wpnspec:new{ minrange=2,maxrange=2}))
+    units[3]:setWeapon(Weapon('Iron Bow', wpnspec:new{ minrange=2,maxrange=2}))
     battlefield:putUnit(hexpos:new{1,1}, units[1])
-    battlefield:putUnit(hexpos:new{5,5}, units[2])
+    battlefield:putUnit(hexpos:new{6,5}, units[2])
+    battlefield:putUnit(hexpos:new{5,6}, units[3])
     battlefield:setTeams('Blue', 'Red')
     local screen = battleui.ScreenElement("screen", battlefield)
     local stats = ui.TextElement("stats", "", 18,

@@ -26,6 +26,7 @@ function battle:TracePathActivity (UI, action)
       unit:getMaxHP(), unit:getWeapon():getName()
     ))
     UI:find("screen"):displayRange(action:getActionRange())
+    action:start()
   end
 
   function self.__accept:KeyPressed (key)

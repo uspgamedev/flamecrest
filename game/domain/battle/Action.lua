@@ -23,6 +23,10 @@ function battle:Action (field, unit, start_pos)
     return current_pos:clone()
   end
 
+  function self:start ()
+    unit:use()
+  end
+
   function self:abort ()
     if (start_pos - current_pos):size() > 0 then
       unit:resetAction()

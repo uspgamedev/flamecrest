@@ -91,6 +91,10 @@ function battle:UnitState (unit, team)
     return hp <= 0
   end
 
+  function self:use ()
+    used = true
+  end
+
   function self:isUsed ()
     return used
   end
@@ -107,7 +111,6 @@ function battle:UnitState (unit, team)
     local n = unit:getTerrainCostFor(terrain_type)
     assert(steps + n <= unit:getMv())
     steps = steps + n
-    used = true
   end
 
   function self:resetAction ()
