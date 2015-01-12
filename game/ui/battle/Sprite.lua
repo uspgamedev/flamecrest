@@ -8,7 +8,7 @@ local ui      = class.package 'ui.battle'
 local shadercode = [[
   vec4 effect (vec4 color, Image texture, vec2 tex_pos, vec2 pix_pos) {
     vec4 pixel = Texel(texture, tex_pos);
-    number mask  = Texel(texture, tex_pos + vec2(.0, .5)).a;
+    number mask  = Texel(texture, tex_pos + vec2(.0, .5)).r;
     return color*pixel*mask + pixel*(1.0-mask);
   }
 ]]
