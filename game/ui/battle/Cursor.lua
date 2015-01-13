@@ -4,7 +4,7 @@ local hexpos  = require 'domain.common.hexpos'
 
 function ui:Cursor ()
 
-  ui.Moveable:inherit(self, hexpos:new{}, 20)
+  ui.Moveable:inherit(self, hexpos:new{}, 15)
 
   local img = love.graphics.newImage "assets/images/cursor.png"
 
