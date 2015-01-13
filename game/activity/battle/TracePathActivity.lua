@@ -22,7 +22,7 @@ function battle:TracePathActivity (UI, action)
   function self.__accept:Load ()
     local unit = action:getUnit()
     UI:find("stats"):setText(stats_display:format(
-      unit:getName(), unit:getTeam(), unit:getLv(), unit:getHP(),
+      unit:getName(), unit:getTeam():getName(), unit:getLv(), unit:getHP(),
       unit:getMaxHP(), unit:getWeapon():getName()
     ))
     UI:find("screen"):displayRange(action:getActionRange())
