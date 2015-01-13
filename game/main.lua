@@ -1,41 +1,87 @@
 
-require "game"
-require "common.vec2"
-require "ui.layout"
-require "ui.battle.mapscene"
-require "model.battle.map"
-require "model.battle.hexpos"
+local FRAME = 1/60
 
-math.randomseed(os.time())
+local class       = require 'lux.oo.class'
+local vec2        = require 'lux.geom.Vector'
 
-local function loadbattlemaplayout ()
-  local map = model.battle.map:new { width = 12, height = 12 }
-  for i=9,12 do
-    for j=1,i-7 do
-      map.tiles[i][j] = nil
-      map.tiles[j][i] = nil
+local engine      = class.package 'engine'
+local battle      = class.package 'activity.battle'
+
+local game_ui
+local activities  = {}
+
+function addActivity (activity, i)
+  i = i or #activities+1
+  table.insert(activities, i, activity)
+  activity:receiveEvent(engine.Event("Load"))
+end
+
+local function removeActivity (index)
+  local activity = activities[index]
+  table.remove(activities, index)
+  return activity
+end
+
+function broadcastEvent (ev)
+  for _,activity in ipairs(activities) do
+    activity:receiveEvent(ev)
+  end
+end
+
+local function tick ()
+  if #activities == 0 then
+    return love.event.push 'quit'
+  end
+  local finished = {}
+  for i,activity in ipairs(activities) do
+    activity:processEvents()
+    activity:updateTasks()
+    for ev in activity:pollEvents() do
+      broadcastEvent(ev)
+    end
+    if activity:isFinished() then
+      table.insert(finished, i)
     end
   end
-  ui.battle.mapscene:load(love.graphics)
-  ui.battle.mapscene:setup(map, love.graphics)
+  for k=#finished,1,-1 do
+    local removed = removeActivity(finished[k])
+    local scheduled = removed:getScheduled()
+    for i = #scheduled,1,-1 do
+      addActivity(scheduled[i], finished[k])
+    end
+  end
 end
 
 function love.load ()
-  love.graphics.setFont(love.graphics.newFont("resources/fonts/Verdana.ttf", 14))
-  love.graphics.setDefaultFilter("nearest", "nearest")
-  ui.layout.add(ui.battle.mapscene)
-  loadbattlemaplayout()
-  ui.battle.mapscene.map.tiles[5][1].unit = game.unit1
-  ui.battle.mapscene.map.tiles[5][9].unit = game.unit2
+  game_ui = engine.UI()
+  addActivity(battle.StartActivity(game_ui))
+  tick()
 end
 
-love.update         = game.update
-love.keypressed     = game.keypressed
-love.keyreleased    = game.keyreleased
-love.mousepressed   = game.mousepressed
-love.mousereleased  = game.mousereleased
+do
+  local lag = 0
+  function love.update (dt)
+    lag = lag + dt
+    while lag >= FRAME do
+      tick()
+      lag = lag - FRAME
+    end
+    game_ui:refresh()
+  end
+end
+
+function love.keypressed (key)
+  broadcastEvent(engine.Event('KeyPressed', key))
+end
+
+function love.mousepressed (x, y, button)
+  game_ui:mouseAction('Pressed', vec2:new{x,y}, button)
+end
+
+function love.mousereleased (x, y, button)
+  game_ui:mouseAction('Released', vec2:new{x,y}, button)
+end
 
 function love.draw ()
-  ui.layout.draw(love.graphics)
+  game_ui:draw(love.graphics, love.window)
 end
-
