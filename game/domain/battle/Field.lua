@@ -82,7 +82,7 @@ function battle:Field (width, height)
     end
   end
 
-  function self:hasUnusedUnits ()
+  function self:hasAvailableUnits ()
     for i = 1, height do
       for j = 1, width do
         local tile = tiles[i][j]
@@ -96,6 +96,36 @@ function battle:Field (width, height)
       end
     end
     return false
+  end
+
+  function self:isOver ()
+    local defeated = {}
+    for _,team in ipairs(teams) do
+      local check = false
+      for i = 1,height do
+        for j = 1,width do
+          local tile = tiles[i][j]
+          if tile then
+            local unit = tile:getUnit()
+            if unit and unit:getTeam() == team then
+              check = true
+            end
+          end
+        end
+      end
+      if not check then
+        defeated[team] = true
+      end
+    end
+    local count, winner = 0, nil
+    for _,team in ipairs(teams) do
+      if defeated[team] then
+        count = count + 1
+      else
+        winner = team
+      end
+    end
+    return count == #teams - 1 and winner
   end
 
 end

@@ -15,7 +15,11 @@ function battle:IdleActivity (UI, battlefield)
   function self.__accept:Load ()
     UI:find("stats"):setText("")
     UI:find("screen"):clearRange()
-    if not battlefield:hasUnusedUnits() then
+    local winner = battlefield:isOver()
+    if winner then
+      self:sendEvent "BattleOver" (winner)
+      self:finish()
+    elseif not battlefield:hasAvailableUnits() then
       battlefield:endTurn()
       self:sendEvent "TurnStart" (battlefield:getCurrentTeam())
     end

@@ -24,10 +24,12 @@ function battle:PickTargetActivity (UI, action)
   end
 
   function self.__accept:TileClicked (tile)
-    combat = action:startCombat(tile)
-    if combat then
-      UI:find("screen"):clearRange()
-      self:addTask('CombatAnimation', combat)
+    if not combat then
+      combat = action:startCombat(tile)
+      if combat then
+        UI:find("screen"):clearRange()
+        self:addTask('CombatAnimation', combat)
+      end
     end
   end
 
@@ -41,7 +43,6 @@ function battle:PickTargetActivity (UI, action)
   --[[ Tasks ]]-----------------------------------------------------------------
 
   function self.__task:CombatAnimation ()
-    -- TODO mark unit as used for this turn
     local log = combat:fight()
     for i,strike in ipairs(log) do
       self:sendEvent 'ShowStrikeAnimation' (strike)

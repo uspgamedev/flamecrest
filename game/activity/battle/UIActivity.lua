@@ -28,6 +28,14 @@ function battle:UIActivity (UI)
     self:addTask("TurnAnimation", team)
   end
 
+  function self.__accept:BattleOver (winner)
+    local message = ui.TextElement('message', "", 48, nil, nil, 'center')
+    UI:add(message)
+    message:setPos(love.window.getWidth()/2 - 256, 300)
+    message:setSize(512, 64)
+    message:setText(winner:getName().." wins!")
+  end
+
   --[[ Tasks ]]-----------------------------------------------------------------
 
   function self.__task:TurnAnimation (team)
