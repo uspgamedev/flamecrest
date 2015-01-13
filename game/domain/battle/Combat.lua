@@ -9,7 +9,7 @@ function battle:Combat (attacker, defender)
     return nil, nil
   end
 
-  local function calculatehit(atk, def)
+  local function calculatehHit(atk, def)
     local trianglehitbonus = atk.unit:getWeapon()
                                      :triangleHitBonus(def.unit:getWeapon())
     local hit = atk.unit:getHit() + trianglehitbonus
@@ -20,7 +20,7 @@ function battle:Combat (attacker, defender)
     return hitchance
   end
 
-  local function calculatedmg(atk, def)
+  local function calculateDmg(atk, def)
     local trianglemtbonus = atk.unit:getWeapon()
                                     :triangleDmgBonus(def.unit:getWeapon())
     local mt = atk.unit:getMtAgainst(def.unit) + trianglemtbonus
@@ -34,7 +34,7 @@ function battle:Combat (attacker, defender)
     return damage
   end
 
-  local function calculatecrit(atk, def)
+  local function calculateCrit(atk, def)
     local crit = atk.unit:getCrit()
     local dodge = def.unit:getDodge()
 
@@ -51,9 +51,9 @@ function battle:Combat (attacker, defender)
       deftile = def.tile
     }
     if atk.unit:getWeapon() and atk.unit:getWeapon():hasDurability() then
-      local hitchance   = calculatehit(atk, def)
-      local damage      = calculatedmg(atk, def)
-      local critchance  = calculatecrit(atk, def)
+      local hitchance   = calculatehHit(atk, def)
+      local damage      = calculateDmg(atk, def)
+      local critchance  = calculateCrit(atk, def)
 
       local random = love.math.random
       local rand1 = random(100)
@@ -77,53 +77,54 @@ function battle:Combat (attacker, defender)
     local range = (attacker.tile:getPos() - defender.tile:getPos()):size()
     local exp = 1
     local log = {}
-    local info = {
-      [attacker] = {
-        unit = attacker,
-        dealtdmg = false,
-        enemy = defender
-      },
-      [defender] = {
-        unit = defender,
-        dealtdmg = false,
-        enemy = attacker
-      }
-    }
-    local strike_result
+    -- First strike
     if attacker.unit:withinAtkRange(range) then
       table.insert(log, strike(attacker, defender))
     end
+    -- Counter strike
     if not defender.unit:isDead() and defender.unit:withinAtkRange(range) then
       table.insert(log, strike(defender, attacker))
     end
+    -- Repeat a strike if much faster
     if not attacker.unit:isDead() and not defender.unit:isDead() then
       local faster, slower = muchFaster()
       if (faster and faster.unit:withinAtkRange(range)) then
         table.insert(log, strike(faster.unit, slower.unit))
       end
     end
-    -- One could generate the infotable from the log. That one is not me.
-    log.deaths = {}
-    log.exp    = {}
+    -- Count exp
     --[[
-    for _,v in pairs(info) do
-      if v.dealtdmg then
-        if v.enemy.unit:isdead() then
-          exp = killexp(v.unit.unit, v.enemy.unit)
-          table.insert(log.deaths, v.enemy.unit)
+    log.exp = {}
+    for _,strike in ipairs(log) do
+      local exp
+      if strike.damage > 0 then
+        if strike.def:isDead() then
+          exp = killExp(strike.atk, strike.def)
         else
-          exp = combatexp(v.unit.unit, v.enemy.unit)
+          exp = combatExp(strike.atk, strike.def)
         end
       else
         exp = 1
       end
-      v.unit.unit:gainexp(exp)
-      if not v.unit.unit:isdead() then
-        log.exp[v.unit.unit] = exp
+      if strike.atk:isAlive() then
+        log.exp[strike.atk] = log.exp[strike.atk] + exp
       end
     end
+    attacker.unit:gainExp(log.exp[attacker.unit])
+    defender.unit:gainExp(log.exp[defender.unit])
     ]]
+    --log.deaths = {}
+    --table.insert(log.deaths, strike.def)
     return log
+  end
+
+  function self:cleanDead ()
+    if attacker.unit:isDead() then
+      attacker.tile:setUnit(nil)
+    end
+    if defender.unit:isDead() then
+      defender.tile:setUnit(nil)
+    end
   end
 
 end

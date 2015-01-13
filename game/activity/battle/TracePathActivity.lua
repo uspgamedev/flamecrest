@@ -37,7 +37,6 @@ function battle:TracePathActivity (UI, action)
 
   function self.__accept:TileClicked (tile)
     if not moving then
-      --action:abort()
       action:findPath(tile:getPos())
       if action:validPath() then
         UI:find("screen"):clearRange()

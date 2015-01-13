@@ -29,6 +29,14 @@ function battle:UnitState (unit, team)
     return unit:getLv()
   end
 
+  function self:isAlive ()
+    return hp > 0
+  end
+
+  function self:isDead ()
+    return hp <= 0
+  end
+
   function self:getHP ()
     return hp
   end
