@@ -1,8 +1,19 @@
 
+FlameCrest
+==========
 
-Dependencies:
-  <> LuaNova: just make symbolic links in game/ to luanava/src/nova.lua and
-              luanova/src/nova/. You may fetch LuaNova at
+A turn-based strategy game inspired by Intelligent System's Fire Emblem
+franshise.
 
-                  git@github.com:Kazuo256/luanova
+Setting up
+----------
+
+There is only a development mode for now. You will need LÖVE (0.9.1+) installed,
+and then run
+
+```bash
+$ love game
+```
+
+From the root folder of this project.
 
