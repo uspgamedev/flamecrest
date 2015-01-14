@@ -35,6 +35,10 @@ function battle:StartActivity (UI)
       UnitState(Unit("Minion", true, spec:new{}, spec:new{}), teams[2]),
       UnitState(Unit("Minion", true, spec:new{}, spec:new{}), teams[2])
     }
+    for i = 1,30 do
+      print("piza")
+      units[1]:getUnit():levelUp()
+    end
     local lancespec = wpnspec:new{ typename='lance' }
     local swordspec = wpnspec:new{ typename='sword' }
     local axespec = wpnspec:new{ typename='axe' }
@@ -64,5 +68,6 @@ function battle:StartActivity (UI)
                 battle.IdleActivity(UI, battlefield),
                 battle.UIActivity(UI))
   end
-
+  
+  
 end
