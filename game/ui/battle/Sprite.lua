@@ -16,7 +16,8 @@ local shadercode = [[
 local variations = {
   lance = 1,
   sword = 2,
-  axe   = 3
+  axe   = 3,
+  bow   = 4
 }
 
 function ui:Sprite (imgname, color, weapontype)
@@ -26,7 +27,7 @@ function ui:Sprite (imgname, color, weapontype)
   local quadheight = 64
   local quads = {}
   for i=1,1 do
-    for j=1,6 do
+    for j=1,8 do
       local quad = love.graphics.newQuad(
         quadwidth*(j-1),
         quadheight*(i-1),

@@ -29,18 +29,28 @@ function battle:StartActivity (UI)
     }
     local units       = {
       UnitState(Unit("Leeroy Jenkins", true, spec:new{}, spec:new{}), teams[1]),
-      UnitState(Unit("Juaum MacDude", true, spec:new{}, spec:new{}), teams[2]),
-      UnitState(Unit("Yohannes MacDude", true, spec:new{}, spec:new{}), teams[2])
+      UnitState(Unit("Juaum MacDude", true, spec:new{}, spec:new{}), teams[1]),
+      UnitState(Unit("Minion", true, spec:new{}, spec:new{}), teams[2]),
+      UnitState(Unit("Minion", true, spec:new{}, spec:new{}), teams[2]),
+      UnitState(Unit("Minion", true, spec:new{}, spec:new{}), teams[2]),
+      UnitState(Unit("Minion", true, spec:new{}, spec:new{}), teams[2])
     }
-    local lancespec = wpnspec:new{ typename='lance'}
-    local swordspec = wpnspec:new{ typename='sword'}
-    local axespec = wpnspec:new{ typename='axe'}
+    local lancespec = wpnspec:new{ typename='lance' }
+    local swordspec = wpnspec:new{ typename='sword' }
+    local axespec = wpnspec:new{ typename='axe' }
+    local bowspec = wpnspec:new{ typename='bow', minrange=2, maxrange=2 }
     units[1]:setWeapon(Weapon('Iron Sword', swordspec))
-    units[2]:setWeapon(Weapon('Iron Axe', axespec))
+    units[2]:setWeapon(Weapon('Iron Bow', bowspec))
     units[3]:setWeapon(Weapon('Iron Axe', axespec))
-    battlefield:putUnit(hexpos:new{1,1}, units[1])
-    battlefield:putUnit(hexpos:new{6,5}, units[2])
+    units[4]:setWeapon(Weapon('Iron Axe', axespec))
+    units[5]:setWeapon(Weapon('Iron Axe', axespec))
+    units[6]:setWeapon(Weapon('Iron Bow', bowspec))
+    battlefield:putUnit(hexpos:new{1,2}, units[1])
+    battlefield:putUnit(hexpos:new{2,1}, units[2])
     battlefield:putUnit(hexpos:new{5,6}, units[3])
+    battlefield:putUnit(hexpos:new{8,4}, units[4])
+    battlefield:putUnit(hexpos:new{6,5}, units[5])
+    battlefield:putUnit(hexpos:new{4,8}, units[6])
     battlefield:setTeams(teams[1], teams[2])
     local screen = battleui.ScreenElement("screen", battlefield)
     local stats = ui.TextElement("stats", "", 18,
