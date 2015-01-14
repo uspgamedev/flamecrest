@@ -20,7 +20,7 @@ function ui:Sprite (imgname, color)
   local quadheight = 64
   local quads = {}
   for i=1,1 do
-    for j=1,2 do
+    for j=1,4 do
       local quad = love.graphics.newQuad(
         quadwidth*(j-1),
         quadheight*(i-1),
@@ -34,11 +34,16 @@ function ui:Sprite (imgname, color)
   local frame = 10
   local tick  = 0
   local shader = love.graphics.newShader(shadercode)
+  local variation = 1
 
   local offset = vec2:new{}
 
   local function currentQuad ()
-    return quads[currentindex]
+    return quads[2*(variation-1) + currentindex]
+  end
+
+  function self:setVariation (var)
+    variation = var
   end
 
   function self:setOffset (o)
@@ -53,7 +58,7 @@ function ui:Sprite (imgname, color)
     tick = tick + 1
     if tick > frame then
       tick = 0
-      currentindex = (currentindex % #quads) + 1
+      currentindex = (currentindex % 2) + 1
     end
   end
 

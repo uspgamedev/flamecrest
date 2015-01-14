@@ -32,9 +32,11 @@ function battle:StartActivity (UI)
       UnitState(Unit("Juaum MacDude", true, spec:new{}, spec:new{}), teams[2]),
       UnitState(Unit("Yohannes MacDude", true, spec:new{}, spec:new{}), teams[2])
     }
-    units[1]:setWeapon(Weapon('Iron Lance', wpnspec:new{}))
-    units[2]:setWeapon(Weapon('Iron Bow', wpnspec:new{ minrange=2,maxrange=2}))
-    units[3]:setWeapon(Weapon('Iron Bow', wpnspec:new{ minrange=2,maxrange=2}))
+    local lancespec = wpnspec:new{ typename='lance'}
+    local swordspec = wpnspec:new{ typename='sword'}
+    units[1]:setWeapon(Weapon('Iron Lance', lancespec))
+    units[2]:setWeapon(Weapon('Iron Sword', swordspec))
+    units[3]:setWeapon(Weapon('Iron Sword', swordspec))
     battlefield:putUnit(hexpos:new{1,1}, units[1])
     battlefield:putUnit(hexpos:new{6,5}, units[2])
     battlefield:putUnit(hexpos:new{5,6}, units[3])
