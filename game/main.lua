@@ -1,4 +1,6 @@
 
+package.path = package.path .. "./lib/?.lua"
+
 local FRAME = 1/60
 
 local class       = require 'lux.oo.class'
