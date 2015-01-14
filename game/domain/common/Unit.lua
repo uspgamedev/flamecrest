@@ -1,26 +1,29 @@
 
-local common = require 'lux.oo.class' .package 'domain.common'
-local unitspec = require 'domain.common.unitspec'
+local common    = require 'lux.oo.class' .package 'domain.common'
+local unitspec  = require 'domain.common.unitspec'
+local units     = require 'content.units'
 
-function common:Unit (name, class, basespec, growthspec)
+function common:Unit (name, class)
 
   assert(name)
   assert(class)
-  assert(basespec)
-  assert(growthspec)
 
-  local maxhp = basespec.maxhp
-  local str   = basespec.str
-  local mag   = basespec.mag
-  local def   = basespec.def
-  local res   = basespec.res
-  local spd   = basespec.spd
-  local skl   = basespec.skl
-  local lck   = basespec.lck
-  local mv    = basespec.mv
-  local con   = basespec.con
+  local bases   = units[name].base
+  local growths = units[name].growth
 
-  local growths = growthspec --:clone()
+  assert(bases)
+  assert(growths)
+
+  local maxhp = bases.maxhp
+  local str   = bases.str
+  local mag   = bases.mag
+  local def   = bases.def
+  local res   = bases.res
+  local spd   = bases.spd
+  local skl   = bases.skl
+  local lck   = bases.lck
+  local mv    = bases.mv
+  local con   = bases.con
 
   local lv    = 1
   local exp   = 0
@@ -145,8 +148,8 @@ function common:Unit (name, class, basespec, growthspec)
   end
 
   function self:levelUp()
+    lv = lv + 1
     for k,v in pairs(unitspec:attrNames()) do
-      print("v -> "..v)
       local roll = math.random(1, 100)
       if roll <= growths[v] then
         self:setAttr(v, self:getAttr(v) + 1)

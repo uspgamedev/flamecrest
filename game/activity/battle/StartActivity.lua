@@ -28,15 +28,14 @@ function battle:StartActivity (UI)
       Team('Red', {255, 80, 0, 255})
     }
     local units       = {
-      UnitState(Unit("Leeroy Jenkins", true, spec:new{}, spec:new{}), teams[1]),
-      UnitState(Unit("Juaum MacDude", true, spec:new{}, spec:new{}), teams[1]),
-      UnitState(Unit("Minion", true, spec:new{}, spec:new{}), teams[2]),
-      UnitState(Unit("Minion", true, spec:new{}, spec:new{}), teams[2]),
-      UnitState(Unit("Minion", true, spec:new{}, spec:new{}), teams[2]),
-      UnitState(Unit("Minion", true, spec:new{}, spec:new{}), teams[2])
+      UnitState(Unit("Leeroy Jenkins", true), teams[1]),
+      UnitState(Unit("Juaum MacDude", true), teams[1]),
+      UnitState(Unit("Minion", true), teams[2]),
+      UnitState(Unit("Minion", true), teams[2]),
+      UnitState(Unit("Minion", true), teams[2]),
+      UnitState(Unit("Minion", true), teams[2])
     }
     for i = 1,30 do
-      print("piza")
       units[1]:getUnit():levelUp()
     end
     local lancespec = wpnspec:new{ typename='lance' }
@@ -68,6 +67,6 @@ function battle:StartActivity (UI)
                 battle.IdleActivity(UI, battlefield),
                 battle.UIActivity(UI))
   end
-  
-  
+
+
 end
