@@ -144,7 +144,7 @@ function common:Unit (name, class, basespec, growthspec)
   end
 
   function self:levelUp()
-    for k,v in pairs(self.growths) do
+    for k,v in pairs(growths) do
       roll = math.random(1, 100)
       if roll <= v then
         self:setAttr(k, self:getAttr(k) + 1)
