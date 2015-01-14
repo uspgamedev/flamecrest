@@ -8,19 +8,25 @@ local ui      = class.package 'ui.battle'
 local shadercode = [[
   vec4 effect (vec4 color, Image texture, vec2 tex_pos, vec2 pix_pos) {
     vec4 pixel = Texel(texture, tex_pos);
-    number mask  = Texel(texture, tex_pos + vec2(.0, .5)).r;
+    number mask  = Texel(texture, tex_pos + vec2(.0, .5)).a;
     return color*pixel*mask + pixel*(1.0-mask);
   }
 ]]
 
-function ui:Sprite (imgname, color)
+local variations = {
+  lance = 1,
+  sword = 2,
+  axe   = 3
+}
+
+function ui:Sprite (imgname, color, weapontype)
 
   local img = love.graphics.newImage("assets/images/"..imgname..".png")
   local quadwidth = 64
   local quadheight = 64
   local quads = {}
   for i=1,1 do
-    for j=1,4 do
+    for j=1,6 do
       local quad = love.graphics.newQuad(
         quadwidth*(j-1),
         quadheight*(i-1),
@@ -34,16 +40,12 @@ function ui:Sprite (imgname, color)
   local frame = 10
   local tick  = 0
   local shader = love.graphics.newShader(shadercode)
-  local variation = 1
+  local variation = variations[weapontype]
 
   local offset = vec2:new{}
 
   local function currentQuad ()
     return quads[2*(variation-1) + currentindex]
-  end
-
-  function self:setVariation (var)
-    variation = var
   end
 
   function self:setOffset (o)

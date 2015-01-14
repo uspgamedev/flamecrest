@@ -34,9 +34,10 @@ function battle:StartActivity (UI)
     }
     local lancespec = wpnspec:new{ typename='lance'}
     local swordspec = wpnspec:new{ typename='sword'}
-    units[1]:setWeapon(Weapon('Iron Lance', lancespec))
-    units[2]:setWeapon(Weapon('Iron Sword', swordspec))
-    units[3]:setWeapon(Weapon('Iron Sword', swordspec))
+    local axespec = wpnspec:new{ typename='axe'}
+    units[1]:setWeapon(Weapon('Iron Sword', swordspec))
+    units[2]:setWeapon(Weapon('Iron Axe', axespec))
+    units[3]:setWeapon(Weapon('Iron Axe', axespec))
     battlefield:putUnit(hexpos:new{1,1}, units[1])
     battlefield:putUnit(hexpos:new{6,5}, units[2])
     battlefield:putUnit(hexpos:new{5,6}, units[3])
