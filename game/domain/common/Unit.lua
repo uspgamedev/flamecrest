@@ -72,6 +72,18 @@ function common:Unit (name, class, basespec, growthspec)
     return con
   end
 
+  function self:getAttr (attrname)
+    local first = string.char(attrname:byte(1)-32)
+    attrname = attrname:gsub("^(%a)", first)
+    return self['get'..attrname](self)
+  end
+
+  function self:setAttr (attrname, value)
+    local first = string.char(attrname:byte(1)-32)
+    attrname = attrname:gsub("^(%a)", first)
+    return self['set'..attrname](self, value)
+  end
+
   function self:getTerrainCostFor (terrain_type)
     -- TODO derp
     if terrain_type == 'Plains' then

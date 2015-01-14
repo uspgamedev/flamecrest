@@ -51,6 +51,7 @@ function battle:StartActivity (UI)
     battlefield:putUnit(hexpos:new{8,4}, units[4])
     battlefield:putUnit(hexpos:new{6,5}, units[5])
     battlefield:putUnit(hexpos:new{4,8}, units[6])
+    print(units[1]:getUnit():getAttr 'str')
     battlefield:setTeams(teams[1], teams[2])
     local screen = battleui.ScreenElement("screen", battlefield)
     local stats = ui.TextElement("stats", "", 18,
