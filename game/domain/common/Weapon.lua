@@ -155,7 +155,7 @@ function common:Weapon (name, weaponspec)
 
   function self:triangleHitBonus (another)
     local bonus = 0
-    if not weapontriangle[typename] then
+    if weapontriangle[typename] then
       bonus = weapontriangle[typename][another:getTypeName()] or 0
     end
     return basebonus.hit * bonus
@@ -163,7 +163,7 @@ function common:Weapon (name, weaponspec)
 
   function self:triangleDmgBonus (another)
     local bonus = 0
-    if not weapontriangle[typename] then
+    if weapontriangle[typename] then
       bonus = weapontriangle[typename][another:getTypeName()] or 0
     end
     return basebonus.dmg * bonus

@@ -1,38 +1,45 @@
-Mercenary/Myrmidon (Swd E)
-  Hero (Swd, Axe D)
-  Swordmaster (Swd, Crit +15)
 
-Fighter (Axe E)
-  Warrior (Axe, Bow D)
-  Berserker (Axe, Crit +15)
+Infantary classes
 
-Soldier (Lnc E)
-  Vanguardian (Lnc, Swd D)
-  Halberdier (Lnc, Crit +15)
+  Mercenary/Myrmidon (Swd E)
+    Hero (Swd, Axe D)
+    Swordmaster (Swd, Crit +15)
+  
+  Fighter (Axe E)
+    Warrior (Axe, Bow D)
+    Berserker (Axe, Crit +15)
+  
+  Soldier (Lnc E)
+    Vanguardian (Lnc, Swd D)
+    Halberdier (Lnc, Crit +15)
+  
+  Archer (Bow E)
+    Hunter (Bow, Lnc D)
+    Sniper (Bow, Crit +15)
 
-Archer (Bow E)
-  Hunter (Bow, Lnc D)
-  Sniper (Bow, Crit +15)
+Magic classes
 
-Mage (Anm E)
-  Sage (Anm, Stf D)
-  Exorcist (Anm Lgt D)
+  Mage (Anm E)
+    Sage (Anm, Stf D)
+    Exorcist (Anm, Lgt D)
+  
+  Monk (Lgt E)
+    Bishop (Lgt, Stf D)
+    Heretic/Fallen (Lgt, Drk D)
+  
+  Shaman (Drk E)
+    Druid (Drk, Stf D)
+    Sorcerer (Drk, Anm D)
+  
+  Priest (Stf E)
+    Sage (Stf, Anm D)
+    Bishop (Stf, Lgt D)
+    Druid (Stf, Drk D)
 
-Monk (Lgt E)
-  Bishop (Lgt, Stf D)
-  Heretic/Fallen (Lgt, Drk D)
+Trait classes
 
-Shaman (Drk E)
-  Druid (Drk, Stf D)
-  Sorcerer (Drk, Anm D)
-
-Priest (Stf E)
-  Sage (Stf, Anm D)
-  Bishop (Stf, Lgt D)
-  Druid (Stf, Drk D)
-
-Knight (Lnc E or Swd E or Axe E)
-  General (Lnc or Swd or Axe, Lnc D or Swd D or Axe D)
-
-Cavalier (Lnc E, Swd E)
-  Paladin (Lnc, Swd, Axe D)
+  Knight (Lnc E or Swd E or Axe E)
+    General (Lnc or Swd or Axe, Lnc D or Swd D or Axe D)
+  
+  Cavalier (Lnc E, Swd E)
+    Paladin (Lnc, Swd, Axe D)

@@ -89,7 +89,8 @@ function ui:ScreenElement (name, battlefield)
   function self:getSprite (obj)
     local sprite = sprites[obj]
     if not sprite then
-      sprite = ui.Sprite("chibi-soldier", {obj:getTeam():getColor()})
+      local wpntype = obj:getWeapon():getTypeName()
+      sprite = ui.Sprite("chibi-soldier", {obj:getTeam():getColor()}, wpntype)
       sprites[obj] = sprite
     end
     return sprite
