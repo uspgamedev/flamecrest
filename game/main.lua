@@ -1,5 +1,5 @@
 
-package.path = package.path .. "./lib/?.lua"
+package.path = package.path .. ";./game/lib/?.lua;./lib/?.lua"
 
 local FRAME = 1/60
 
