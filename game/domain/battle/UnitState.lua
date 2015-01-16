@@ -17,6 +17,10 @@ function battle:UnitState (unit, team)
     return unit
   end
 
+  function self:getClass ()
+    return unit:getClass()
+  end
+
   function self:getTeam ()
     return team
   end
