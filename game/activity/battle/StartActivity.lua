@@ -35,7 +35,7 @@ function battle:StartActivity (UI)
       UnitState(Unit("Minion"), teams[2]),
       UnitState(Unit("Minion"), teams[2])
     }
-    for i = 1,30 do
+    for i = 1,5 do
       units[1]:getUnit():levelUp()
     end
     local lancespec = wpnspec:new{ typename='lance' }

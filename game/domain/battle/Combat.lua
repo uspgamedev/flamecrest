@@ -6,7 +6,13 @@ local battle = class.package 'domain.battle'
 function battle:Combat (attacker, defender)
 
   local function muchFaster ()
-    return nil, nil
+    if (attacker.unit:getCombatSpeed() -4 >= defender.unit:getCombatSpeed()) then
+      return attacker, defender
+    end
+    if (defender.unit:getCombatSpeed() -4 >= attacker.unit:getCombatSpeed())  then
+      return defender, attacker
+    end
+    return false, false
   end
 
   local function calculatehHit(atk, def)
@@ -58,6 +64,7 @@ function battle:Combat (attacker, defender)
       local random = love.math.random
       local rand1 = random(100)
       local rand2 = random(100)
+      result.hpbefore = def.unit:getHP()
       if ((rand1 + rand2) / 2 <= hitchance) then --Double RNG as seen in the games
         result.hit = true
         rand1 = random(100)
@@ -89,7 +96,7 @@ function battle:Combat (attacker, defender)
     if not attacker.unit:isDead() and not defender.unit:isDead() then
       local faster, slower = muchFaster()
       if (faster and faster.unit:withinAtkRange(range)) then
-        table.insert(log, strike(faster.unit, slower.unit))
+        table.insert(log, strike(faster, slower))
       end
     end
     -- Count exp

@@ -16,7 +16,7 @@ function ui:EnergyBarElement (_name, _pos, _size)
   end
 
   function self:setValue (val)
-    value = val
+    value = math.min(math.max(val, 0), 1)
   end
 
   function self:draw (graphics, window)

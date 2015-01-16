@@ -74,7 +74,7 @@ function battle:UIActivity (UI)
     UI:add(splash)
     for i=1,20 do
       splash:setPos(pos + vec2:new{0, -i})
-      hpbar:setValue((hp + damage*(1-i/20))/strike.def:getMaxHP())
+      hpbar:setValue((strike.hpbefore - damage*(i/20))/strike.def:getMaxHP())
       self:yield()
     end
     UI:remove(splash)
@@ -89,7 +89,7 @@ function battle:UIActivity (UI)
     local damage  = strike.damage or 0
     -- Show HP bar with life before damage
     UI:add(hpbar)
-    hpbar:setValue((hp + damage)/strike.def:getMaxHP())
+    hpbar:setValue(strike.hpbefore/strike.def:getMaxHP())
     self:yield(20)
     -- Forward motion
     for i=1,STRIKE_DURATION do
