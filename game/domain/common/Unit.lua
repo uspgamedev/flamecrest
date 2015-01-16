@@ -3,13 +3,15 @@ local common    = require 'lux.oo.class' .package 'domain.common'
 local unitspec  = require 'domain.common.unitspec'
 local units     = require 'content.units'
 
-function common:Unit (name, class)
+print(common.Class)
+
+function common:Unit (name)
 
   assert(name)
-  assert(class)
 
   local bases   = units[name].base
   local growths = units[name].growth
+  local class   = common.Class(units[name].class)
 
   assert(bases)
   assert(growths)
@@ -32,6 +34,10 @@ function common:Unit (name, class)
 
   function self:getName ()
     return name
+  end
+
+  function self:getClass ()
+    return class
   end
 
   function self:getLv ()
@@ -133,14 +139,7 @@ function common:Unit (name, class)
   end
 
   function self:getTerrainCostFor (terrain_type)
-    -- TODO derp
-    if terrain_type == 'Plains' then
-      return 1
-    elseif terrain_type == 'Forest' then
-      return 2
-    else
-      return 1337
-    end
+    return class:getTerrainCostFor(terrain_type)
   end
 
   function self:hasTrait (traitname)

@@ -32,16 +32,19 @@ local units = {}
 units["Leeroy Jenkins"] = {
   base = basespec:new{},
   growth = growthspec:new{},
+  class = 'Myrmidon'
 }
 
 units["Juaum MacDude"] = {
   base = basespec:new{},
   growth = growthspec:new{},
+  class = 'Archer'
 }
 
 units["Minion"] = {
   base = basespec:new{},
   growth = growthspec:new{},
+  class = 'Fighter'
 }
 
 return units

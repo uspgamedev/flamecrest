@@ -28,12 +28,12 @@ function battle:StartActivity (UI)
       Team('Red', {255, 80, 0, 255})
     }
     local units       = {
-      UnitState(Unit("Leeroy Jenkins", true), teams[1]),
-      UnitState(Unit("Juaum MacDude", true), teams[1]),
-      UnitState(Unit("Minion", true), teams[2]),
-      UnitState(Unit("Minion", true), teams[2]),
-      UnitState(Unit("Minion", true), teams[2]),
-      UnitState(Unit("Minion", true), teams[2])
+      UnitState(Unit("Leeroy Jenkins"), teams[1]),
+      UnitState(Unit("Juaum MacDude"), teams[1]),
+      UnitState(Unit("Minion"), teams[2]),
+      UnitState(Unit("Minion"), teams[2]),
+      UnitState(Unit("Minion"), teams[2]),
+      UnitState(Unit("Minion"), teams[2])
     }
     for i = 1,30 do
       units[1]:getUnit():levelUp()

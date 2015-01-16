@@ -21,8 +21,12 @@ function battle:Tile (pos, typename)
     return unit
   end
 
-  function self:getType ()
+  function self:getName ()
     return attributes.name
+  end
+
+  function self:getType ()
+    return typename
   end
 
   function self:getAvoid ()

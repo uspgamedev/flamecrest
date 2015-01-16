@@ -40,9 +40,9 @@ function ui:ScreenElement (name, battlefield)
   local cursor      = ui.Cursor()
   local range
 
-  tileset.Default   = require 'assets.tiles.Default'
-  tileset.Plains    = require 'assets.tiles.Plains'
-  tileset.Forest    = require 'assets.tiles.Forest'
+  tileset.default   = require 'assets.tiles.default'
+  tileset.plains    = require 'assets.tiles.plains'
+  tileset.forest    = require 'assets.tiles.forest'
 
   local function vec2ToHexpos (pos)
     pos = pos.x/192*vec2:new{1,-1} + pos.y/64*vec2:new{1,1}
