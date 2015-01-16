@@ -24,7 +24,7 @@ function battle:StartActivity (UI)
   function self.__accept:Load ()
     local battlefield = Field(15, 15)
     local teams       = {
-      Team('Blue', {0, 80, 255, 255}),
+      Team('Blue', {100, 130, 219, 255}),
       Team('Red', {255, 80, 0, 255})
     }
     local units       = {
