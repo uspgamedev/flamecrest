@@ -38,7 +38,7 @@ function ui:Sprite (imgname, color, weapontype)
     end
   end
   local currentindex = 1
-  local frame = 10
+  local frame = 20
   local tick  = 0
   local shader = love.graphics.newShader(shadercode)
   local variation = variations[weapontype]
