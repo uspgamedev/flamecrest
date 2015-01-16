@@ -3,8 +3,6 @@ local common    = require 'lux.oo.class' .package 'domain.common'
 local unitspec  = require 'domain.common.unitspec'
 local units     = require 'content.units'
 
-print(common.Class)
-
 function common:Unit (name)
 
   assert(name)
