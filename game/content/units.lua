@@ -31,7 +31,10 @@ local units = {}
 
 units["Leeroy Jenkins"] = {
   base = basespec:new{},
-  growth = growthspec:new{},
+  growth = growthspec:new{
+    spd = 60,
+    skl = 75,
+  },
   class = 'Myrmidon'
 }
 

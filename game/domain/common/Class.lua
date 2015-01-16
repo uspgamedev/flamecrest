@@ -16,8 +16,12 @@ function common:Class (name)
     return name
   end
 
-  function self:getTerrainCostFor (typename)
-    return terraincosts[typename]
+  function self:getCap (attr_name)
+    return caps[attr_name]
+  end
+
+  function self:getTerrainCostFor (type_name)
+    return terraincosts[type_name]
   end
 
 end

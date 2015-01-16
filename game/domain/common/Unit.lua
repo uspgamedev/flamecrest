@@ -151,7 +151,7 @@ function common:Unit (name)
     for k,v in pairs(unitspec:attrNames()) do
       local roll = math.random(1, 100)
       if roll <= growths[v] then
-        self:setAttr(v, self:getAttr(v) + 1)
+        self:setAttr(v, math.min(self:getAttr(v) + 1, class:getCap(v)))
       end
     end
   end
