@@ -1,7 +1,10 @@
 
 local class   = require 'lux.oo.class'
+local vec2    = require 'lux.geom.Vector'
+
 local engine  = class.package 'engine'
 local battle  = class.package 'activity.battle'
+local ui      = class.package 'ui'
 
 local stats_display = [[
 %s
@@ -21,11 +24,16 @@ function battle:TracePathActivity (UI, action)
 
   function self.__accept:Load ()
     local unit = action:getUnit()
-    UI:find("stats"):setText(stats_display:format(
+    local screen = UI:find("screen")
+    local stats = ui.TextElement("stats", "", 18,
+                                 vec2:new{16, screen:getHeight()-120-16},
+                                 vec2:new{256, 120}, 'left')
+    stats:setText(stats_display:format(
       unit:getName(), unit:getClass():getName(), unit:getTeam():getName(),
       unit:getLv(), unit:getHP(), unit:getMaxHP(), unit:getWeapon():getName()
     ))
-    UI:find("screen"):displayRange(action:getActionRange())
+    UI:add(stats)
+    screen:displayRange(action:getActionRange())
     action:start()
   end
 

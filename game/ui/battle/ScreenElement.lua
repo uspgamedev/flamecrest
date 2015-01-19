@@ -24,7 +24,14 @@ local glow = {
   atk  = makemarkereffect(love.graphics, 0.8, 0.1, 0)
 }
 
-function ui:ScreenElement (name, battlefield)
+local dirs = {
+  right = { hexpos:new{-1, 0}, hexpos:new{0, 1} },
+  left  = { hexpos:new{0, -1}, hexpos:new{1, 0} },
+  up    = { hexpos:new{-1, -1}, hexpos:new{-1, -1} },
+  down  = { hexpos:new{1, 1}, hexpos:new{1, 1} },
+}
+
+function ui:ScreenElement (name, battlefield, input)
 
   engine.UIElement:inherit(self, name, vec2:new{0, 0},
                            vec2:new{ love.window.getDimensions() })
@@ -119,7 +126,7 @@ function ui:ScreenElement (name, battlefield)
 
   --- Overrides @{UIElement:onMousePressed}
   function self:onMousePressed (pos, button)
-    if button == 'l' then
+    if button == 'l' and input == 'mouse' then
       local tile_hexpos   = screenToHexpos(pos)
       local tile          = battlefield:getTileAt(tile_hexpos)
       if tile then
@@ -144,12 +151,31 @@ function ui:ScreenElement (name, battlefield)
     if scrolling.active then
       local diff = vec2ToHexpos(pos - scrolling.origin)
       camera:setTarget(scrolling.old_pos - diff)
-    else
+    elseif input == 'mouse' then
       local hex = screenToHexpos(pos)
       if battlefield:getTileAt(hex) then
         cursor:setTarget(hex)
       else
         cursor:stop()
+      end
+    end
+  end
+
+  function self:onKeyPressed (key)
+    if input == 'keyboard' then
+      if key == 'z' then
+        local tile_hexpos   = cursor:getPos():rounded()
+        local tile          = battlefield:getTileAt(tile_hexpos)
+        if tile then
+          broadcastEvent(engine.Event('TileClicked', tile))
+        end
+      elseif key == 'x' then
+        broadcastEvent(engine.Event('Cancel'))
+      else
+        local pos = cursor:getPos():rounded()
+        local odd = (pos.i + pos.j) % 2 + 1
+        local dir = dirs[key] and dirs[key][odd] or hexpos:new{0,0}
+        cursor:setTarget(pos + dir)
       end
     end
   end

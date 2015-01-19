@@ -111,4 +111,12 @@ function engine:UIElement (name, pos, size)
     -- abstract method
   end
 
+  function self:onKeyPressed (key)
+    -- abstract method
+  end
+
+  function self:onKeyReleased (key)
+    -- abstract method
+  end
+
 end
