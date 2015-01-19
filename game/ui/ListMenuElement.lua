@@ -48,6 +48,8 @@ function ui:ListMenuElement (_name, options, fontsize, _pos, _minwidth)
   function self:onKeyPressed (key)
     if key == 'z' then
       broadcastEvent(engine.Event('ListMenuOption', focus, options[focus]))
+    elseif key == 'x' then
+      broadcastEvent(engine.Event('Cancel'))
     elseif key == 'up' then
       focus = focus - 1
       if focus == 0 then focus = 4 end
