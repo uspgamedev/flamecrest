@@ -8,7 +8,6 @@ function battle:UnitState (unit, team)
   local steps = 0
   local used  = false
 
-  local weapon
   local rescuedunit
 
   -- Unit attribute getters
@@ -132,15 +131,20 @@ function battle:UnitState (unit, team)
 
   -- Weapon stuff
 
-  function self:getWeapon ()
-    return weapon
+  function self:addItem (item)
+    return unit:addItem(item)
   end
 
-  function self:setWeapon (wpn)
-    weapon = wpn
+  function self:getWeapon ()
+    return unit:getItem(1)
+  end
+
+  function self:setWeapon (idx)
+    return unit:equipItem(idx)
   end
 
   function self:getAtkRange ()
+    local weapon = self:getWeapon()
     if not weapon then
       return 1, 1
     else
@@ -154,14 +158,17 @@ function battle:UnitState (unit, team)
   end
 
   function self:getAtkAttr ()
+    local weapon = self:getWeapon()
     return weapon and weapon:getAtkAttr() or 'Str'
   end
 
   function self:getDefAttr ()
+    local weapon = self:getWeapon()
     return weapon and weapon:getDefAttr() or 'Def'
   end
 
   function self:getMtAgainst (other)
+    local weapon = self:getWeapon()
     local base_atk = self['get'..self:getAtkAttr()](self)
     return base_atk + (weapon and weapon:getMtAgainst(other) or 0)
   end
@@ -169,10 +176,12 @@ function battle:UnitState (unit, team)
   -- Combat stats
 
   function self:getHit ()
+    local weapon = self:getWeapon()
     return 2 * self:getSkl() + self:getLck() + (weapon and weapon:getHit() or 0)
   end
 
   function self:getCombatSpeed ()
+    local weapon = self:getWeapon()
     local weapon_wgt = weapon and weapon:getWgt() or 0
     local wgtmod = math.floor(math.max(
       0, weapon_wgt - (self:getStr() + self:getCon())/2
@@ -186,6 +195,7 @@ function battle:UnitState (unit, team)
   end
 
   function self:getCrit ()
+    local weapon = self:getWeapon()
     return self:getSkl()/2 + (weapon and weapon:getCrt() or 0)
   end
 

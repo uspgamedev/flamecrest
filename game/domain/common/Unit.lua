@@ -28,6 +28,8 @@ function common:Unit (name)
   local lv    = 1
   local exp   = 0
 
+  local items = {}
+
   local bossexpbonus = 0
 
   function self:getName ()
@@ -134,6 +136,22 @@ function common:Unit (name)
     attrname = attrname:gsub("^(%a)", first)
     attrname = attrname:gsub("hp", "HP")
     return self['set'..attrname](self, value)
+  end
+
+  function self:addItem (item)
+    assert(#items < 4)
+    table.insert(items, item)
+  end
+
+  function self:getItem (idx)
+    if idx >= 1 and idx <= #items then
+      return items[idx]
+    end
+  end
+
+  function self:equipItem (idx)
+    assert(idx >= 1 and idx <= #items)
+    items[1], items[idx] = items[idx], items[1]
   end
 
   function self:getTerrainCostFor (terrain_type)
