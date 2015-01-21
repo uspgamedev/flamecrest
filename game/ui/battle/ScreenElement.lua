@@ -206,7 +206,11 @@ function ui:ScreenElement (name, battlefield, input)
     end
     local draw = tileset[tile:getType()]
     graphics.setShader(shader())
+    if (math.floor((i+j+1)/2)) % 2 == 1 then
+      graphics.setColor(235, 235, 235, 255)
+    end
     draw(graphics, pos, drawUnit)
+    graphics.setColor(255, 255, 255, 255)
     graphics.setShader()
   end
 
