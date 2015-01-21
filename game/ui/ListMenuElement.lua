@@ -46,14 +46,14 @@ function ui:ListMenuElement (_name, options, fontsize, _pos, _minwidth)
   end
 
   function self:onKeyPressed (key)
-    if key == 'z' then
+    if key == 'return' then
       broadcastEvent(engine.Event('ListMenuOption', focus, options[focus]))
-    elseif key == 'x' then
+    elseif key == 'backspace' then
       broadcastEvent(engine.Event('Cancel'))
-    elseif key == 'up' then
+    elseif key == 'up' or key == 'w' then
       focus = focus - 1
       if focus == 0 then focus = 4 end
-    elseif key == 'down' then
+    elseif key == 'down' or key == 's' then
       focus = (focus % #options) + 1
     end
   end

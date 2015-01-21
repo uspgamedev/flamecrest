@@ -25,14 +25,12 @@ local glow = {
 }
 
 local dirs = {
-  right = { hexpos:new{-1, 0}, hexpos:new{0, 1} },
-  left  = { hexpos:new{0, -1}, hexpos:new{1, 0} },
-  up    = { hexpos:new{-1, -1}, hexpos:new{-1, -1} },
-  down  = { hexpos:new{1, 1}, hexpos:new{1, 1} },
-  --right = { hexpos:new{-1, 0}, hexpos:new{-1, 0} },
-  --left  = { hexpos:new{1, 0}, hexpos:new{1, 0} },
-  --down  = { hexpos:new{0, 1}, hexpos:new{0, 1} },
-  --up    = { hexpos:new{0, -1}, hexpos:new{0, -1} },
+  q = hexpos:new{0, -1},
+  w = hexpos:new{-1, -1},
+  e = hexpos:new{-1, 0},
+  a = hexpos:new{1, 0},
+  s = hexpos:new{1, 1},
+  d = hexpos:new{0, 1}
 }
 
 function ui:ScreenElement (name, battlefield, input)
@@ -167,18 +165,17 @@ function ui:ScreenElement (name, battlefield, input)
 
   function self:onKeyPressed (key)
     if input == 'keyboard' then
-      if key == 'z' then
+      if key == 'return' then
         local tile_hexpos   = cursor:getPos():rounded()
         local tile          = battlefield:getTileAt(tile_hexpos)
         if tile then
           broadcastEvent(engine.Event('TileClicked', tile))
         end
-      elseif key == 'x' then
+      elseif key == 'backspace' then
         broadcastEvent(engine.Event('Cancel'))
       else
         local pos = cursor:getPos():rounded()
-        local odd = (pos.i + pos.j) % 2 + 1
-        local dir = dirs[key] and dirs[key][odd] or hexpos:new{0,0}
+        local dir = dirs[key] or hexpos:new{0,0}
         cursor:setTarget(pos + dir)
       end
     end
@@ -210,12 +207,9 @@ function ui:ScreenElement (name, battlefield, input)
     end
     local draw = tileset[tile:getType()]
     graphics.setShader(shader())
-    if input == 'keyboard' and (math.floor((i+j+1)/2)) % 2 == 1 then
-      graphics.setColor(235, 235, 235, 255)
-    end
     draw(graphics, pos, drawUnit)
-    graphics.setColor(255, 255, 255, 255)
     graphics.setShader()
+    graphics.setColor(255, 255, 255, 255)
   end
 
   -- @override
