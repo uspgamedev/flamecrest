@@ -29,6 +29,10 @@ local dirs = {
   left  = { hexpos:new{0, -1}, hexpos:new{1, 0} },
   up    = { hexpos:new{-1, -1}, hexpos:new{-1, -1} },
   down  = { hexpos:new{1, 1}, hexpos:new{1, 1} },
+  --right = { hexpos:new{-1, 0}, hexpos:new{-1, 0} },
+  --left  = { hexpos:new{1, 0}, hexpos:new{1, 0} },
+  --down  = { hexpos:new{0, 1}, hexpos:new{0, 1} },
+  --up    = { hexpos:new{0, -1}, hexpos:new{0, -1} },
 }
 
 function ui:ScreenElement (name, battlefield, input)
@@ -206,7 +210,7 @@ function ui:ScreenElement (name, battlefield, input)
     end
     local draw = tileset[tile:getType()]
     graphics.setShader(shader())
-    if (math.floor((i+j+1)/2)) % 2 == 1 then
+    if input == 'keyboard' and (math.floor((i+j+1)/2)) % 2 == 1 then
       graphics.setColor(235, 235, 235, 255)
     end
     draw(graphics, pos, drawUnit)
