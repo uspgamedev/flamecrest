@@ -52,7 +52,7 @@ function ui:ListMenuElement (_name, options, fontsize, _pos, _minwidth)
       broadcastEvent(engine.Event('Cancel'))
     elseif key == 'up' or key == 'w' then
       focus = focus - 1
-      if focus == 0 then focus = 4 end
+      if focus == 0 then focus = #options end
     elseif key == 'down' or key == 's' then
       focus = (focus % #options) + 1
     end
