@@ -6,14 +6,18 @@ function engine:UI ()
 
   local elements      = setmetatable({}, { __index = table })
   local reverse_index = {}
+  local focused
 
   --- Adds a element to the UI.
   -- Nothing happens if the element is currently in the UI.
   -- @param element The added element. Cannot be <code>nil</code>.
-  function self:add (element)
+  function self:add (element, focus)
     if reverse_index[element:getName()] then return end
     elements:insert(element)
     reverse_index[element:getName()] = #elements
+    if focus then
+      self:focus(element:getName())
+    end
   end
 
   --- Removes a element from the UI.
@@ -39,6 +43,10 @@ function engine:UI ()
     return index and elements[index]
   end
 
+  function self:focus (name)
+    focused = reverse_index[name]
+  end
+
   --- Clears the UI of all elements.
   function self:clear ()
     elements      = setmetatable({}, { __index = table })
@@ -54,6 +62,13 @@ function engine:UI ()
         element["onMouse"..type] (element, pos - element:getPos(), ...)
         return
       end
+    end
+  end
+
+  function self:keyboardAction (type, key, ...)
+    local element = focused and elements[focused] or elements[#elements]
+    if element:isVisible() then
+      element["onKey"..type] (element, key, ...)
     end
   end
 

@@ -28,7 +28,7 @@ function ui:ListMenuElement (_name, options, fontsize, _pos, _minwidth)
                              vec2:new{maxwidth, #options*getFontHeight()})
   end
 
-  local focus = 0
+  local focus = 1
 
   local function getOption (y)
     return math.modf(y/getFontHeight())+1
@@ -43,6 +43,19 @@ function ui:ListMenuElement (_name, options, fontsize, _pos, _minwidth)
 
   function self:onMouseHover (pos)
     focus = getOption(pos.y)
+  end
+
+  function self:onKeyPressed (key)
+    if key == 'z' then
+      broadcastEvent(engine.Event('ListMenuOption', focus, options[focus]))
+    elseif key == 'x' then
+      broadcastEvent(engine.Event('Cancel'))
+    elseif key == 'up' then
+      focus = focus - 1
+      if focus == 0 then focus = 4 end
+    elseif key == 'down' then
+      focus = (focus % #options) + 1
+    end
   end
 
   function self:draw (graphics, window)
@@ -64,7 +77,7 @@ function ui:ListMenuElement (_name, options, fontsize, _pos, _minwidth)
       graphics.setFont(oldfont)
     end
 
-    focus = 0
+    --focus = 0
   end
 
 end

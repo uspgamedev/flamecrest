@@ -16,7 +16,7 @@ function battle:SelectActionActivity (UI, action)
     local pos = UI:find("screen"):hexposToScreen(action:getCurrentPos())
                 + vec2:new{-128, -96}
     action_menu:setPos(pos)
-    UI:add(action_menu)
+    UI:add(action_menu, true)
   end
 
   function self.__accept:KeyPressed (key)
@@ -27,17 +27,18 @@ function battle:SelectActionActivity (UI, action)
 
   function self.__accept:ListMenuOption (index, option)
     if option == "Wait" then
-      -- TODO mark unit as used for this turn
       self:switch(battle.IdleActivity(UI, action:getField()))
     elseif option == "Fight" then
       self:switch(battle.PickTargetActivity(UI, action))
     end
     UI:remove("action_menu")
+    UI:focus("screen")
   end
 
   function self.__accept:Cancel ()
     action:abort()
     UI:remove("action_menu")
+    UI:focus("screen")
     self:switch(battle.TracePathActivity(UI, action))
   end
 

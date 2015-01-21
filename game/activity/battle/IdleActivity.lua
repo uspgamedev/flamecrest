@@ -13,7 +13,7 @@ function battle:IdleActivity (UI, battlefield)
   --[[ Event receivers ]]-------------------------------------------------------
 
   function self.__accept:Load ()
-    UI:find("stats"):setText("")
+    UI:remove("stats")
     UI:find("screen"):clearRange()
     local winner = battlefield:isOver()
     if winner then

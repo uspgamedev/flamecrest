@@ -74,6 +74,7 @@ end
 
 function love.keypressed (key)
   broadcastEvent(engine.Event('KeyPressed', key))
+  game_ui:keyboardAction('Pressed', key)
 end
 
 function love.mousepressed (x, y, button)

@@ -57,12 +57,9 @@ function battle:StartActivity (UI)
     battlefield:putUnit(hexpos:new{6,5}, units[5])
     battlefield:putUnit(hexpos:new{4,8}, units[6])
     battlefield:setTeams(teams[1], teams[2])
-    local screen = battleui.ScreenElement("screen", battlefield)
-    local stats = ui.TextElement("stats", "", 18,
-                                 vec2:new{16, screen:getHeight()-120-16},
-                                 vec2:new{256, 120}, 'left')
+    local screen = battleui.ScreenElement("screen", battlefield, 'mouse')
     UI:add(screen)
-    UI:add(stats)
+    UI:focus("screen")
     screen:lookAt(6, 6)
     self:switch(battle.PlayActivity(battlefield, units),
                 battle.IdleActivity(UI, battlefield),
