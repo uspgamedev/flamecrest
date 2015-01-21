@@ -68,7 +68,6 @@ function battle:Field (width, height)
   end
 
   function self:endTurn ()
-    turn = (turn % #teams) + 1
     for i = 1, height do
       for j = 1, width do
         local tile = tiles[i][j]
@@ -80,6 +79,7 @@ function battle:Field (width, height)
         end
       end
     end
+    turn = (turn % #teams) + 1
   end
 
   function self:hasAvailableUnits ()

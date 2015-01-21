@@ -65,12 +65,16 @@ function ui:Sprite (imgname, color, weapontype)
     end
   end
 
-  function self:draw (graphics, pos)
+  function self:draw (graphics, pos, used)
     local quad = currentQuad()
     graphics.push()
     graphics.translate(offset:unpack())
-    graphics.setColor(color or { 0, 0, 255, 255 })
-    graphics.setShader(shader)
+    if used then
+      graphics.setColor(100, 100, 100, 255)
+    else
+      graphics.setColor(color or { 0, 0, 255, 255 })
+      graphics.setShader(shader)
+    end
     graphics.draw(img, quad, pos.x, pos.y, 0, 1, 1, quadwidth/2, quadheight-16)
     graphics.setShader()
     graphics.setColor(255, 255, 255, 255)

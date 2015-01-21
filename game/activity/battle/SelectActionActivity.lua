@@ -27,6 +27,7 @@ function battle:SelectActionActivity (UI, action)
 
   function self.__accept:ListMenuOption (index, option)
     if option == "Wait" then
+      action:finish()
       self:switch(battle.IdleActivity(UI, action:getField()))
     elseif option == "Fight" then
       self:switch(battle.PickTargetActivity(UI, action))

@@ -23,7 +23,7 @@ function battle:Action (field, unit, start_pos)
     return current_pos:clone()
   end
 
-  function self:start ()
+  function self:finish ()
     unit:use()
   end
 

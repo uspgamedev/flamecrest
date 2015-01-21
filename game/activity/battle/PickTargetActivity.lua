@@ -49,6 +49,7 @@ function battle:PickTargetActivity (UI, action)
       self:yield('StrikeAnimationFinished')
     end
     combat:cleanDead()
+    action:finish()
     self:switch(battle.IdleActivity(UI, action:getField()))
   end
 

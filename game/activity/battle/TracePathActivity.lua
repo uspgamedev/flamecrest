@@ -34,7 +34,6 @@ function battle:TracePathActivity (UI, action)
     ))
     UI:add(stats)
     screen:displayRange(action:getActionRange())
-    action:start()
   end
 
   function self.__accept:KeyPressed (key)

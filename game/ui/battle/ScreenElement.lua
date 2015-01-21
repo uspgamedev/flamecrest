@@ -201,7 +201,7 @@ function ui:ScreenElement (name, battlefield, input)
       local unit = tile:getUnit()
       if unit then
         graphics.setShader()
-        self:getSprite(unit):draw(graphics, pos)
+        self:getSprite(unit):draw(graphics, pos, unit:isUsed())
         graphics.setShader(shader())
       end
     end
