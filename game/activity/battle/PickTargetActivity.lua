@@ -11,6 +11,7 @@ function battle:PickTargetActivity (UI, action)
   engine.Activity:inherit(self)
 
   local combat
+  local combatflag = false
 
   --[[ Event receivers ]]-------------------------------------------------------
 
@@ -25,36 +26,40 @@ function battle:PickTargetActivity (UI, action)
   end
 
   function self.__accept:TileHovered (tile)
-    combat = action:startCombat(tile)
-    if combat then
-      local playerstats = {}
-      local foestats = {}
-      playerstats.hp, foestats.hp = combat:getHPs()
-      playerstats.dmg, foestats.dmg = combat:calculateDmgs()
-      playerstats.hit, foestats.hit = combat:calculateHits()
-      playerstats.crit, foestats.crit = combat:calculateCrits()
-
-      local playercombatwindow = ui.TextElement( "combatwindow1", "", 14, vec2:new{20,20}, vec2:new{48,144} )
-      local foecombatwindow = ui.TextElement( "combatwindow2", "", 14, vec2:new{88,20}, vec2:new{48,144} )
-      local playertext, foetext = "", ""
-      for k,v in pairs(playerstats) do
-        playertext = playertext .. k .. ": " .. playerstats[k] .. "\n"
-        foetext = foetext .. k .. ": " .. foestats[k] .. "\n"
+    if not combatflag then
+      combat = action:startCombat(tile)
+      if combat then
+        local playerstats = {}
+        local foestats = {}
+        local playercombatwindow = ui.TextElement( "combatwindow1", "", 14, vec2:new{20,20}, vec2:new{48,144} )
+        local foecombatwindow = ui.TextElement( "combatwindow2", "", 14, vec2:new{88,20}, vec2:new{48,144} )
+        local playertext, foetext = "", ""
+        playerstats.hp, foestats.hp = combat:getHPs()
+        playerstats.dmg, foestats.dmg = combat:calculateDmgs()
+        playerstats.hit, foestats.hit = combat:calculateHits()
+        playerstats.crit, foestats.crit = combat:calculateCrits()
+        for k,v in pairs(playerstats) do
+          playertext = playertext .. k .. ": " .. playerstats[k] .. "\n"
+          foetext = foetext .. k .. ": " .. foestats[k] .. "\n"
+        end
+        playercombatwindow:setText(playertext)
+        foecombatwindow:setText(foetext)
+        UI:add(playercombatwindow)
+        UI:add(foecombatwindow)
+        UI:focus('screen')
+      else
+        UI:remove('combatwindow1')
+        UI:remove('combatwindow2')
       end
-      playercombatwindow:setText(playertext)
-      foecombatwindow:setText(foetext)
-      UI:add(playercombatwindow)
-      UI:add(foecombatwindow)
-      UI:focus('screen')
-    else
-      UI:remove('combatwindow1')
-      UI:remove('combatwindow2')
     end
   end
 
   function self.__accept:TileClicked (tile)
     if combat then
+      combatflag = true
       UI:find("screen"):clearRange()
+      UI:remove('combatwindow1')
+      UI:remove('combatwindow2')
       self:addTask('CombatAnimation', combat)
     end
   end
