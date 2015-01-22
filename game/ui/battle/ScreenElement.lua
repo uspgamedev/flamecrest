@@ -161,6 +161,11 @@ function ui:ScreenElement (name, battlefield, input)
         cursor:stop()
       end
     end
+    local tile_hexpos   = screenToHexpos(pos)
+    local tile          = battlefield:getTileAt(tile_hexpos)
+    if tile then
+      broadcastEvent(engine.Event('TileHovered', tile))
+    end
   end
 
   function self:onKeyPressed (key)

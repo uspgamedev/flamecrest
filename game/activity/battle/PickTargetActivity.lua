@@ -4,6 +4,7 @@ local vec2    = require 'lux.geom.Vector'
 
 local engine  = class.package 'engine'
 local battle  = class.package 'activity.battle'
+local ui      = class.package 'ui'
 
 function battle:PickTargetActivity (UI, action)
 
@@ -20,6 +21,36 @@ function battle:PickTargetActivity (UI, action)
   function self.__accept:KeyPressed (key)
     if not combat and key == 'escape' then
       self:finish()
+    end
+  end
+
+  function self.__accept:TileHovered (tile)
+    if not combat then
+      combat = action:startCombat(tile)
+      if combat then
+        local playerstats = {}
+        local foestats = {}
+        playerstats.hp, foestats.hp = combat:getHPs()
+        playerstats.dmg, foestats.dmg = combat:calculateDmgs()
+        playerstats.hit, foestats.hit = combat:calculateHits()
+        playerstats.crit, foestats.crit = combat:calculateCrits()
+
+        local playercombatwindow = ui.TextElement( "combatwindow", "", 14, vec2:new{20,20}, vec2:new{48,144} )
+        local foecombatwindow = ui.TextElement( "combatwindow", "", 14, vec2:new{88,20}, vec2:new{48,144} )
+        local playertext, foetext = "", ""
+        for k,v in pairs(playerstats) do
+          playertext = playertext .. k .. ": " .. playerstats[k] .. "\n"
+          foetext = foetext .. k .. ": " .. foestats[k] .. "\n"
+        end
+        playercombatwindow:setText(playertext)
+        foecombatwindow:setText(foetext)
+        UI:add(playercombatwindow)
+        UI:add(foecombatwindow)
+        UI:focus('screen')
+        return
+      else
+        return
+      end
     end
   end
 
@@ -52,5 +83,4 @@ function battle:PickTargetActivity (UI, action)
     action:finish()
     self:switch(battle.IdleActivity(UI, action:getField()))
   end
-
 end

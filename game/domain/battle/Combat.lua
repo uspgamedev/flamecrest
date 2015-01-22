@@ -15,7 +15,7 @@ function battle:Combat (attacker, defender)
     return false, false
   end
 
-  local function calculatehHit(atk, def)
+  local function calculateHit(atk, def)
     local trianglehitbonus = atk.unit:getWeapon()
                                      :triangleHitBonus(def.unit:getWeapon())
     local hit = atk.unit:getHit() + trianglehitbonus
@@ -49,6 +49,20 @@ function battle:Combat (attacker, defender)
     return critchance
   end
 
+  -- get combat stats
+  function self:getHPs()
+    return attacker.unit:getHP(), defender.unit:getHP()
+  end
+  function self:calculateDmgs()
+    return calculateDmg(attacker, defender), calculateDmg(defender, attacker)
+  end
+  function self:calculateHits()
+    return calculateHit(attacker, defender), calculateHit(defender, attacker)
+  end
+  function self:calculateCrits()
+    return calculateCrit(attacker, defender), calculateCrit(defender, attacker)
+  end
+
   local function strike (atk, def)
     local result = {
       atk = atk.unit,
@@ -57,7 +71,7 @@ function battle:Combat (attacker, defender)
       deftile = def.tile
     }
     if atk.unit:getWeapon() and atk.unit:getWeapon():hasDurability() then
-      local hitchance   = calculatehHit(atk, def)
+      local hitchance   = calculateHit(atk, def)
       local damage      = calculateDmg(atk, def)
       local critchance  = calculateCrit(atk, def)
 
