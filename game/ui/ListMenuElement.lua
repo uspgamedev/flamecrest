@@ -9,12 +9,15 @@ local OPTION_HEIGHT = 96
 local DELAY         = 20
 
 local shader_code = [[
+  extern number time;
   vec4 effect (vec4 color, Image texture, vec2 tex_pos, vec2 pix_pos) {
     vec4 result = Texel(texture, tex_pos)*color;
+    number limit = 0.4;
     number dist = distance(tex_pos, vec2(0.5, 0.5));
-    number back = 1.0 - smoothstep(0.38, 0.4, dist);
-    number border = smoothstep(0.38, 0.4, dist)*(1 - smoothstep(0.48, 0.5, dist));
-    return back*result + border*vec4(.2, .2, .2, 1);
+    number back = 1.0 - smoothstep(limit - .02, limit, dist);
+    number border = smoothstep(limit - .02, limit, dist)
+                  * (1 - smoothstep(limit + 0.08, limit + 0.1, dist));
+    return back*result + border*vec4(.2, .2, .2 + .5*time, 1);
   }
 ]]
 
@@ -24,7 +27,7 @@ function ui:ListMenuElement (_name, options, _pos, _minwidth)
   fontsize = fontsize or 24
   _minwidth = _minwidth or 128
   local font = love.graphics.newFont('assets/fonts/Verdana.ttf', 18)
-  local shader = love.graphics.newShader(shader_code)
+  local shaders = {}
   local icons = {}
 
   local function getFontHeight ()
@@ -39,6 +42,7 @@ function ui:ListMenuElement (_name, options, _pos, _minwidth)
         maxwidth = width
       end
       icons[i] = love.graphics.newImage('assets/icons/'..option..'.png')
+      shaders[i] = love.graphics.newShader(shader_code)
     end
     engine.UIElement:inherit(self, _name, _pos,
                              vec2:new{maxwidth, #options*OPTION_HEIGHT})
@@ -52,6 +56,14 @@ function ui:ListMenuElement (_name, options, _pos, _minwidth)
     return math.modf(y/OPTION_HEIGHT)+1
   end
 
+  local function changeFocus (newfocus)
+    if newfocus ~= focus then
+      oldfocus = focus
+      focus = newfocus
+      time = 0
+    end
+  end
+
   function self:onMousePressed (pos, button)
     if button == 'l' then
       local i = getOption(pos.y)
@@ -60,12 +72,7 @@ function ui:ListMenuElement (_name, options, _pos, _minwidth)
   end
 
   function self:onMouseHover (pos)
-    local newfocus = getOption(pos.y)
-    if newfocus ~= focus then
-      oldfocus = focus
-      focus = newfocus
-      time = 0
-    end
+    return changeFocus(getOption(pos.y))
   end
 
   function self:onKeyPressed (key)
@@ -74,24 +81,28 @@ function ui:ListMenuElement (_name, options, _pos, _minwidth)
     elseif key == 'backspace' then
       broadcastEvent(engine.Event('Cancel'))
     elseif key == 'up' or key == 'w' then
-      focus = focus - 1
-      if focus == 0 then focus = #options end
+      local f = focus - 1
+      if f == 0 then f = #options end
+      changeFocus(f)
     elseif key == 'down' or key == 's' then
-      focus = (focus % #options) + 1
+      changeFocus((focus % #options) + 1)
     end
   end
 
   function self:onRefresh ()
     time = math.min(time + 1, DELAY)
+    for _,shader in ipairs(shaders) do
+      shader:send("time", 0)
+    end
+    shaders[focus]:send("time", time/DELAY)
   end
 
   function self:draw (graphics, window)
+
     local oldfont = graphics.getFont()
     local p = 1 - (1 - time/DELAY)^3
-    graphics.setFont(font)
 
-    --graphics.setColor(150, 150, 100, 255)
-    --graphics.rectangle('fill', 0, 0, self:getWidth(), self:getHeight())
+    graphics.setFont(font)
 
     for i,option in ipairs(options) do
       if focus == i or oldfocus == i then
@@ -108,12 +119,25 @@ function ui:ListMenuElement (_name, options, _pos, _minwidth)
         end
         graphics.setColor(255, 255, 255, 255)
       end
-      graphics.setShader(shader)
-      graphics.draw(icons[i], 0, (i-1)*OPTION_HEIGHT)
-      graphics.setShader()
+      do
+        local w, h = icons[i]:getWidth(), icons[i]:getHeight()
+        local q = 1.36 - (1 - 1.6*time/DELAY)^2
+        graphics.setShader(shaders[i])
+        graphics.push()
+        graphics.translate(w/2, (i-1)*OPTION_HEIGHT + h/2)
+        if focus == i then
+          graphics.scale(1 + 0.2*q, 1 + 0.2*q)
+        elseif oldfocus == i then
+          graphics.scale(1.2 - 0.2*q, 1.2 - 0.2*q)
+        end
+        graphics.draw(icons[i], 0, 0, 0, 1, 1, w/2, h/2)
+        graphics.pop()
+        graphics.setShader()
+      end
     end
 
     graphics.setFont(oldfont)
+
   end
 
 end
