@@ -14,7 +14,7 @@ function battle:SelectActionActivity (UI, action)
   function self.__accept:Load ()
     local action_menu = ui.ListMenuElement("action_menu", {"Fight", "Wait"}, 18)
     local pos = UI:find("screen"):hexposToScreen(action:getCurrentPos())
-                + vec2:new{-128, -96}
+                + vec2:new{64, -96}
     action_menu:setPos(pos)
     UI:add(action_menu, true)
   end
