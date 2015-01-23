@@ -7,7 +7,6 @@ function ui:Moveable (start_position, acceleration)
   local accel       = acceleration or 25
   local currentpos  = start_position or hexpos:new {1,1}
   local target      = hexpos:new {1,1}
-  local step        = hexpos:new {0,0}
 
   function self:getPos ()
     return currentpos:clone()
